@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<title>건축공사 공기산정 시스템 [MANMIN-Ver3.0]</title>
+<meta name="description" content="공공 건설공사 적정 공기산정 PWA — 국토교통부고시 제2024-1021호"/>
+<meta name="theme-color" content="#1d4ed8"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="공기산정"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<link rel="icon" href="icons/favicon.ico" sizes="any"/>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png"/>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif!important;}
+body{background:#f0f4f9;color:#1a2744;min-height:100vh;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:#f0f4f9;}
+::-webkit-scrollbar-thumb{background:#bfdbfe;border-radius:10px;}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+input[type="number"]{-moz-appearance:textfield;}
+.mono{font-family:'JetBrains Mono','Courier New',monospace!important;}
+
+/* ── HEADER ── */
+.app-header{background:#dbeafe;position:sticky;top:0;z-index:40;box-shadow:0 2px 16px rgba(147,197,253,.45);}
+.header-inner{max-width:1300px;margin:0 auto;padding:0 16px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.brand-logo{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.brand-icon{width:38px;height:38px;background:#1d4ed8;border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(29,78,216,.38);flex-shrink:0;font-size:18px;}
+.brand-texts{min-width:0;}
+.brand-title{font-size:15px;font-weight:900;color:#1e3a8a;letter-spacing:-.02em;line-height:1.2;white-space:nowrap;}
+.brand-sub{font-size:9.5px;color:#3b82f6;margin-top:2px;font-weight:700;white-space:nowrap;}
+.ver-badge{background:linear-gradient(135deg,#1d4ed8,#0c4da2);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;letter-spacing:.04em;}
+.hdr-btns{display:flex;gap:7px;flex-shrink:0;}
+.btn-red{background:#e63312;color:#fff;border:none;padding:8px 13px;border-radius:9px;font-size:11.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:all .15s;box-shadow:0 2px 8px rgba(230,51,18,.32);white-space:nowrap;}
+.btn-red:hover{background:#c62a0c;}
+.btn-blue{background:#1d4ed8;color:#fff;border:none;padding:8px 12px;border-radius:9px;font-size:11.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:all .15s;box-shadow:0 2px 8px rgba(29,78,216,.28);white-space:nowrap;}
+.btn-blue:hover{background:#1e40af;}
+.btn-ghost{background:#fff;color:#374151;border:1.5px solid #d1d5db;padding:8px 12px;border-radius:9px;font-size:11.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:all .15s;}
+.btn-ghost:hover{border-color:#1d4ed8;color:#1d4ed8;background:#eff6ff;}
+.btn-orange{background:#f97316;color:#fff;border:none;padding:8px 13px;border-radius:9px;font-size:11.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:all .15s;box-shadow:0 2px 8px rgba(249,115,22,.32);}
+.btn-orange:hover{background:#ea6c0e;}
+
+/* ── TAB BAR ── */
+.tab-bar{background:#bfdbfe;border-top:1px solid rgba(147,197,253,.35);overflow-x:auto;scrollbar-width:none;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab-bar-inner{max-width:1300px;margin:0 auto;padding:0 8px;display:flex;}
+.tab-btn{background:none;border:none;cursor:pointer;color:#1e40af;font-family:inherit;padding:10px 14px;font-size:11.5px;font-weight:700;position:relative;transition:color .15s,background .15s;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;letter-spacing:.02em;}
+.tab-btn:hover{color:#1e3a8a;background:rgba(30,58,138,.07);}
+.tab-btn.active{color:#1e3a8a;}
+.tab-btn.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:#f97316;border-radius:2px 2px 0 0;}
+
+/* ── MAIN ── */
+.main-wrap{max-width:1300px;margin:0 auto;padding:16px 14px 100px;}
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+@media(max-width:900px){.two-col{grid-template-columns:1fr;}}
+
+/* ── CARD ── */
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 1px 4px rgba(15,23,42,.06);overflow:hidden;margin-bottom:14px;}
+.card-head{display:flex;align-items:center;gap:9px;padding:13px 15px;border-bottom:1px solid #eef1f6;}
+.card-icon{width:27px;height:27px;border-radius:7px;background:#eff6ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;}
+.card-title{font-size:11.5px;font-weight:800;color:#1a2744;letter-spacing:.04em;}
+.card-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.card-body{padding:13px 15px;}
+
+/* ── FORM ── */
+.flbl{font-size:10px;font-weight:700;color:#6b7a99;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;display:block;}
+.finput{width:100%;padding:8px 11px;background:#f8fafd;border:1.5px solid #dde3ed;border-radius:8px;color:#1a2744;font-size:13px;font-weight:600;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s;}
+.finput:focus{border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.1);background:#fff;}
+.fselect{width:100%;padding:8px 26px 8px 10px;background:#f8fafd;border:1.5px solid #dde3ed;border-radius:8px;color:#1a2744;font-size:12px;font-weight:700;font-family:inherit;outline:none;cursor:pointer;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231d4ed8' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;}
+.fselect:focus{border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.1);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.frow.triple{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:480px){.frow{grid-template-columns:1fr;}.frow.triple{grid-template-columns:1fr 1fr;}}
+.fgroup{display:flex;flex-direction:column;gap:4px;}
+.fgroup.full{grid-column:1/-1;}
+.input-sfx{display:flex;}
+.input-sfx .finput{border-radius:8px 0 0 8px;}
+.sfx-lbl{padding:8px 11px;background:#eff6ff;border:1.5px solid #dde3ed;border-left:none;border-radius:0 8px 8px 0;font-size:12px;font-weight:700;color:#3b82f6;white-space:nowrap;display:flex;align-items:center;}
+
+/* ── OPT CARDS ── */
+.opt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;}
+.opt-card{border:2px solid #e2e8f0;border-radius:10px;padding:10px;cursor:pointer;transition:all .15s;text-align:center;background:#f8fafd;}
+.opt-card:hover{border-color:#bfdbfe;background:#f0f9ff;}
+.opt-card.sel{border-color:#1d4ed8;background:#eff6ff;}
+.opt-ico{font-size:22px;margin-bottom:4px;}
+.opt-name{font-size:11.5px;font-weight:800;color:#1a2744;}
+.opt-meta{font-size:10px;color:#6b7a99;margin-top:2px;}
+
+/* ── STEPPER ── */
+.stepper{display:flex;border:1.5px solid #dde3ed;border-radius:8px;overflow:hidden;}
+.stp-btn{width:32px;height:36px;background:#f0f4f9;border:none;font-size:16px;cursor:pointer;color:#6b7a99;transition:all .15s;flex-shrink:0;}
+.stp-btn:hover{background:#1d4ed8;color:#fff;}
+.stp-inp{flex:1;border:none!important;border-left:1.5px solid #dde3ed!important;border-right:1.5px solid #dde3ed!important;border-radius:0!important;text-align:center;font-weight:700;padding:7px 4px!important;min-width:48px;background:#fff;outline:none!important;color:#1a2744;font-size:13px;}
+
+/* ── RESULT BOX ── */
+.result-hero{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);padding:20px;border-radius:14px;color:#fff;text-align:center;margin-bottom:14px;}
+.rh-sub{font-size:10.5px;opacity:.65;margin-bottom:4px;font-weight:600;}
+.rh-num{font-size:64px;font-weight:900;color:#fbbf24;line-height:1;}
+.rh-unit{font-size:16px;font-weight:700;opacity:.85;margin-top:2px;}
+.rh-dates{font-size:11.5px;opacity:.72;margin-top:10px;}
+.rh-formula{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15);font-size:11px;opacity:.72;font-family:monospace;}
+.res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:600px){.res-grid{grid-template-columns:repeat(2,1fr);}}
+.res-item{background:#f8fafd;border:1.5px solid #e2e8f0;border-radius:12px;padding:12px;text-align:center;}
+.res-item.hl{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-color:transparent;color:#fff;}
+.res-item.hl .ri-label{color:rgba(255,255,255,.6);}
+.ri-ico{font-size:18px;margin-bottom:4px;}
+.ri-label{font-size:10px;color:#6b7a99;font-weight:600;margin-bottom:3px;}
+.ri-val{font-size:22px;font-weight:900;color:#1d4ed8;}
+.ri-unit{font-size:11px;}
+.res-item.hl .ri-val{color:#fbbf24;}
+.ri-sub{font-size:9.5px;color:#6b7a99;margin-top:2px;}
+
+/* ── GANTT ── */
+.gantt-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.gantt-lbl{width:76px;font-size:11px;font-weight:600;color:#374151;flex-shrink:0;text-align:right;}
+.gantt-track{flex:1;height:26px;background:#f0f4f9;border-radius:5px;position:relative;min-width:120px;border:1px solid #e2e8f0;}
+.gantt-bar{position:absolute;top:3px;height:20px;border-radius:4px;display:flex;align-items:center;padding:0 6px;font-size:10px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;}
+.gantt-days{width:40px;text-align:right;font-size:11px;font-weight:700;color:#6b7a99;flex-shrink:0;}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{background:#1d4ed8;color:#fff;padding:8px 10px;font-size:11px;font-weight:700;text-align:left;}
+.tbl th:first-child{border-radius:7px 0 0 0;}
+.tbl th:last-child{border-radius:0 7px 0 0;}
+.tbl td{padding:8px 10px;border-bottom:1px solid #e2e8f0;font-size:12px;}
+.tbl tr:hover td{background:#f8fafd;}
+.tbl .cat-row td{background:#eff6ff;font-weight:800;font-size:11px;color:#1e40af;padding:5px 10px;}
+.tbl .sum-row td{background:#1d4ed8;color:#fff;font-weight:900;}
+
+/* ── NW TABLE ── */
+.nw-tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.nw-tbl th{background:#1d4ed8;color:#fff;padding:6px 7px;text-align:center;font-size:10px;}
+.nw-tbl td{padding:6px 7px;border-bottom:1px solid #e2e8f0;text-align:center;}
+.nw-tbl .act-row td{background:#eff6ff;font-weight:600;}
+.nw-tbl .sum-row td{background:#e0eaff;font-weight:800;color:#1e3a8a;}
+
+/* ── ALERT ── */
+.alert{border-radius:9px;padding:10px 13px;display:flex;gap:8px;align-items:flex-start;font-size:11.5px;line-height:1.6;margin-bottom:12px;}
+.alert-info{background:#eff6ff;border-left:3px solid #1d4ed8;color:#1e40af;}
+.alert-success{background:#f0fdf4;border-left:3px solid #22c55e;color:#166534;}
+.alert-warning{background:#fffbeb;border-left:3px solid #f59e0b;color:#92400e;}
+.alert-danger{background:#fff1f2;border-left:3px solid #ef4444;color:#991b1b;}
+.alert-ico{font-size:14px;flex-shrink:0;margin-top:1px;}
+
+/* ── VERIFICATION BAR ── */
+.vbar{background:#f8fafd;border-radius:12px;padding:14px;border:1.5px solid #e2e8f0;}
+.vbar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;flex-wrap:wrap;gap:5px;}
+.prog-track{height:12px;background:#e2e8f0;border-radius:6px;position:relative;overflow:visible;}
+.prog-ok{position:absolute;top:0;height:100%;background:#dcfce7;border:2px solid #22c55e;border-radius:6px;}
+.prog-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;background:#1d4ed8;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+
+/* ── FORMULA BOX ── */
+.formula{background:#0f172a;color:#e2e8f0;border-radius:9px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;margin:10px 0;}
+.formula .hl{color:#fbbf24;font-weight:700;}
+.formula .cm{color:#475569;}
+
+/* ── LEGAL BADGE ── */
+.legal-ref{font-size:10.5px;color:#6b7a99;background:#f8fafd;border-radius:8px;padding:6px 11px;margin-top:7px;display:flex;align-items:center;gap:5px;}
+.tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;background:#eff6ff;color:#1d4ed8;}
+
+/* ── SUMLIST ── */
+.sumlist{list-style:none;}
+.sumlist li{display:flex;justify-content:space-between;padding:7px 3px;border-bottom:1px solid #e2e8f0;font-size:12.5px;flex-wrap:wrap;gap:4px;}
+.sumlist li:last-child{border-bottom:none;}
+.sumlist .k{color:#6b7a99;}
+.sumlist .v{font-weight:700;text-align:right;}
+
+/* ── INFO STRIP ── */
+.info-strip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:9px 12px;margin-bottom:12px;display:flex;align-items:flex-start;gap:7px;}
+.info-strip p{font-size:11px;color:#1e40af;font-weight:600;line-height:1.7;}
+
+/* ── A4 PREVIEW ── */
+.preview-bg{background:#94a3b8;border-radius:0 0 14px 14px;padding:20px;display:flex;justify-content:center;overflow-x:auto;min-height:300px;}
+#a4-page{background:#fff;width:794px;min-height:1123px;padding:24px 48px 40px;font-size:12px;}
+.a4-header{border-bottom:3px solid #1d4ed8;padding-bottom:14px;margin-bottom:20px;}
+.a4-title{font-size:20px;font-weight:900;color:#1e3a8a;margin-bottom:5px;}
+.a4-meta{font-size:10px;color:#6b7a99;font-weight:600;}
+.a4-stamp{position:absolute;top:40px;right:48px;border:3px solid #ef4444;padding:6px 12px;border-radius:5px;font-size:11px;font-weight:900;color:#ef4444;letter-spacing:.05em;transform:rotate(-8deg);opacity:.8;}
+.a4-section{margin-bottom:18px;}
+.a4-sec-title{font-size:12px;font-weight:800;color:#1e3a8a;border-left:3px solid #f97316;padding-left:8px;margin-bottom:8px;letter-spacing:.04em;}
+.a4-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.a4-item{border:1.5px solid #e2e8f0;border-radius:8px;padding:9px;text-align:center;}
+.a4-item-label{font-size:9px;color:#6b7a99;font-weight:700;margin-bottom:3px;}
+.a4-item-val{font-size:18px;font-weight:900;color:#1d4ed8;}
+.a4-item-unit{font-size:10px;color:#374151;}
+.a4-item.total{background:#1e3a8a;border-color:#1e3a8a;}
+.a4-item.total .a4-item-label{color:rgba(255,255,255,.6);}
+.a4-item.total .a4-item-val{color:#fbbf24;font-size:22px;}
+.a4-item.total .a4-item-unit{color:#fff;}
+.a4-formula-box{background:#0f172a;color:#e2e8f0;border-radius:8px;padding:10px 12px;font-family:monospace;font-size:11px;line-height:1.9;margin-bottom:12px;}
+.a4-formula-box .hl{color:#fbbf24;font-weight:700;}
+.a4-tbl{width:100%;border-collapse:collapse;font-size:10.5px;margin-bottom:10px;}
+.a4-tbl th{background:#1d4ed8;color:#fff;padding:6px 8px;text-align:left;font-size:9.5px;font-weight:700;}
+.a4-tbl td{padding:6px 8px;border-bottom:1px solid #e2e8f0;}
+.a4-tbl .sum td{background:#eff6ff;font-weight:800;color:#1e3a8a;}
+.a4-gantt-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.a4-gantt-lbl{width:68px;font-size:10px;font-weight:600;text-align:right;color:#374151;}
+.a4-gantt-track{flex:1;height:20px;background:#f0f4f9;border-radius:4px;position:relative;border:1px solid #e2e8f0;}
+.a4-gantt-bar{position:absolute;top:2px;height:16px;border-radius:3px;display:flex;align-items:center;padding:0 5px;font-size:9px;font-weight:700;color:#fff;overflow:hidden;}
+.a4-gantt-days{width:36px;text-align:right;font-size:10px;font-weight:700;color:#6b7a99;}
+.a4-footer{border-top:1px solid #e2e8f0;padding-top:8px;display:flex;justify-content:space-between;font-size:9px;color:#94a3b8;font-weight:600;margin-top:24px;}
+.a4-watermark{text-align:center;margin-bottom:16px;}
+.a4-watermark-text{font-size:13px;font-weight:900;color:#1d4ed8;letter-spacing:.15em;}
+
+/* ── MOBILE PREVIEW ── */
+.mob-preview-wrap{display:flex;justify-content:center;padding:20px;background:#94a3b8;border-radius:0 0 14px 14px;}
+.mob-frame{width:390px;background:#1a1a1a;border-radius:24px;padding:8px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.mob-screen{background:#f0f4f9;border-radius:18px;overflow:hidden;min-height:700px;}
+.mob-statusbar{background:#1d4ed8;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:11px;color:rgba(255,255,255,.85);font-weight:700;}
+.mob-header{background:#dbeafe;padding:12px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(147,197,253,.4);}
+.mob-content{padding:12px;}
+.mob-card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.mob-result-hero{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-radius:12px;padding:14px;text-align:center;color:#fff;margin-bottom:10px;}
+.mob-big-num{font-size:40px;font-weight:900;color:#fbbf24;line-height:1;}
+.mob-res-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.mob-res-item{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center;}
+.mob-fab{margin:0 12px;background:linear-gradient(135deg,#0c4da2,#1d4ed8);color:#fff;border:none;border-radius:14px;padding:13px;cursor:pointer;box-shadow:0 4px 16px rgba(12,77,162,.5);display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:800;font-family:inherit;width:calc(100% - 24px);}
+
+/* ── LEGAL TAB ── */
+.legal-section{margin-bottom:18px;}
+.legal-sec-title{font-size:13px;font-weight:900;color:#1e3a8a;border-left:4px solid #f97316;padding-left:10px;margin-bottom:10px;letter-spacing:.03em;}
+.legal-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.legal-law-title{font-size:12px;font-weight:800;color:#1d4ed8;margin-bottom:7px;}
+.legal-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:11.5px;}
+.legal-row:last-child{border-bottom:none;}
+.legal-row .lk{color:#6b7a99;font-weight:600;}
+.legal-row .lv{font-weight:700;color:#1a2744;text-align:right;}
+.law-badge{display:inline-flex;align-items:center;gap:4px;background:#eff6ff;color:#1d4ed8;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:800;border:1px solid #bfdbfe;margin:2px;}
+.law-badge.orange{background:#fff7ed;color:#c2410c;border-color:#fed7aa;}
+.law-badge.green{background:#f0fdf4;color:#166534;border-color:#bbf7d0;}
+.law-badge.red{background:#fff1f2;color:#be123c;border-color:#fecdd3;}
+.component-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:580px){.component-grid{grid-template-columns:1fr;}}
+.comp-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:13px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.comp-number{font-size:24px;font-weight:900;color:#1d4ed8;line-height:1;}
+.comp-label{font-size:11.5px;font-weight:800;color:#1a2744;margin:4px 0 5px;}
+.comp-sub{font-size:10.5px;color:#6b7a99;line-height:1.6;}
+.comp-law{font-size:9.5px;color:#3b82f6;font-weight:700;margin-top:5px;}
+
+/* ── CALC GUIDE MODAL ── */
+.modal-bg{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:14px;animation:mFade .2s ease-out;}
+@keyframes mFade{from{opacity:0}to{opacity:1}}
+.modal-box{background:#fff;border-radius:20px;width:100%;max-width:820px;max-height:calc(100vh - 28px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35);animation:mUp .25s cubic-bezier(.34,1.5,.64,1);}
+@keyframes mUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mhd{background:linear-gradient(135deg,#081e44,#0c4da2);color:#fff;padding:16px 18px 0;flex-shrink:0;}
+.mhd-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:10px;}
+.mclose{background:rgba(255,255,255,.13);border:none;color:#fff;border-radius:50%;width:30px;height:30px;flex-shrink:0;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .15s;font-family:inherit;}
+.mclose:hover{background:rgba(255,255,255,.28);}
+.mitabs{display:flex;overflow-x:auto;scrollbar-width:none;}
+.mitabs::-webkit-scrollbar{display:none;}
+.mitab{padding:9px 14px;border:none;background:transparent;color:rgba(255,255,255,.6);font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .15s;flex-shrink:0;}
+.mitab.on{color:#fff;border-bottom-color:#f97316;}
+.mbd{overflow-y:auto;padding:18px;flex:1;}
+.mbd::-webkit-scrollbar{width:4px;}
+.mbd::-webkit-scrollbar-thumb{background:#bfdbfe;border-radius:3px;}
+.mpanel{display:none;}
+.mpanel.on{display:block;}
+.msec{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;margin:14px 0 7px;display:flex;align-items:center;gap:6px;border-left:3px solid #1d4ed8;padding-left:8px;color:#1a2744;}
+.msec:first-child{margin-top:0;}
+.mcard{background:#f8fafc;border:1px solid #e4e9f0;border-radius:10px;padding:11px 12px;margin-bottom:7px;}
+.meq{display:block;font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;color:#1d4ed8;background:#eff6ff;border-radius:8px;padding:9px 12px;margin:5px 0;word-break:break-all;line-height:1.75;}
+.mhi{border:1.5px solid #bfdbfe;background:#eff6ff;border-radius:10px;padding:11px 12px;margin-bottom:7px;font-size:11px;line-height:1.8;color:#1e3a8a;}
+.mhi.amber{border-color:#fde68a;background:#fefce8;color:#854d0e;}
+.mg2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:7px;}
+@media(max-width:480px){.mg2{grid-template-columns:1fr;}}
+.mtbl{width:100%;border-collapse:collapse;font-size:11px;border-radius:8px;overflow:hidden;}
+.mtbl th{background:#0c4da2;color:#fff;padding:7px 9px;text-align:center;font-weight:700;font-size:10px;}
+.mtbl td{padding:7px 9px;border-bottom:1px solid #e4e9f0;}
+.mtbl tr:last-child td{border-bottom:none;}
+.mtbl tr:nth-child(even) td{background:#f8fafc;}
+.mtbl td:first-child{font-weight:700;color:#1a2744;padding-left:11px;}
+
+/* ── PWA INSTALL BANNER ── */
+.install-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;box-shadow:0 -4px 24px rgba(29,78,216,.4);transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);border-radius:16px 16px 0 0;}
+.install-banner.show{transform:translateY(0);}
+.ib-ico{font-size:26px;flex-shrink:0;}
+.ib-txt{flex:1;}
+.ib-ttl{font-size:13px;font-weight:800;}
+.ib-sub{font-size:11px;opacity:.7;margin-top:1px;}
+.ib-btns{display:flex;gap:7px;flex-shrink:0;}
+.ib-install{background:#f97316;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;}
+.ib-close{background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:8px;padding:8px 10px;font-family:inherit;font-size:13px;cursor:pointer;}
+
+/* ── OFFLINE TOAST ── */
+.offline-toast{position:fixed;top:68px;left:50%;transform:translateX(-50%) translateY(-12px);z-index:8888;background:#0f172a;color:#fff;padding:8px 16px;border-radius:24px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(0,0,0,.3);opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;}
+.offline-toast.online{background:#166534;}
+.offline-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── UPDATE BANNER ── */
+.update-banner{position:fixed;top:0;left:0;right:0;z-index:9990;background:#f97316;color:#fff;padding:9px 14px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:12.5px;font-weight:700;transform:translateY(-100%);transition:transform .3s;box-shadow:0 2px 10px rgba(0,0,0,.15);}
+.update-banner.show{transform:translateY(0);}
+.update-banner button{background:#1d4ed8;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-family:inherit;font-size:11.5px;font-weight:800;cursor:pointer;}
+
+/* ── FAB ── */
+.fab{position:fixed;bottom:20px;right:16px;z-index:50;background:linear-gradient(135deg,#0c4da2,#1d4ed8);color:#fff;border:none;border-radius:16px;padding:11px 16px;cursor:pointer;box-shadow:0 4px 20px rgba(12,77,162,.55);display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;font-family:inherit;transition:transform .15s,box-shadow .15s;}
+.fab:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(12,77,162,.7);}
+
+/* ── PRINT ── */
+@page{size:A4 portrait;margin:15mm 18mm 20mm;}
+@media print{
+  *,*::before,*::after{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .no-print{display:none!important;}
+  html,body{margin:0!important;padding:0!important;width:210mm!important;background:#fff!important;}
+  #a4-print-target{display:block!important;}
+  #root-app>*:not(#a4-print-target){display:none!important;}
+  /* ── 페이지 나눔 제어 ── */
+  .a4-section{break-inside:avoid;page-break-inside:avoid;}
+  .a4-tbl{break-inside:auto;page-break-inside:auto;}
+  .a4-tbl thead{display:table-header-group;}
+  .a4-tbl tr{break-inside:avoid;page-break-inside:avoid;}
+  .a4-grid{break-inside:avoid;page-break-inside:avoid;}
+  .a4-formula-box{break-inside:avoid;page-break-inside:avoid;}
+  .a4-gantt-row{break-inside:avoid;page-break-inside:avoid;}
+  .a4-header{break-inside:avoid;page-break-inside:avoid;}
+  /* ── 바닥글: 문서 흐름 내 마지막 요소 처리 (position:fixed 중복 제거) ── */
+  .a4-footer{
+    margin-top:16px;
+    border-top:1px solid #e2e8f0;
+    padding-top:6px;
+    display:flex;
+    justify-content:space-between;
+    font-size:8px;
+    color:#94a3b8;
+    font-weight:600;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  #a4-print-target #a4-page{padding:0;width:100%;}
+}
+
+/* ── FADE ── */
+.fade-in{animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── STEP PROGRESS ── */
+.step-progress{display:flex;align-items:center;gap:4px;}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;border:2px solid rgba(30,58,138,.22);color:rgba(30,58,138,.4);cursor:pointer;transition:all .2s;flex-shrink:0;}
+.step-dot.active{background:#f97316;border-color:#f97316;color:#fff;}
+.step-dot.done{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8;}
+.step-line{width:12px;height:2px;background:rgba(30,58,138,.15);}
+.step-line.done{background:#bfdbfe;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .app-header{padding:0;}
+  .header-inner{padding:0 12px;height:54px;}
+  .brand-title{font-size:13px;}
+  .brand-sub{display:none;}
+  .main-wrap{padding:12px 10px 100px;}
+  .a4-grid{grid-template-columns:repeat(2,1fr);}
+  .hdr-btns .btn-ghost{display:none;}
+}
+@media(max-width:480px){
+  .opt-grid{grid-template-columns:repeat(3,1fr);}
+  .res-grid{grid-template-columns:repeat(2,1fr);}
+  .mob-frame{width:100%;max-width:390px;}
+}
+</style>
+</head>
+<body>
+<div id="root-app">
+
+  <!-- Update Banner -->
+  <div class="update-banner" id="updateBanner">🔄 새 버전이 있습니다 <button onclick="applyUpdate()">지금 업데이트</button><button onclick="this.parentElement.classList.remove('show')" style="background:rgba(255,255,255,.2);color:#fff;">나중에</button></div>
+
+  <!-- Offline Toast -->
+  <div class="offline-toast" id="offlineToast"></div>
+
+  <!-- Install Banner -->
+  <div class="install-banner" id="installBanner">
+    <div class="ib-ico">📲</div>
+    <div class="ib-txt"><div class="ib-ttl">홈 화면에 추가</div><div class="ib-sub">오프라인에서도 공기산정 · 빠른 실행</div></div>
+    <div class="ib-btns"><button class="ib-install" id="btnInstall">설치</button><button class="ib-close" onclick="dismissInstall()">✕</button></div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="app-header no-print">
+    <div class="header-inner">
+      <div class="brand-logo">
+        <div class="brand-icon">⏱</div>
+        <div class="brand-texts">
+          <div class="brand-title">건축공사 공기산정 시스템 [MANMIN-Ver3.0]</div>
+          <div class="brand-sub">국토교통부고시 제2024-1021호 · 건설기술진흥법 제45조의2</div>
+        </div>
+      </div>
+      <div class="hdr-btns">
+        <button class="btn-ghost no-print" onclick="openCalcGuide()">📐 계산방법 안내</button>
+        <button class="btn-blue no-print" id="btnPrintA4" onclick="printA4()">🖨 A4 출력</button>
+        <button class="btn-orange no-print" id="btnExportJPG" onclick="exportMobileJPG()">📱 JPG 저장</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- TAB BAR -->
+  <nav class="tab-bar no-print">
+    <div class="tab-bar-inner">
+      <button class="tab-btn active" data-tab="input" onclick="switchTab('input')">⌨️ 입력·산출</button>
+      <button class="tab-btn" data-tab="a4" onclick="switchTab('a4')">📄 A4 미리보기</button>
+      <button class="tab-btn" data-tab="mobile" onclick="switchTab('mobile')">📱 모바일 미리보기</button>
+      <button class="tab-btn" data-tab="legal" onclick="switchTab('legal')">⚖️ 법적근거</button>
+    </div>
+  </nav>
+
+  <main class="main-wrap">
+
+    <!-- ══ TAB: 입력·산출 ══ -->
+    <div class="tab-panel active fade-in" id="tab-input">
+      <!-- Step Progress -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="font-size:18px;font-weight:900;color:#1e3a8a;" id="stepTitle">프로젝트 기본 정보</div>
+          <div style="font-size:11.5px;color:#6b7a99;margin-top:2px;" id="stepDesc">공사기간 산정의 기초 데이터를 입력합니다.</div>
+        </div>
+        <div class="step-progress" id="stepProg"></div>
+      </div>
+
+      <div id="stepContent"></div>
+    </div>
+
+    <!-- ══ TAB: A4 미리보기 ══ -->
+    <div class="tab-panel" id="tab-a4">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">📄</div>
+          <div class="card-title">A4 공기산정 근거서 미리보기</div>
+          <div class="card-badge" style="margin-left:auto">210mm × 297mm</div>
+        </div>
+        <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid #eef1f6;flex-wrap:wrap;">
+          <button class="btn-blue" onclick="printA4()">🖨 A4 인쇄</button>
+          <button class="btn-orange" onclick="exportA4JPG()">📷 A4 JPG 저장</button>
+          <span style="font-size:11px;color:#6b7a99;align-self:center;flex:1;min-width:120px;">※ 공기산정 근거서 — 입찰 서류 첨부 의무 (고시 제5조)</span>
+        </div>
+        <div class="preview-bg" id="a4PreviewBg">
+          <div style="box-shadow:0 8px 40px rgba(0,0,0,.3);display:inline-block;">
+          <div id="a4-page">
+            <div id="a4-content"></div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: 모바일 미리보기 ══ -->
+    <div class="tab-panel" id="tab-mobile">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">📱</div>
+          <div class="card-title">모바일 산정결과 미리보기</div>
+          <div class="card-badge" style="margin-left:auto">iPhone 15 Pro (390px)</div>
+        </div>
+        <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid #eef1f6;flex-wrap:wrap;">
+          <button class="btn-orange" onclick="exportMobileJPG()">📱 모바일 JPG 저장</button>
+          <span style="font-size:11px;color:#6b7a99;align-self:center;">현장 공유·보고용 이미지로 저장</span>
+        </div>
+        <div class="mob-preview-wrap" id="mobPreviewBg">
+          <div class="mob-frame" id="mob-frame">
+            <div class="mob-screen" id="mob-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: 법적근거 ══ -->
+    <div class="tab-panel" id="tab-legal">
+      <div class="info-strip">
+        <p>⚖️ 이 시스템은 <strong>국토교통부고시 제2024-1021호</strong>(시행 2025.1.6) 및 <strong>건설기술진흥법 제45조의2</strong>를 기준으로 산정합니다. 법령 개정 시 별도 업데이트가 필요합니다.</p>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <!-- 근거 법령 -->
+          <div class="legal-section">
+            <div class="legal-sec-title">📋 근거 법령 체계</div>
+            <div class="legal-card">
+              <div class="legal-law-title">🏛 건설기술진흥법 제45조의2</div>
+              <div class="legal-row"><span class="lk">시행일</span><span class="lv">2021년 9월 17일</span></div>
+              <div class="legal-row"><span class="lk">핵심 내용</span><span class="lv">발주자의 적정 공사기간 산정 의무화</span></div>
+              <div class="legal-row"><span class="lk">적용 범위</span><span class="lv">모든 공공 건설공사</span></div>
+              <div style="margin-top:8px;font-size:11px;color:#374151;line-height:1.8;">발주자는 건설공사의 계획·설계·시공 등에 적합한 공사기간을 산정하여 입찰공고에 명시해야 합니다. 부당하게 공사기간을 단축하는 것을 금지하고 있습니다.</div>
+            </div>
+            <div class="legal-card">
+              <div class="legal-law-title">📜 국토교통부고시 제2024-1021호</div>
+              <div class="legal-row"><span class="lk">고시일</span><span class="lv">2024년 12월</span></div>
+              <div class="legal-row"><span class="lk">시행일</span><span class="lv">2025년 1월 6일</span></div>
+              <div class="legal-row"><span class="lk">명칭</span><span class="lv">공공 건설공사의 공사기간 산정기준</span></div>
+              <div style="margin-top:8px;">
+                <span class="law-badge">제5조: 산정근거 명시</span>
+                <span class="law-badge">제7조: 준비기간</span>
+                <span class="law-badge orange">제8~10조: 비작업일수</span>
+                <span class="law-badge green">제11조: 작업일수</span>
+                <span class="law-badge">제12조: 정리기간</span>
+                <span class="law-badge red">제14조: 표준공기 검증</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 심의 기준 -->
+          <div class="legal-section">
+            <div class="legal-sec-title">🏛 심의 필요 기준</div>
+            <div class="legal-card">
+              <div class="legal-row"><span class="lk">일반 공공공사</span><span class="lv" style="color:#ef4444;">총공사비 100억원 이상</span></div>
+              <div class="legal-row"><span class="lk">시·군·구 발주</span><span class="lv" style="color:#f59e0b;">총공사비 50억원 이상</span></div>
+              <div class="legal-row"><span class="lk">심의 기관</span><span class="lv">지방건설기술심의위원회</span></div>
+              <div class="legal-row"><span class="lk">근거</span><span class="lv">건설기술진흥법 시행령 제17~19조</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <!-- 4대 구성요소 -->
+          <div class="legal-section">
+            <div class="legal-sec-title">📐 공사기간 4대 구성요소</div>
+            <div class="component-grid">
+              <div class="comp-card">
+                <div class="comp-number">①</div>
+                <div class="comp-label">준비기간</div>
+                <div class="comp-sub">설계도서 검토, 안전관리계획서 승인, 하도급 선정, 가설시설 설치. 비작업일수 별도 계상 안 함.</div>
+                <div class="comp-law">⚖ 고시 제7조</div>
+                <div style="margin-top:7px;font-size:10px;color:#374151;">
+                  <div>일반건물 &lt;10억: <strong>10일</strong></div>
+                  <div>일반건물 ≥10억: <strong>20일</strong></div>
+                  <div>안전관리계획서 대상: <strong>45일</strong></div>
+                  <div>공동주택: <strong>45일</strong></div>
+                  <div>고속도로: <strong>180일</strong></div>
+                </div>
+              </div>
+              <div class="comp-card">
+                <div class="comp-number" style="color:#f97316;">②</div>
+                <div class="comp-label">작업일수</div>
+                <div class="comp-sub">주공정(Critical Path) 기준 순수 작업일수. 법정 근로시간(1일 8시간, 주 40시간) 준수.</div>
+                <div class="comp-law">⚖ 고시 제11조 · 부록5</div>
+                <div class="formula" style="margin-top:7px;font-size:10px;padding:7px 9px;">Y = −21.674 + 7.953×G<br/>+ 116.835×ln(C)</div>
+                <div style="font-size:9.5px;color:#6b7a99;">G=층수, C=공사비(억원)</div>
+              </div>
+              <div class="comp-card">
+                <div class="comp-number" style="color:#6b7a99;">③</div>
+                <div class="comp-label">비작업일수</div>
+                <div class="comp-sub">기상조건(혹서·동절·강우·강설·강풍·미세먼지)과 법정공휴일로 작업 불가 일수.</div>
+                <div class="comp-law">⚖ 고시 제8~10조</div>
+                <div class="formula" style="margin-top:7px;font-size:10px;padding:7px 9px;"><span class="hl">A + B - C</span><br/>C = A×B ÷ 달력일수<br/>최솟값 보장: 월 8일</div>
+              </div>
+              <div class="comp-card">
+                <div class="comp-number" style="color:#22c55e;">④</div>
+                <div class="comp-label">정리기간</div>
+                <div class="comp-sub">준공검사 준비, 인수인계, 현장 정리. 비작업일수 별도 계상 안 함. 최대 30일.</div>
+                <div class="comp-law">⚖ 고시 제12조</div>
+                <div style="margin-top:7px;font-size:10px;color:#374151;">
+                  <div>공사비 10억 이상: <strong>30일</strong></div>
+                  <div>공사비 10억 미만: <strong>15일</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 기상 제한 기준 -->
+          <div class="legal-section">
+            <div class="legal-sec-title">🌡 기상 조건별 작업 제한 기준</div>
+            <div class="legal-card" style="padding:0;overflow:hidden;">
+              <table class="tbl">
+                <thead><tr><th>항목</th><th>기준</th><th>주요 공종</th></tr></thead>
+                <tbody>
+                  <tr><td>🌡 혹서기</td><td>일 최고기온 33°C 이상</td><td>토공사, 옥외</td></tr>
+                  <tr><td>❄️ 동절기</td><td>최고기온 0°C이하 (콘크리트 −3°C)</td><td>RC, 조적</td></tr>
+                  <tr><td>🌧 강우</td><td>일 강수량 5mm↑ / 10mm↑(토공)</td><td>전 공종</td></tr>
+                  <tr><td>🌬 강풍</td><td>최대순간풍속 10m/s↑</td><td>크레인, 고층</td></tr>
+                  <tr><td>😷 미세먼지</td><td>비상저감조치 발령</td><td>토공, 해체</td></tr>
+                  <tr><td>❄️ 강설</td><td>일 신적설 5cm 이상</td><td>전 공종</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 산정 흐름도 -->
+      <div class="legal-section">
+        <div class="legal-sec-title">🔄 공기산정 프로세스 흐름도</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;padding:16px;background:#fff;border-radius:14px;border:1px solid #e2e8f0;">
+          <div style="text-align:center;padding:12px 16px;background:#eff6ff;border-radius:10px;min-width:100px;">
+            <div style="font-size:18px;">📋</div>
+            <div style="font-size:11px;font-weight:800;color:#1e3a8a;margin-top:4px;">기본정보</div>
+            <div style="font-size:9.5px;color:#6b7a99;margin-top:2px;">공사명·유형·비용</div>
+          </div>
+          <div style="font-size:20px;color:#bfdbfe;margin:0 6px;">→</div>
+          <div style="text-align:center;padding:12px 16px;background:#fff7ed;border-radius:10px;min-width:100px;">
+            <div style="font-size:18px;">🔧</div>
+            <div style="font-size:11px;font-weight:800;color:#c2410c;margin-top:4px;">준비기간</div>
+            <div style="font-size:9.5px;color:#6b7a99;margin-top:2px;">유형별 자동산정</div>
+          </div>
+          <div style="font-size:20px;color:#bfdbfe;margin:0 6px;">→</div>
+          <div style="text-align:center;padding:12px 16px;background:#fefce8;border-radius:10px;min-width:100px;">
+            <div style="font-size:18px;">🔨</div>
+            <div style="font-size:11px;font-weight:800;color:#854d0e;margin-top:4px;">작업일수</div>
+            <div style="font-size:9.5px;color:#6b7a99;margin-top:2px;">주공정 기준</div>
+          </div>
+          <div style="font-size:20px;color:#bfdbfe;margin:0 6px;">→</div>
+          <div style="text-align:center;padding:12px 16px;background:#f8fafc;border-radius:10px;min-width:100px;">
+            <div style="font-size:18px;">🌦</div>
+            <div style="font-size:11px;font-weight:800;color:#374151;margin-top:4px;">비작업일수</div>
+            <div style="font-size:9.5px;color:#6b7a99;margin-top:2px;">A+B−C 공식</div>
+          </div>
+          <div style="font-size:20px;color:#bfdbfe;margin:0 6px;">→</div>
+          <div style="text-align:center;padding:12px 16px;background:#f0fdf4;border-radius:10px;min-width:100px;">
+            <div style="font-size:18px;">✅</div>
+            <div style="font-size:11px;font-weight:800;color:#166534;margin-top:4px;">총 공사기간</div>
+            <div style="font-size:9.5px;color:#6b7a99;margin-top:2px;">±20% 검증</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FAB -->
+  <button class="fab no-print" onclick="switchTab('input')">⏱ 산정하기</button>
+
+  <!-- CALC GUIDE MODAL -->
+  <div class="modal-bg" id="calcModal" style="display:none;" onclick="if(event.target===this)closeCalcGuide()">
+    <div class="modal-box">
+      <div class="mhd">
+        <div class="mhd-row">
+          <div>
+            <div style="font-size:16px;font-weight:900;">📐 공기산정 계산방법 안내</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.6);margin-top:2px;font-weight:600;">국토교통부고시 제2024-1021호 · 건설기술진흥법 제45조의2</div>
+          </div>
+          <button class="mclose" onclick="closeCalcGuide()">✕</button>
+        </div>
+        <div class="mitabs">
+          <button class="mitab on" onclick="switchMTab('m_overview',this)">📋 전체 흐름</button>
+          <button class="mitab" onclick="switchMTab('m_prep',this)">🔧 준비기간</button>
+          <button class="mitab" onclick="switchMTab('m_work',this)">🔨 작업일수</button>
+          <button class="mitab" onclick="switchMTab('m_nw',this)">🌦 비작업일수</button>
+          <button class="mitab" onclick="switchMTab('m_verify',this)">🔍 표준공기 검증</button>
+          <button class="mitab" onclick="switchMTab('m_weather',this)">🌡 기상기준</button>
+        </div>
+      </div>
+      <div class="mbd">
+
+        <div class="mpanel on" id="m_overview">
+          <div class="msec">공사기간 산정 공식</div>
+          <div style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:12px;padding:14px 18px;text-align:center;margin-bottom:12px;">
+            <div style="font-size:11px;color:#6b7a99;margin-bottom:6px;font-weight:600;">국토교통부고시 제2024-1021호 제4조</div>
+            <div style="font-size:15px;font-weight:900;color:#1d4ed8;font-family:'JetBrains Mono',monospace;line-height:1.7;">총 공사기간 = 준비기간 + 작업일수<br/>+ 비작업일수 + 정리기간</div>
+          </div>
+          <div class="msec">각 요소 개요</div>
+          <div class="mg2">
+            <div class="mcard"><div style="font-size:12px;font-weight:800;color:#1d4ed8;margin-bottom:5px;">① 준비기간</div><div style="font-size:11px;color:#374151;line-height:1.7;">착공 전 준비 소요기간<br/>· 설계도서 검토<br/>· 안전관리계획서 승인<br/>· 하도급 선정<br/>· 가설시설 설치<br/>비작업일수 별도 계상 안 함</div></div>
+            <div class="mcard"><div style="font-size:12px;font-weight:800;color:#f97316;margin-bottom:5px;">② 작업일수</div><div style="font-size:11px;color:#374151;line-height:1.7;">주공정 기준 순수 작업일<br/>· Critical Path 공종<br/>· 1일 8시간 기준<br/>· 주 40시간 기준<br/>· 콘크리트 양생 포함</div></div>
+            <div class="mcard"><div style="font-size:12px;font-weight:800;color:#6b7a99;margin-bottom:5px;">③ 비작업일수</div><div style="font-size:11px;color:#374151;line-height:1.7;">기상+공휴일 비작업일<br/>· A(기상) + B(공휴일)<br/>· −C(중복) 차감<br/>· 월 최솟값 8일 보장<br/>· ASOS 기상통계 기반</div></div>
+            <div class="mcard"><div style="font-size:12px;font-weight:800;color:#22c55e;margin-bottom:5px;">④ 정리기간</div><div style="font-size:11px;color:#374151;line-height:1.7;">준공검사 준비 기간<br/>· 준공검사 신청·완료<br/>· 인수인계<br/>· 현장 정리·철거<br/>최대 30일, 별도 비작업 없음</div></div>
+          </div>
+          <div class="msec">적용 대상 및 의무</div>
+          <div class="mhi">
+            <strong>📌 의무 적용 대상:</strong> 모든 공공 건설공사 (발주자 의무)<br/>
+            <strong>📌 심의 필요:</strong> 100억원 이상(시·군·구 50억 이상) → 지방건설기술심의위원회<br/>
+            <strong>📌 서류 명시:</strong> 산정근거는 입찰공고·계약 서류에 첨부 의무 (제5조)
+          </div>
+        </div>
+
+        <div class="mpanel" id="m_prep">
+          <div class="msec">준비기간 산정 기준 (고시 제7조)</div>
+          <table class="mtbl">
+            <thead><tr><th>공사 유형</th><th>기준</th><th>준비기간</th></tr></thead>
+            <tbody>
+              <tr><td>일반건물 (10억 미만)</td><td>소규모 건축</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">10일</td></tr>
+              <tr><td>일반건물 (10억 이상)</td><td>일반 건축</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">20일</td></tr>
+              <tr><td>안전관리계획서 대상</td><td>고위험·대규모</td><td style="text-align:center;font-weight:800;color:#f97316;">45일</td></tr>
+              <tr><td>공동주택</td><td>—</td><td style="text-align:center;font-weight:800;color:#f97316;">45일</td></tr>
+              <tr><td>상수도</td><td>—</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">60일</td></tr>
+              <tr><td>도로공사</td><td>—</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">60일</td></tr>
+              <tr><td>교량·강교</td><td>—</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">90일</td></tr>
+              <tr><td>철도</td><td>—</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">90일</td></tr>
+              <tr><td>고속도로</td><td>—</td><td style="text-align:center;font-weight:800;color:#ef4444;">180일</td></tr>
+            </tbody>
+          </table>
+          <div class="msec">특수 상황 추가 검토</div>
+          <div class="mhi amber">
+            <strong>⚠ 별도 추가 검토 필요 항목:</strong><br/>
+            · 용지보상: 보상계획 공고~완공까지 최소 7개월<br/>
+            · 문화재 시·발굴조사: 50,000㎡ 이하 91일↑, 발굴종료 후 226일↑<br/>
+            · 한전 지장물 이설: 최대 255일<br/>
+            · 통신선로 이설: 150일
+          </div>
+        </div>
+
+        <div class="mpanel" id="m_work">
+          <div class="msec">작업일수 산정 원칙 (고시 제11조)</div>
+          <div class="mcard">
+            <div style="font-size:11.5px;font-weight:800;color:#1a2744;margin-bottom:7px;">주공정(Critical Path) 기준 산정</div>
+            <div style="font-size:11px;color:#374151;line-height:1.9;">
+              · 공사 전체의 최장 연속 공종 경로(주공정) 기준<br/>
+              · 법정 근로시간: <strong>1일 8시간, 주 40시간</strong> 준수<br/>
+              · 콘크리트 양생, 지지력 시험 등 공학적 필수 소요시간 포함<br/>
+              · 부록5 표준작업량 적용 (공종별 단위 작업량 기준)
+            </div>
+          </div>
+          <div class="msec">일반건물·공동주택 공종별 기준</div>
+          <table class="mtbl">
+            <thead><tr><th>공종</th><th>산정 기준</th><th>비고</th></tr></thead>
+            <tbody>
+              <tr><td>흙막이·터파기</td><td>지하 1층당 10일</td><td>지하 없으면 생략</td></tr>
+              <tr><td>지하층 골조</td><td>지하 1층당 31일</td><td>지지력 포함</td></tr>
+              <tr><td>파일기초</td><td>11일 (표준)</td><td>지지력 시험 포함</td></tr>
+              <tr><td>지상층 골조</td><td>1층 20일, 2층 10일, 3층~ 9일/층</td><td>주공정</td></tr>
+              <tr><td>조적공사</td><td>지상층수 × 5일</td><td>병행 가능</td></tr>
+              <tr><td>미장공사</td><td>지상층수 × 8일</td><td>주공정 (가장 긺)</td></tr>
+              <tr><td>창호공사</td><td>지상층수 × 6일</td><td>—</td></tr>
+              <tr><td>방수공사</td><td>지상층수 × 3일</td><td>—</td></tr>
+              <tr><td>토목·조경</td><td>15일</td><td>건축 완료 후</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mpanel" id="m_nw">
+          <div class="msec">비작업일수 산정 공식 (고시 제8~10조)</div>
+          <div style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:12px;padding:14px;text-align:center;margin-bottom:12px;">
+            <div class="meq" style="text-align:left;">비작업일수 = A + B − C</div>
+            <div class="meq amber" style="text-align:left;">C (중복일수) = (A × B) ÷ 달력일수</div>
+            <div style="font-size:11px;color:#374151;line-height:1.9;text-align:left;margin-top:6px;">
+              <strong>A</strong> = 기상조건 비작업일수 (혹서·동절기·강우·강풍·강설·미세먼지 합산)<br/>
+              <strong>B</strong> = 법정공휴일수 (관공서 공휴일에 관한 규정 적용)<br/>
+              <strong>C</strong> = 중복일수 (소수점 첫째자리 반올림)<br/>
+              <strong>최솟값:</strong> 월 8일 보장 (주 40시간 근무제 하한선)
+            </div>
+          </div>
+          <div class="msec">데이터 출처</div>
+          <div class="mhi">
+            · 기상통계: <strong>ASOS (자동기상관측소) 최근 5~10년 실측 데이터</strong><br/>
+            · 국토교통부 가이드라인 부록3: 전국 권역별 월별 비작업일수 통계 수록<br/>
+            · 정밀 산정 시 해당 지역 기상청 자료 활용 권장
+          </div>
+          <div class="msec">지역별 기상 특성 반영</div>
+          <div class="mhi amber">
+            ⚠ 본 시스템은 <strong>중부권 표준값</strong>을 기준으로 합니다.<br/>
+            지역별 편차가 큰 경우 (제주, 강원 산악, 서해안 등) 실측 데이터로 보정이 필요합니다.
+          </div>
+        </div>
+
+        <div class="mpanel" id="m_verify">
+          <div class="msec">표준공기 검증 공식 (고시 제14조 · 부록5)</div>
+          <div class="mcard">
+            <div style="font-size:11.5px;font-weight:800;color:#1a2744;margin-bottom:7px;">일반건물·공동주택 적용 (회귀분석 공식)</div>
+            <div class="meq">Y = −21.674 + 7.953×G + 116.835×ln(C)</div>
+            <table class="mtbl" style="margin-top:8px;">
+              <thead><tr><th>변수</th><th>의미</th><th>단위</th></tr></thead>
+              <tbody>
+                <tr><td>Y</td><td>표준 작업일수</td><td>일(day)</td></tr>
+                <tr><td>G</td><td>지상 층수</td><td>층</td></tr>
+                <tr><td>C</td><td>총 공사비</td><td>억원</td></tr>
+                <tr><td>ln(C)</td><td>공사비의 자연로그</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="msec">적정성 판단 기준</div>
+          <table class="mtbl">
+            <thead><tr><th>편차 범위</th><th>판정</th><th>조치</th></tr></thead>
+            <tbody>
+              <tr><td>±20% 이내</td><td style="color:#166534;font-weight:800;">✅ 적정</td><td>별도 조치 불필요</td></tr>
+              <tr><td>±20%~30%</td><td style="color:#92400e;font-weight:800;">⚠ 주의</td><td>전문가 검토 권고</td></tr>
+              <tr><td>±30% 초과</td><td style="color:#991b1b;font-weight:800;">🚨 부적정</td><td>전문가 재검토 필수</td></tr>
+            </tbody>
+          </table>
+          <div class="mhi amber" style="margin-top:10px;">
+            ⚠ 이 공식은 <strong>일반건물·공동주택</strong>에만 적용됩니다.<br/>
+            도로, 교량, 철도 등 토목공사는 별도 기준 적용이 필요합니다.
+          </div>
+        </div>
+
+        <div class="mpanel" id="m_weather">
+          <div class="msec">기상 조건별 작업 제한 기준 (표준시방서·산업안전보건기준규칙)</div>
+          <table class="mtbl">
+            <thead><tr><th>기상항목</th><th>작업제한 기준</th><th>주요 영향 공종</th></tr></thead>
+            <tbody>
+              <tr><td>🌡 혹서기(폭염)</td><td>일 최고기온 <strong>33°C 이상</strong></td><td>토공사, 옥외작업, 콘크리트 타설</td></tr>
+              <tr><td>❄️ 동절기(한파)</td><td>최고기온 <strong>0°C 이하</strong><br/>(콘크리트 공사: −3°C)</td><td>철근콘크리트, 조적, 타일</td></tr>
+              <tr><td>🌧 강우</td><td>일 강수량 <strong>5mm 이상</strong>(구조물)<br/><strong>10mm 이상</strong>(토공)</td><td>전 공종</td></tr>
+              <tr><td>🌬 강풍</td><td>최대순간풍속 <strong>10m/s 이상</strong><br/>(타워크레인: 15m/s)</td><td>타워크레인, 고층 작업</td></tr>
+              <tr><td>😷 미세먼지</td><td>비상저감조치 발령<br/>(PM2.5 50㎍/㎥ 초과 등 발령 기준)</td><td>토공사, 해체공사</td></tr>
+              <tr><td>❄️ 강설</td><td>일 신적설 <strong>5cm 이상</strong></td><td>전 공종</td></tr>
+            </tbody>
+          </table>
+          <div class="mhi" style="margin-top:10px;">
+            💡 <strong>복합 기상 발생 시:</strong> 각 기상조건별 비작업일수는 중복 계상하지 않습니다.<br/>
+            동일 날짜에 혹서기와 강우가 동시 발생해도 1일로 산정합니다.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- root-app -->
+
+<!-- A4 Hidden Print Target -->
+<div id="a4-print-target" style="display:none;"></div>
+
+<script>
+/* ====================================================
+   데이터 상수
+   ==================================================== */
+const NWD={
+  2024:[[0,8.7,1.3,1.6,1.6,13.2,8,3,18,13],[0,4.1,2.5,1.2,2,9.8,4,1,13,15],[0,0,2.7,2.5,3.2,8.4,7,2,13,18],[0,0,3.7,1.1,1.6,6.4,4,1,9,21],[0,0,4.7,1.1,0.6,6.4,6,1,11,20],[0,0,4.5,0.9,0,5.4,6,1,10,20],[2,0,7.8,1.5,0,11.3,4,1,14,17],[4.6,0,7.4,1.5,0,13.5,6,3,17,14],[0.1,0,4.8,0.7,0,5.6,4,1,9,21],[0,0,3.2,1.2,0.2,4.6,9,1,13,18],[0,0.4,4,1.8,0.6,6.8,5,1,11,19],[0,6.4,2.3,1.7,1.2,11.6,5,2,15,16]],
+  2025:[[0,8.7,1.3,1.6,1.6,13.2,8,3,18,13],[0,4.1,2.5,1.2,2,9.8,4,1,13,15],[0,0,2.7,2.5,3.2,8.4,7,2,13,18],[0,0,3.7,1.1,1.6,6.4,4,1,9,21],[0,0,4.7,1.1,0.6,6.4,6,1,11,20],[0,0,4.5,0.9,0,5.4,6,1,10,20],[2,0,7.8,1.5,0,11.3,4,1,14,17],[4.6,0,7.4,1.5,0,13.5,6,3,17,14],[0.1,0,4.8,0.7,0,5.6,4,1,9,21],[0,0,3.2,1.2,0.2,4.6,9,1,13,18],[0,0.4,4,1.8,0.6,6.8,5,1,11,19],[0,6.4,2.3,1.7,1.2,11.6,5,2,15,16]],
+  2026:[[0,25.8,1.3,1.6,1.6,30.3,5,5,30,1],[0,21.2,2.5,1.2,2,26.9,7,7,27,1],[0,4.8,2.7,2.5,3.2,13.2,6,3,16,15],[0,0,3.7,1.1,1.6,6.4,4,1,9,21],[0,0,4.7,1.1,0.6,6.4,7,1,12,19],[0,0,4.5,0.9,0,5.4,5,1,9,21],[2,0,7.8,1.5,0,11.3,4,1,14,17],[4.6,0,7.4,1.5,0,13.5,7,3,18,13],[0.1,0,4.8,0.7,0,5.6,7,1,12,18],[0,0,3.2,1.2,0.2,4.6,7,1,11,20],[0,5.8,4,1.8,0.6,12.2,5,2,15,15],[0,22.3,2.3,1.7,1.2,27.5,5,4,29,2]],
+  2027:[[0,25.8,1.3,1.6,1.6,30.3,6,6,30,1],[0,21.2,2.5,1.2,2,26.9,7,7,27,1],[0,4.8,2.7,2.5,3.2,13.2,5,2,16,15],[0,0,3.7,1.1,1.6,6.4,4,1,9,21],[0,0,4.7,1.1,0.6,6.4,7,1,12,19],[0,0,4.5,0.9,0,5.4,4,1,8,22],[2,0,7.8,1.5,0,11.3,4,1,14,17],[4.6,0,7.4,1.5,0,13.5,6,3,17,14],[0.1,0,4.8,0.7,0,5.6,7,1,12,18],[0,0,3.2,1.2,0.2,4.6,8,1,12,19],[0,5.8,4,1.8,0.6,12.2,4,2,14,16],[0,22.3,2.3,1.7,1.2,27.5,6,5,29,2]]
+};
+NWD.DEFAULT=NWD[2027];
+const MNAMES=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+const TYPES=[
+  {id:'general',  name:'일반건물',  ico:'🏢', prepSmall:10,prepLarge:20,prepSafety:45},
+  {id:'apartment',name:'공동주택',  ico:'🏘', prep:45},
+  {id:'road',     name:'도로공사',  ico:'🛣', prep:60},
+  {id:'waterwork',name:'상수도',    ico:'💧', prep:60},
+  {id:'bridge',   name:'교량·강교', ico:'🌉', prep:90},
+  {id:'railway',  name:'철도',      ico:'🚂', prep:90},
+  {id:'highway',  name:'고속도로',  ico:'🏎', prep:180}
+];
+
+/* ====================================================
+   앱 상태
+   ==================================================== */
+const S={
+  step:1,
+  proj:{name:'만민 건축사 여의도 신사옥 건립공사',type:'general',cost:0,fa:3,fb:0,startDate:'',safetyPlan:false},
+  prep:{days:20},
+  work:{items:[],custom:[],total:0},
+  nw:{months:[],total:0},
+  cleanup:{days:30}
+};
+
+/* ====================================================
+   계산
+   ==================================================== */
+function calcPrep(p){
+  const t=TYPES.find(t=>t.id===p.type);
+  if(!t)return 20;
+  if(p.type==='general'){if(p.safetyPlan)return 45;return p.cost>=10?20:10;}
+  return t.prep||60;
+}
+function calcCleanup(p){return p.cost>=10?30:15;}
+function buildWorkItems(p){
+  const fa=Math.max(1,p.fa||1),fb=Math.max(0,p.fb||0),items=[];
+  if(p.type==='general'||p.type==='apartment'){
+    if(fb>0){items.push({g:'기초공사',name:`흙막이·터파기 (지하${fb}층)`,days:10*fb,basis:`지하${fb}층×10일`});items.push({g:'기초공사',name:'지하층 골조',days:31*fb,basis:`지하${fb}층×31일`});items.push({g:'기초공사',name:'지지력 시험·파일기초',days:11,basis:'11일'});}
+    else{items.push({g:'기초공사',name:'파일기초·지지력시험',days:11,basis:'11일'});}
+    let gd=20,gbasis='1층 20일';if(fa>=2){gd+=10;gbasis+=' + 2층 10일';}if(fa>=3){gd+=(fa-2)*9;gbasis+=` + ${fa-2}층×9일`;}
+    items.push({g:'골조공사',name:`지상 ${fa}층 골조`,days:gd,basis:gbasis});
+    items.push({g:'마감공사',name:'조적공사',days:5*fa,basis:`${fa}층×5일`});
+    items.push({g:'마감공사',name:'미장공사',days:8*fa,basis:`${fa}층×8일`});
+    items.push({g:'마감공사',name:'창호공사',days:6*fa,basis:`${fa}층×6일`});
+    items.push({g:'마감공사',name:'방수공사',days:3*fa,basis:`${fa}층×3일`});
+    items.push({g:'마감공사',name:'타일공사',days:2*fa,basis:`${fa}층×2일`});
+    items.push({g:'토목·조경',name:'토목공사',days:15,basis:'15일'});
+  }else{items.push({g:'주공정',name:'주요 공종',days:90,basis:'전문가 산정 필요'});}
+  return items;
+}
+function calcNWD(startStr,prepDays,workDays){
+  const cStart=new Date(startStr);cStart.setDate(cStart.getDate()+prepDays);
+  const months=[];let rem=workDays,totalNW=0;
+  let cur=new Date(cStart.getFullYear(),cStart.getMonth(),1),safe=0;
+  while(rem>0&&safe++<60){
+    const yr=cur.getFullYear(),mo=cur.getMonth();
+    const ydata=NWD[yr]||NWD.DEFAULT,mdata=ydata[mo];
+    const nw=mdata[8],wk=mdata[9];
+    if(wk<=0){cur.setMonth(mo+1);continue;}
+    const used=Math.min(rem,wk),appNW=Math.round(nw*used/wk);
+    months.push({yr,mo:mo+1,label:`${yr}.${String(mo+1).padStart(2,'0')}`,A:mdata[5].toFixed(1),B:mdata[6],C:mdata[7],nw,wk,used,appNW});
+    totalNW+=appNW;rem-=used;cur.setMonth(mo+1);
+  }
+  return{months,total:totalNW};
+}
+function standardFormula(p){
+  if(p.type!=='apartment')return null;
+  if(p.cost<=0||p.fa<=0)return null;
+  const Y=-21.674+7.953*p.fa+116.835*Math.log(p.cost);
+  if(Y<=0)return null;
+  const std=Math.round(Y)+S.prep.days+S.cleanup.days;
+  const calc=S.prep.days+S.work.total+S.nw.total+S.cleanup.days;
+  const dev=((calc-std)/std*100);
+  return{std,calc,dev:dev.toFixed(1),Y:Math.round(Y),status:Math.abs(dev)<=20?'ok':Math.abs(dev)<=30?'warning':'danger'};
+}
+function refresh(){
+  const p=S.proj;
+  S.prep.days=calcPrep(p);S.cleanup.days=calcCleanup(p);
+  S.work.items=buildWorkItems(p);
+  const stdTotal=S.work.items.reduce((s,i)=>s+(parseInt(i.days)||0),0);
+  const cusTotal=S.work.custom.reduce((s,i)=>s+(parseInt(i.days)||0),0);
+  S.work.total=stdTotal+cusTotal;
+  const nw=calcNWD(p.startDate||today(),S.prep.days,S.work.total);
+  S.nw.months=nw.months;S.nw.total=nw.total;
+}
+function totalDays(){return S.prep.days+S.work.total+S.nw.total+S.cleanup.days;}
+function today(){return new Date().toISOString().split('T')[0];}
+function fmtDate(d){const x=new Date(d);if(isNaN(x))return '-';return `${x.getFullYear()}. ${x.getMonth()+1}. ${x.getDate()}.`;}
+function addDays(dateStr,days){const d=new Date(dateStr);if(isNaN(d))return new Date();d.setDate(d.getDate()+days);return d;}
+
+/* ====================================================
+   STEP RENDERING
+   ==================================================== */
+const stepMeta=[
+  {title:'프로젝트 기본 정보',desc:'공사기간 산정의 기초 데이터를 입력합니다.'},
+  {title:'준비기간 산정',desc:'착공 전 준비 소요기간을 산정합니다.'},
+  {title:'공종별 작업일수',desc:'주공정 기준 순수 작업일수를 산정합니다.'},
+  {title:'비작업일수 산정',desc:'기상·공휴일 비작업일수를 자동 계산합니다.'},
+  {title:'공사기간 산정 결과',desc:'적정 공사기간 산정이 완료되었습니다.'}
+];
+
+function renderProg(){
+  let h='';
+  for(let i=1;i<=5;i++){
+    const cls=i<S.step?'done':i===S.step?'active':'';
+    const lnCls=i<S.step?'done':'';
+    h+=`<div class="step-dot ${cls}" onclick="goStep(${i})" title="${stepMeta[i-1].title}">${i<S.step?'✓':i}</div>`;
+    if(i<5)h+=`<div class="step-line ${lnCls}"></div>`;
+  }
+  document.getElementById('stepProg').innerHTML=h;
+  document.getElementById('stepTitle').textContent=stepMeta[S.step-1].title;
+  document.getElementById('stepDesc').textContent=stepMeta[S.step-1].desc;
+}
+
+function renderStep(){
+  const el=document.getElementById('stepContent');
+  el.className='fade-in';
+  const fns=[null,renderStep1,renderStep2,renderStep3,renderStep4,renderStep5];
+  el.innerHTML=fns[S.step]();
+  bindStep();
+}
+
+function renderStep1(){
+  const p=S.proj,t=today();
+  const typeOpts=TYPES.map(t=>`<div class="opt-card ${p.type===t.id?'sel':''}" onclick="selType('${t.id}')"><div class="opt-ico">${t.ico}</div><div class="opt-name">${t.name}</div><div class="opt-meta">${t.prep?`준비 ${t.prep}일`:'자동산정'}</div></div>`).join('');
+  return`
+  <div class="card"><div class="card-head"><div class="card-icon">📁</div><div class="card-title">공사 기본 정보</div><span class="card-badge" style="margin-left:auto">건설기술진흥법 제45조의2</span></div>
+  <div class="card-body">
+    <div class="frow"><div class="fgroup full"><label class="flbl">공사명</label><input class="finput" id="iName" value="${p.name}" placeholder="예: 광주 복합문화시설 건립공사" maxlength="100"></div></div>
+    <div class="frow">
+      <div class="fgroup"><label class="flbl">착공 예정일 <span style="color:#ef4444">*</span></label><input type="date" class="finput" id="iDate" value="${p.startDate||t}" min="${t}"></div>
+      <div class="fgroup"><label class="flbl">총 공사비 <span style="color:#ef4444">*</span> <span style="color:#6b7a99;font-size:9px;">(100억↑ 심의)</span></label><div class="input-sfx"><input type="number" class="finput" id="iCost" value="${p.cost||''}" placeholder="0" min="0" step="0.1"><div class="sfx-lbl">억원</div></div></div>
+    </div>
+  </div></div>
+  <div class="card"><div class="card-head"><div class="card-icon">🏗</div><div class="card-title">공사 유형</div></div>
+  <div class="card-body"><div class="opt-grid">${typeOpts}</div></div></div>
+  ${(p.type==='general'||p.type==='apartment')?`
+  <div class="card"><div class="card-head"><div class="card-icon">🏛</div><div class="card-title">건물 규모</div></div>
+  <div class="card-body">
+    <div class="frow triple">
+      <div class="fgroup"><label class="flbl">지상 층수</label><div class="stepper"><button class="stp-btn" onclick="chFl('a',-1)">−</button><input type="number" class="stp-inp" id="iFA" value="${p.fa}" min="1" max="100" onchange="setFl('a',this.value)"><button class="stp-btn" onclick="chFl('a',1)">+</button></div></div>
+      <div class="fgroup"><label class="flbl">지하 층수</label><div class="stepper"><button class="stp-btn" onclick="chFl('b',-1)">−</button><input type="number" class="stp-inp" id="iFB" value="${p.fb}" min="0" max="20" onchange="setFl('b',this.value)"><button class="stp-btn" onclick="chFl('b',1)">+</button></div></div>
+      <div class="fgroup"><label class="flbl">안전관리계획서</label>
+        <div style="display:flex;gap:10px;margin-top:6px">
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;cursor:pointer"><input type="radio" name="sp" value="y" ${p.safetyPlan?'checked':''} onchange="setSP(true)">해당 (45일)</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;cursor:pointer"><input type="radio" name="sp" value="n" ${!p.safetyPlan?'checked':''} onchange="setSP(false)">비해당</label>
+        </div>
+      </div>
+    </div>
+  </div></div>`:''}
+  <div class="alert alert-info"><span class="alert-ico">ℹ️</span><div><strong>공기산정 공식:</strong> 준비기간 + 작업일수 + 비작업일수 + 정리기간<br/>총공사비 100억원↑(시·군·구 50억↑): 지방건설기술심의위원회 심의 필수</div></div>
+  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+    <button class="btn-ghost" onclick="openCalcGuide()">📐 계산방법 안내</button>
+    <button class="btn-blue" onclick="nextStep()">다음: 준비기간 →</button>
+  </div>`;
+}
+
+function renderStep2(){
+  const p=S.proj,t=TYPES.find(x=>x.id===p.type);
+  return`
+  <div class="card"><div class="card-head"><div class="card-icon">🔧</div><div class="card-title">준비기간 산정</div><span class="card-badge" style="margin-left:auto">고시 제7조</span></div>
+  <div class="card-body">
+    <div style="display:flex;align-items:center;gap:18px;margin-bottom:14px;flex-wrap:wrap">
+      <div><div style="font-size:10px;color:#6b7a99;font-weight:700;">공사유형</div><div style="font-size:14px;font-weight:800;color:#1e3a8a">${t?.ico} ${t?.name}</div></div>
+      <div style="width:1px;height:40px;background:#e2e8f0"></div>
+      <div><div style="font-size:10px;color:#6b7a99;font-weight:700;">산정 준비기간</div><div style="font-size:36px;font-weight:900;color:#1d4ed8;line-height:1">${S.prep.days}<span style="font-size:14px;font-weight:600;margin-left:3px">일</span></div></div>
+      <div style="width:1px;height:40px;background:#e2e8f0"></div>
+      <div><div style="font-size:10px;color:#6b7a99;font-weight:700;">착공 준비 완료</div><div style="font-size:13px;font-weight:800;color:#f97316">${fmtDate(addDays(p.startDate,S.prep.days))}</div></div>
+    </div>
+    <label class="flbl">준비기간 수동 조정</label>
+    <div class="stepper" style="max-width:180px"><button class="stp-btn" onclick="chPrep(-1)">−</button><input type="number" class="stp-inp" id="iPrep" value="${S.prep.days}" min="1" max="365" onchange="setPrep(this.value)"><button class="stp-btn" onclick="chPrep(1)">+</button></div>
+    <div class="legal-ref" style="margin-top:10px">⚖️ 근거: 공사기간 산정기준 제7조, 가이드라인 부록1·2</div>
+  </div></div>
+  <div class="alert alert-warning"><span class="alert-ico">⚠️</span><div><strong>특수 상황 추가 검토:</strong> 용지보상(7개월↑), 문화재조사(91일↑), 한전 지장물(255일↑), 통신선로 이설(150일)</div></div>
+  <div style="display:flex;justify-content:space-between;gap:8px;margin-top:14px">
+    <button class="btn-ghost" onclick="prevStep()">← 이전</button>
+    <button class="btn-blue" onclick="nextStep()">다음: 작업일수 →</button>
+  </div>`;
+}
+
+function renderStep3(){
+  const items=S.work.items,groups={};
+  items.forEach(it=>{if(!groups[it.g])groups[it.g]=[];groups[it.g].push(it);});
+  const colors=['#1d4ed8','#f97316','#22c55e','#8b5cf6','#06b6d4','#ec4899'];
+  let rows='';
+  Object.entries(groups).forEach(([g,gits])=>{
+    const gTotal=gits.reduce((s,i)=>s+(parseInt(i.days)||0),0);
+    rows+=`<tr class="cat-row"><td colspan="4">${g} <span style="float:right;font-weight:400">${gTotal}일</span></td></tr>`;
+    gits.forEach(it=>{
+      const idx=items.indexOf(it);
+      rows+=`<tr><td>${it.name}</td><td style="color:#6b7a99;font-size:11px">${it.basis}</td><td class="center"><span class="tag">자동</span></td><td class="center"><div class="stepper" style="max-width:120px;margin:0 auto"><button class="stp-btn" onclick="chWork(${idx},-1)">−</button><input type="number" class="stp-inp" value="${it.days}" min="0" onchange="setWork(${idx},this.value)"><button class="stp-btn" onclick="chWork(${idx},1)">+</button></div></td></tr>`;
+    });
+  });
+
+  /* 추가 공종 행 */
+  let cusRows='';
+  S.work.custom.forEach((it,i)=>{
+    cusRows+=`<tr style="background:#fffbeb;">
+      <td><input class="finput" style="padding:5px 8px;font-size:12px;min-width:100px;" value="${it.name}" placeholder="공종명 입력" onchange="updateCus(${i},'name',this.value)"></td>
+      <td><input class="finput" style="padding:5px 8px;font-size:11px;color:#6b7a99;min-width:80px;" value="${it.basis}" placeholder="산정 근거" onchange="updateCus(${i},'basis',this.value)"></td>
+      <td class="center"><span class="tag" style="background:#fff7ed;color:#c2410c;border-color:#fed7aa;">추가</span></td>
+      <td class="center">
+        <div style="display:flex;align-items:center;gap:6px;justify-content:center;">
+          <div class="stepper" style="max-width:120px;"><button class="stp-btn" onclick="chCus(${i},-1)">−</button><input type="number" class="stp-inp" value="${it.days}" min="0" onchange="updateCus(${i},'days',this.value)"><button class="stp-btn" onclick="chCus(${i},1)">+</button></div>
+          <button onclick="removeCus(${i})" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;font-size:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">×</button>
+        </div>
+      </td>
+    </tr>`;
+  });
+
+  const allGroups={...groups};
+  if(S.work.custom.length>0) allGroups['추가 공종']=S.work.custom;
+  const gantt=Object.entries(allGroups).map(([g,gits],i)=>{
+    const d=gits.reduce((s,it)=>s+(parseInt(it.days)||0),0);
+    const pct=S.work.total>0?(d/S.work.total*100).toFixed(1):0;
+    return`<div class="gantt-row"><div class="gantt-lbl">${g}</div><div class="gantt-track"><div class="gantt-bar" style="left:0;width:${pct}%;background:${colors[i%colors.length]}">${pct>12?`${pct}%`:''}</div></div><div class="gantt-days">${d}일</div></div>`;
+  }).join('');
+
+  return`
+  <div class="card"><div class="card-head"><div class="card-icon">🔨</div><div class="card-title">공종별 표준 작업일수</div><span class="card-badge" style="margin-left:auto">고시 제11조 · 부록5</span></div>
+  <div class="card-body">
+    <div class="alert alert-info" style="margin-bottom:12px"><span class="alert-ico">ℹ️</span><div>주공정 기준 · <strong>1일 8시간 / 주 40시간</strong> 법정근로시간 준수 · 총 작업일수: <strong>${S.work.total}일</strong></div></div>
+    <div style="overflow-x:auto"><table class="tbl">
+      <thead><tr><th>공종명</th><th>산정 근거</th><th style="width:65px;text-align:center">구분</th><th style="width:155px;text-align:center">작업일수</th></tr></thead>
+      <tbody>
+        ${rows}
+        ${S.work.custom.length>0?`<tr class="cat-row" style="background:#fff7ed;"><td colspan="4" style="color:#c2410c;">추가 공종 (법적 기준 준수 확인 필수) <span style="float:right;font-weight:400">${S.work.custom.reduce((s,i)=>s+(parseInt(i.days)||0),0)}일</span></td></tr>${cusRows}`:''}
+        <tr class="sum-row"><td colspan="3">✦ 총 작업일수 합계 (표준 + 추가)</td><td style="text-align:center;font-size:15px">${S.work.total}일</td></tr>
+      </tbody>
+    </table></div>
+    <div style="margin-top:10px">
+      <button onclick="addCus()" style="background:#fff7ed;color:#c2410c;border:1.5px dashed #fed7aa;border-radius:9px;padding:9px 16px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;" onmouseover="this.style.background='#ffedd5'" onmouseout="this.style.background='#fff7ed'">
+        ＋ 공종 추가 입력 <span style="font-size:10.5px;opacity:.65;font-weight:500;">(법적 기준 준수·주 40시간 이내)</span>
+      </button>
+    </div>
+    <div class="alert alert-warning" style="margin-top:10px;margin-bottom:0"><span class="alert-ico">⚠️</span><div><strong>추가 공종 입력 시 준수 사항:</strong> 1일 8시간·주 40시간 이내 법정근로시간 준수 · 야간·휴일작업 시 별도 근로계약 필요 · 주공정(Critical Path) 외 병행 공종은 작업일수 합산에 포함하지 않음</div></div>
+  </div></div>
+  <div class="card" style="margin-top:14px;"><div class="card-head"><div class="card-icon">📊</div><div class="card-title">공종별 배분</div></div><div class="card-body">${gantt||'<p style="text-align:center;color:#6b7a99;padding:10px">작업일수를 입력하세요</p>'}</div></div>
+  <div style="display:flex;justify-content:space-between;gap:8px;margin-top:14px">
+    <button class="btn-ghost" onclick="prevStep()">← 이전</button>
+    <button class="btn-blue" onclick="nextStep()">다음: 비작업일수 →</button>
+  </div>`;
+}
+
+function renderStep4(){
+  const nw=S.nw,cStart=addDays(S.proj.startDate,S.prep.days);
+  const nwRows=nw.months.length===0
+    ?`<tr><td colspan="8" style="text-align:center;padding:14px;color:#6b7a99">작업일수를 입력하세요</td></tr>`
+    :nw.months.map(m=>`<tr class="act-row"><td><strong>${m.label}</strong></td><td>${m.A}</td><td>${m.B}</td><td>${m.C}</td><td><strong>${m.nw}</strong></td><td>${m.wk}</td><td>${m.used}</td><td style="color:#f97316;font-weight:800">${m.appNW}</td></tr>`).join('');
+  return`
+  <div class="card"><div class="card-head"><div class="card-icon">🌦</div><div class="card-title">비작업일수 산정</div><span class="card-badge" style="margin-left:auto">고시 제8~10조</span></div>
+  <div class="card-body">
+    <div class="formula"><span class="hl">비작업일수 = A + B − C</span>  <span class="cm">(월별 합산)</span>
+A = 기상조건 비작업일수  <span class="cm">// ASOS 최근 5~10년 통계</span>
+B = 법정공휴일수         <span class="cm">// 관공서 공휴일에 관한 규정</span>
+C = 중복일수             <span class="cm">// (A × B) ÷ 달력일수 (반올림)</span>
+<span class="hl">최솟값 보장: 월 8일</span>       <span class="cm">// 주 40시간 근무제 하한선</span></div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px">
+      <div><div style="font-size:10px;color:#6b7a99;font-weight:700">작업 착공일</div><div style="font-weight:800;color:#1d4ed8">${fmtDate(cStart)}</div></div>
+      <div><div style="font-size:10px;color:#6b7a99;font-weight:700">순수 작업일수</div><div style="font-weight:800;color:#1d4ed8">${S.work.total}일</div></div>
+      <div><div style="font-size:10px;color:#6b7a99;font-weight:700">총 비작업일수</div><div style="font-size:22px;font-weight:900;color:#f97316;line-height:1.1">${nw.total}일</div></div>
+    </div>
+    <div style="overflow-x:auto"><table class="nw-tbl"><thead><tr><th>연도·월</th><th>기상[A]</th><th>공휴[B]</th><th>중복[C]</th><th>비작업</th><th>작업가능</th><th>해당월</th><th>적용비작업</th></tr></thead>
+    <tbody>${nwRows}<tr class="sum-row"><td><strong>합 계</strong></td><td colspan="3">—</td><td>—</td><td>—</td><td><strong>${nw.months.reduce((s,m)=>s+m.used,0)}일</strong></td><td style="font-size:13px"><strong>${nw.total}일</strong></td></tr></tbody></table></div>
+  </div></div>
+  <div style="display:flex;justify-content:space-between;gap:8px;margin-top:14px">
+    <button class="btn-ghost" onclick="prevStep()">← 이전</button>
+    <button class="btn-blue" onclick="nextStep()">다음: 최종 결과 →</button>
+  </div>`;
+}
+
+function renderStep5(){
+  const p=S.proj,prep=S.prep.days,work=S.work.total,nw=S.nw.total,clean=S.cleanup.days,tot=totalDays();
+  const months=(tot/30.4).toFixed(1);
+  const sDate=new Date(p.startDate),eDate=addDays(p.startDate,tot);
+  const t=TYPES.find(x=>x.id===p.type);
+  const val=standardFormula(p);
+  const valMap={ok:{cls:'alert-success',ico:'✅',msg:`표준공기 대비 <strong>${val?.dev}%</strong> — 적정 (±20% 통과)`},warning:{cls:'alert-warning',ico:'⚠️',msg:`표준공기 대비 <strong>${val?.dev}%</strong> — 주의 (전문가 재검토 권고)`},danger:{cls:'alert-danger',ico:'🚨',msg:`표준공기 대비 <strong>${val?.dev}%</strong> — 부적정 (전문가 재검토 필수)`}};
+  const valMsg=val?valMap[val.status]:null;
+  const ganttData=[
+    {name:'준비기간',days:prep,clr:'#1d4ed8',off:0},
+    {name:'작업일수',days:work,clr:'#f97316',off:prep},
+    {name:'비작업일수',days:nw,clr:'#94a3b8',off:prep},
+    {name:'정리기간',days:clean,clr:'#22c55e',off:tot-clean},
+    {name:'총 공사기간',days:tot,clr:'#1e3a8a',off:0,bold:true}
+  ];
+  const gantt=ganttData.map(g=>`<div class="gantt-row"><div class="gantt-lbl" style="${g.bold?'font-weight:900;color:#1d4ed8':''}">${g.name}</div><div class="gantt-track"><div class="gantt-bar" style="left:${g.off/tot*100}%;width:${g.days/tot*100}%;background:${g.clr};${g.bold?'opacity:.18':''}">${(!g.bold&&g.days/tot>0.09)?g.days+'일':''}</div></div><div class="gantt-days" style="${g.bold?'font-weight:900;color:#1d4ed8':''}">${g.days}일</div></div>`).join('');
+
+  return`
+  <div class="result-hero">
+    <div class="rh-sub">${p.name||'해당 공사'} — 최종 적정 공사기간</div>
+    <div class="rh-num">${tot}</div>
+    <div class="rh-unit">일 &nbsp;(약 ${months}개월)</div>
+    <div class="rh-dates">착공 ${fmtDate(sDate)} → 준공 ${fmtDate(eDate)}</div>
+    <div class="rh-formula">준비 ${prep}일 + 작업 ${work}일 + 비작업 ${nw}일 + 정리 ${clean}일</div>
+  </div>
+  <div class="res-grid">
+    <div class="res-item"><div class="ri-ico">🔧</div><div class="ri-label">① 준비기간</div><div class="ri-val">${prep}<span class="ri-unit">일</span></div><div class="ri-sub">고시 제7조</div></div>
+    <div class="res-item"><div class="ri-ico">🔨</div><div class="ri-label">② 작업일수</div><div class="ri-val">${work}<span class="ri-unit">일</span></div><div class="ri-sub">고시 제11조</div></div>
+    <div class="res-item"><div class="ri-ico">🌦</div><div class="ri-label">③ 비작업일수</div><div class="ri-val">${nw}<span class="ri-unit">일</span></div><div class="ri-sub">고시 제8~10조</div></div>
+    <div class="res-item hl"><div class="ri-ico">📋</div><div class="ri-label">④ 정리기간</div><div class="ri-val">${clean}<span class="ri-unit">일</span></div><div class="ri-sub">고시 제12조</div></div>
+  </div>
+  <div class="card"><div class="card-head"><div class="card-icon">📊</div><div class="card-title">공사기간 구성</div></div><div class="card-body">${gantt}</div></div>
+  ${val?`<div class="card"><div class="card-head"><div class="card-icon">🔍</div><div class="card-title">표준공기 적정성 검증</div><span class="card-badge" style="margin-left:auto">고시 제14조</span></div>
+  <div class="card-body">
+    <div class="alert ${valMsg.cls}"><span class="alert-ico">${valMsg.ico}</span><div>${valMsg.msg}<br><span style="font-size:11px;color:#6b7a99">표준공기 Y = −21.674 + 7.953×${p.fa} + 116.835×ln(${p.cost}) ≈ ${val.Y}일 (작업일수 기준)<br>표준공기(+준비·정리): ${val.std}일 | 산정공기: ${val.calc}일</span></div></div>
+    <div class="vbar"><div class="vbar-head"><span style="font-size:12px;font-weight:800">편차 분석 (적정범위: ±20%)</span><span style="font-size:11px;color:#6b7a99">편차 ${val.dev}%</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:#6b7a99;margin-bottom:2px"><span>−30%</span><span>−20%</span><span>0%</span><span>+20%</span><span>+30%</span></div>
+    <div class="prog-track"><div class="prog-ok" style="left:33.3%;width:33.4%"></div><div class="prog-dot" style="left:${Math.max(3,Math.min(97,50+parseFloat(val.dev)))}%"></div></div></div>
+  </div></div>`:''}
+  <div class="card"><div class="card-head"><div class="card-icon">⚖️</div><div class="card-title">공사기간 산정근거 명세서</div><span class="card-badge" style="margin-left:auto">고시 제5조 명시 의무</span></div>
+  <div class="card-body">
+    <ul class="sumlist">
+      <li><span class="k">근거 법령</span><span class="v">건설기술진흥법 제45조의2, 국토교통부고시 제2024-1021호 (2025.1.6)</span></li>
+      <li><span class="k">공사명</span><span class="v">${p.name||'(공사명 미입력)'}</span></li>
+      <li><span class="k">공사유형</span><span class="v">${t?.ico} ${t?.name}</span></li>
+      <li><span class="k">총 공사비</span><span class="v">${p.cost}억원 ${p.cost>=100?'⚠️ 심의필요':p.cost>=50?'※ 시·군·구 심의':''}</span></li>
+      <li><span class="k">지상·지하 층수</span><span class="v">지상 ${p.fa}층 / 지하 ${p.fb}층</span></li>
+      <li><span class="k">착공 예정일</span><span class="v">${fmtDate(sDate)}</span></li>
+      <li><span class="k">준공 예정일</span><span class="v">${fmtDate(eDate)}</span></li>
+      <li><span class="k">① 준비기간</span><span class="v">${prep}일 (고시 제7조)</span></li>
+      <li><span class="k">② 순수 작업일수</span><span class="v">${work}일 (고시 제11조, 주공정 기준)</span></li>
+      <li><span class="k">③ 비작업일수</span><span class="v">${nw}일 (고시 제8·9·10조)</span></li>
+      <li><span class="k">④ 정리기간</span><span class="v">${clean}일 (고시 제12조)</span></li>
+      <li style="background:#eff6ff;padding:9px 3px"><span class="k" style="font-weight:800;color:#1e3a8a">✦ 최종 공사기간</span><span class="v" style="color:#1d4ed8;font-size:16px">${tot}일 (약 ${months}개월)</span></li>
+    </ul>
+    ${p.cost>=100?`<div class="alert alert-warning" style="margin-top:10px"><span class="alert-ico">🏛</span><div><strong>심의 필요 (100억원 이상):</strong> 지방건설기술심의위원회 적정성 심의 후 입찰공고 가능합니다. (건설기술진흥법 시행령 제17~19조)</div></div>`:''}
+    <div style="font-size:10px;color:#6b7a99;margin-top:10px;text-align:right">작성: MANMIN-Ver3.0 · ${new Date().toLocaleDateString('ko-KR')}</div>
+  </div></div>
+  <div style="display:flex;justify-content:space-between;gap:8px;margin-top:14px;flex-wrap:wrap">
+    <button class="btn-ghost" onclick="prevStep()">← 이전</button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn-blue" onclick="switchTab('a4');renderA4()">📄 A4 미리보기</button>
+      <button class="btn-orange" onclick="exportMobileJPG()">📱 JPG 저장</button>
+      <button class="btn-ghost" onclick="resetApp()">🔄 새 공사</button>
+    </div>
+  </div>`;
+}
+
+/* ====================================================
+   STEP NAVIGATION
+   ==================================================== */
+function nextStep(){
+  if(S.step===1){
+    const n=document.getElementById('iName'),c=document.getElementById('iCost'),d=document.getElementById('iDate');
+    if(n)S.proj.name=n.value;if(c)S.proj.cost=parseFloat(c.value)||0;
+    if(d)S.proj.startDate=d.value;
+    if(!S.proj.startDate){alert('착공 예정일을 입력해 주세요.');return;}
+    refresh();
+  }
+  if(S.step<5){S.step++;renderProg();renderStep();window.scrollTo({top:0,behavior:'smooth'});}
+}
+function prevStep(){if(S.step>1){S.step--;renderProg();renderStep();window.scrollTo({top:0,behavior:'smooth'});}}
+function goStep(n){if(n<S.step){S.step=n;renderProg();renderStep();window.scrollTo({top:0,behavior:'smooth'});}}
+function resetApp(){if(!confirm('초기화하시겠습니까?'))return;S.step=1;S.work.custom=[];S.proj={name:'만민 건축사 여의도 신사옥 건립공사',type:'general',cost:0,fa:3,fb:0,startDate:today(),safetyPlan:false};refresh();renderProg();renderStep();window.scrollTo({top:0,behavior:'smooth'});}
+
+function bindStep(){
+  if(S.step===1){
+    const n=document.getElementById('iName'),c=document.getElementById('iCost'),d=document.getElementById('iDate');
+    if(n)n.oninput=e=>S.proj.name=e.target.value;
+    if(c)c.oninput=e=>{S.proj.cost=parseFloat(e.target.value)||0;refresh();};
+    if(d)d.onchange=e=>{S.proj.startDate=e.target.value;refresh();};
+  }
+}
+function selType(id){S.proj.type=id;refresh();renderStep();}
+function setSP(v){S.proj.safetyPlan=v;refresh();}
+function chFl(d,delta){if(d==='a')S.proj.fa=Math.max(1,Math.min(100,(S.proj.fa||1)+delta));else S.proj.fb=Math.max(0,Math.min(20,(S.proj.fb||0)+delta));const el=document.getElementById(d==='a'?'iFA':'iFB');if(el)el.value=d==='a'?S.proj.fa:S.proj.fb;refresh();}
+function setFl(d,v){if(d==='a')S.proj.fa=Math.max(1,Math.min(100,parseInt(v)||1));else S.proj.fb=Math.max(0,Math.min(20,parseInt(v)||0));refresh();}
+function chPrep(delta){S.prep.days=Math.max(1,Math.min(365,S.prep.days+delta));const el=document.getElementById('iPrep');if(el)el.value=S.prep.days;const nw=calcNWD(S.proj.startDate,S.prep.days,S.work.total);S.nw.months=nw.months;S.nw.total=nw.total;}
+function setPrep(v){S.prep.days=Math.max(1,Math.min(365,parseInt(v)||1));const nw=calcNWD(S.proj.startDate,S.prep.days,S.work.total);S.nw.months=nw.months;S.nw.total=nw.total;}
+function chWork(idx,delta){S.work.items[idx].days=Math.max(0,(S.work.items[idx].days||0)+delta);_recalcWork();renderStep();}
+function setWork(idx,v){S.work.items[idx].days=Math.max(0,parseInt(v)||0);_recalcWork();}
+function addCus(){
+  S.work.custom.push({name:'',basis:'직접 입력',days:0,g:'추가 공종'});
+  renderStep();
+}
+function removeCus(i){S.work.custom.splice(i,1);_recalcWork();renderStep();}
+function chCus(i,delta){S.work.custom[i].days=Math.max(0,(S.work.custom[i].days||0)+delta);_recalcWork();renderStep();}
+function updateCus(i,field,val){
+  if(field==='days')S.work.custom[i].days=Math.max(0,parseInt(val)||0);
+  else S.work.custom[i][field]=val;
+  _recalcWork();
+}
+function _recalcWork(){
+  const std=S.work.items.reduce((s,i)=>s+(parseInt(i.days)||0),0);
+  const cus=S.work.custom.reduce((s,i)=>s+(parseInt(i.days)||0),0);
+  S.work.total=std+cus;
+  const nw=calcNWD(S.proj.startDate,S.prep.days,S.work.total);
+  S.nw.months=nw.months;S.nw.total=nw.total;
+}
+
+/* ====================================================
+   TAB SWITCHING
+   ==================================================== */
+function switchTab(tab){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');if(b.dataset.tab===tab)b.classList.add('active');});
+  const panel=document.getElementById('tab-'+tab);
+  if(panel){panel.classList.add('active');panel.classList.add('fade-in');}
+  if(tab==='a4')renderA4();
+  if(tab==='mobile')renderMobile();
+}
+
+/* ====================================================
+   A4 RENDER
+   ==================================================== */
+function renderA4(){
+  const p=S.proj,prep=S.prep.days,work=S.work.total,nw=S.nw.total,clean=S.cleanup.days,tot=totalDays();
+  const months=(tot/30.4).toFixed(1);
+  const sDate=new Date(p.startDate),eDate=addDays(p.startDate,tot);
+  const t=TYPES.find(x=>x.id===p.type);
+  const val=standardFormula(p);
+  // 바닥글은 renderA4() 내 innerHTML에 포함되어 동적 렌더링됨
+
+  const nwRows=S.nw.months.map(m=>`<tr><td style="font-weight:700">${m.label}</td><td style="text-align:center">${m.A}</td><td style="text-align:center">${m.B}</td><td style="text-align:center">${m.C}</td><td style="text-align:center;font-weight:800">${m.nw}</td><td style="text-align:center">${m.wk}</td><td style="text-align:center">${m.used}</td><td style="text-align:center;color:#f97316;font-weight:800">${m.appNW}</td></tr>`).join('');
+
+  /* 간트 — 공종그룹별 분해 */
+  const wgroups={};
+  S.work.items.forEach(it=>{if(!wgroups[it.g])wgroups[it.g]=0;wgroups[it.g]+=(parseInt(it.days)||0);});
+  if(S.work.custom.length>0) wgroups['추가 공종']=S.work.custom.reduce((s,i)=>s+(parseInt(i.days)||0),0);
+  const gColors=['#1d4ed8','#f97316','#22c55e','#8b5cf6','#06b6d4','#ec4899'];
+  let gci=0;
+  const wgantt=Object.entries(wgroups).map(([gn,gd])=>{
+    const pct=work>0?(gd/work*100).toFixed(0):0;
+    return`<div class="a4-gantt-row"><div class="a4-gantt-lbl">${gn}</div><div class="a4-gantt-track"><div class="a4-gantt-bar" style="left:0;width:${pct}%;background:${gColors[gci++%gColors.length]}">${gd>0?gd+'일':''}</div></div><div class="a4-gantt-days">${gd}일</div></div>`;
+  }).join('');
+
+  const ganttData=[
+    {n:'준비기간',  d:prep,  c:'#1d4ed8',o:0},
+    {n:'작업일수',  d:work,  c:'#f97316', o:prep},
+    {n:'비작업일수',d:nw,    c:'#94a3b8', o:prep},
+    {n:'정리기간',  d:clean, c:'#22c55e', o:tot-clean}
+  ];
+  const gantt=ganttData.map(g=>`<div class="a4-gantt-row"><div class="a4-gantt-lbl">${g.n}</div><div class="a4-gantt-track"><div class="a4-gantt-bar" style="left:${tot>0?g.o/tot*100:0}%;width:${tot>0?g.d/tot*100:0}%;background:${g.c}">${g.d>0?g.d+'일':''}</div></div><div class="a4-gantt-days">${g.d}일</div></div>`).join('');
+
+  /* 공종 명세 행 */
+  const allItems=[...S.work.items,...S.work.custom.map(i=>({...i,g:'추가 공종'}))];
+  const itemGroups={};
+  allItems.forEach(it=>{if(!itemGroups[it.g])itemGroups[it.g]=[];itemGroups[it.g].push(it);});
+  let itemRows='';
+  Object.entries(itemGroups).forEach(([g,gits])=>{
+    const bg=g==='추가 공종'?'style="background:#fff7ed;"':'style="background:#eff6ff;"';
+    const gc=g==='추가 공종'?'color:#c2410c':'color:#1e40af';
+    const gd=gits.reduce((s,i)=>s+(parseInt(i.days)||0),0);
+    itemRows+=`<tr><td colspan="3" ${bg} style="font-weight:800;font-size:9.5px;${gc};padding:4px 8px;">${g} — ${gd}일</td></tr>`;
+    gits.forEach(it=>{
+      itemRows+=`<tr><td style="padding-left:14px">${it.name}</td><td>${it.basis||'—'}</td><td style="text-align:center;font-weight:700">${it.days}일</td></tr>`;
+    });
+  });
+
+  document.getElementById('a4-content').innerHTML=`
+  <div class="a4-header" style="break-inside:avoid;page-break-inside:avoid;">
+    <div class="a4-title">공공 건설공사 공기산정 근거서 [MANMIN-Ver3.0]</div>
+    <div class="a4-meta">국토교통부고시 제2024-1021호 · 건설기술진흥법 제45조의2 | ${new Date().toLocaleDateString('ko-KR')} 작성</div>
+  </div>
+  <div class="a4-section" style="break-inside:avoid;page-break-inside:avoid;">
+    <div class="a4-sec-title">01. 공사 개요</div>
+    <table class="a4-tbl"><thead><tr><th>항목</th><th>내용</th><th>항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">공사명</td><td colspan="3">${p.name||'(미입력)'}</td></tr>
+      <tr><td style="font-weight:700">공사유형</td><td>${t?.ico} ${t?.name}</td><td style="font-weight:700">총 공사비</td><td>${p.cost}억원 ${p.cost>=100?'[심의필요]':p.cost>=50?'[시·군·구 심의]':''}</td></tr>
+      <tr><td style="font-weight:700">건물 규모</td><td>지상 ${p.fa}층 / 지하 ${p.fb}층</td><td style="font-weight:700">안전관리계획서</td><td>${p.safetyPlan?'해당':'비해당'}</td></tr>
+      <tr><td style="font-weight:700">착공 예정일</td><td>${fmtDate(sDate)}</td><td style="font-weight:700">준공 예정일</td><td>${fmtDate(eDate)}</td></tr>
+    </tbody></table>
+  </div>
+  <div class="a4-section" style="break-inside:avoid;page-break-inside:avoid;">
+    <div class="a4-sec-title">02. 공사기간 산정 결과 요약</div>
+    <div class="a4-grid">
+      <div class="a4-item"><div class="a4-item-label">① 준비기간</div><div class="a4-item-val">${prep}<span class="a4-item-unit">일</span></div></div>
+      <div class="a4-item"><div class="a4-item-label">② 작업일수</div><div class="a4-item-val">${work}<span class="a4-item-unit">일</span></div></div>
+      <div class="a4-item"><div class="a4-item-label">③ 비작업일수</div><div class="a4-item-val">${nw}<span class="a4-item-unit">일</span></div></div>
+      <div class="a4-item total"><div class="a4-item-label">총 공사기간</div><div class="a4-item-val">${tot}<span class="a4-item-unit" style="font-size:11px;color:#fff"> 일</span></div><div style="font-size:9px;color:rgba(255,255,255,.65)">약 ${months}개월</div></div>
+    </div>
+    <div class="a4-formula-box">공사기간 = 준비 ${prep}일 + 작업 ${work}일 + 비작업 ${nw}일 + 정리 ${clean}일 = <span class="hl">${tot}일</span></div>
+  </div>
+  <div class="a4-section" style="break-inside:avoid;page-break-inside:avoid;">
+    <div class="a4-sec-title">03. 전체 공정 구성 (간트)</div>
+    ${gantt}
+  </div>
+  <div class="a4-section" style="break-inside:auto;page-break-inside:auto;">
+    <div class="a4-sec-title" style="break-inside:avoid;page-break-inside:avoid;">04. 공종별 작업일수 명세</div>
+    <table class="a4-tbl" style="break-inside:auto;page-break-inside:auto;"><thead style="display:table-header-group;"><tr><th>공종명</th><th>산정 근거</th><th style="text-align:center;width:60px">작업일수</th></tr></thead>
+    <tbody>${itemRows}<tr style="background:#1d4ed8;color:#fff;font-weight:900;"><td colspan="2" style="color:#fff;">✦ 총 작업일수 합계</td><td style="text-align:center;color:#fbbf24;font-size:12px;">${work}일</td></tr></tbody></table>
+    ${S.work.custom.length>0?`<div style="font-size:9px;color:#c2410c;margin-top:5px;font-weight:600;">※ 추가 공종: 1일 8시간·주 40시간 법정근로시간 준수 확인 필수 (건설기술진흥법 제45조의2)</div>`:''}
+    <div style="margin-top:8px;"><div style="font-size:10px;font-weight:800;color:#1e3a8a;margin-bottom:5px;">공종별 배분 현황</div>${wgantt}</div>
+  </div>
+  ${S.nw.months.length>0?`<div class="a4-section" style="break-inside:auto;page-break-inside:auto;">
+    <div class="a4-sec-title" style="break-inside:avoid;page-break-inside:avoid;">05. 비작업일수 산정 내역 (A+B−C)</div>
+    <table class="a4-tbl" style="break-inside:auto;page-break-inside:auto;"><thead style="display:table-header-group;"><tr><th>연도·월</th><th style="text-align:center">기상[A]</th><th style="text-align:center">공휴[B]</th><th style="text-align:center">중복[C]</th><th style="text-align:center">비작업</th><th style="text-align:center">작업가능</th><th style="text-align:center">해당월</th><th style="text-align:center">적용</th></tr></thead>
+    <tbody>${nwRows}<tr class="sum"><td colspan="6" style="font-weight:800;text-align:right">합 계</td><td style="text-align:center;font-weight:800">${S.nw.months.reduce((s,m)=>s+m.used,0)}일</td><td style="text-align:center;font-weight:800;color:#f97316">${nw}일</td></tr></tbody></table>
+  </div>`:''}
+  ${val?`<div class="a4-section" style="break-inside:avoid;page-break-inside:avoid;">
+    <div class="a4-sec-title">06. 표준공기 대비 적정성 검증</div>
+    <table class="a4-tbl"><thead><tr><th>구분</th><th>산출 근거</th><th>결과</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">표준공기 공식</td><td>Y = −21.674 + 7.953×${p.fa} + 116.835×ln(${p.cost})</td><td>${val.Y}일 (작업일수)</td></tr>
+      <tr><td style="font-weight:700">표준공기 (준비·정리 포함)</td><td>작업일수 ${val.Y}일 + 준비 ${prep}일 + 정리 ${clean}일</td><td>${val.std}일</td></tr>
+      <tr><td style="font-weight:700">산정공기</td><td>준비+작업+비작업+정리</td><td>${val.calc}일</td></tr>
+      <tr><td style="font-weight:700">편차 및 판정</td><td>|산정공기−표준공기| ÷ 표준공기 × 100</td><td style="font-weight:900;color:${val.status==='ok'?'#166534':val.status==='warning'?'#92400e':'#991b1b'}">${val.dev}% (${val.status==='ok'?'✅ 적정':val.status==='warning'?'⚠ 주의':'🚨 부적정'})</td></tr>
+    </tbody></table>
+  </div>`:''}
+  <div class="a4-section" style="break-inside:avoid;page-break-inside:avoid;">
+    <div class="a4-sec-title">07. 법적 근거</div>
+    <table class="a4-tbl"><thead><tr><th>법령</th><th>조항</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">건설기술진흥법</td><td>제45조의2</td><td>발주자 적정 공사기간 산정·명시 의무</td></tr>
+      <tr><td style="font-weight:700">국토교통부고시 제2024-1021호</td><td>제5조</td><td>공사기간 산정근거 입찰 서류 첨부 의무</td></tr>
+      <tr><td style="font-weight:700">건설기술진흥법 시행령</td><td>제17~19조</td><td>100억원↑(시·군·구 50억↑) 심의위원회 심의</td></tr>
+    </tbody></table>
+  </div>
+  <div class="a4-footer">
+    <span>건축공사 공기산정 시스템 [MANMIN-Ver3.0]</span>
+    <span>국토교통부고시 제2024-1021호 · 건설기술진흥법 제45조의2</span>
+    <span>작성일: ${new Date().toLocaleDateString('ko-KR')}</span>
+  </div>`;
+}
+
+/* ====================================================
+   MOBILE PREVIEW RENDER
+   ==================================================== */
+function renderMobile(){
+  const p=S.proj,tot=totalDays();
+  const prep=S.prep.days,work=S.work.total,nw=S.nw.total,clean=S.cleanup.days;
+  const t=TYPES.find(x=>x.id===p.type);
+  const now=new Date();
+
+  document.getElementById('mob-content').innerHTML=`
+  <div class="mob-statusbar">
+    <span>${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}</span>
+    <span>MANMIN-Ver3.0</span>
+    <span>●●● 5G</span>
+  </div>
+  <div class="mob-header">
+    <div style="width:32px;height:32px;background:#1d4ed8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">⏱</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:13px;font-weight:900;color:#1e3a8a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">건축공사 공기산정</div>
+      <div style="font-size:9.5px;color:#3b82f6;font-weight:700">MANMIN-Ver3.0</div>
+    </div>
+  </div>
+  <div class="mob-content">
+    <div class="mob-result-hero">
+      <div style="font-size:9.5px;opacity:.65;margin-bottom:3px;font-weight:700">${p.name||'해당 공사'} — 적정 공사기간</div>
+      <div class="mob-big-num">${tot}</div>
+      <div style="font-size:13px;font-weight:700;opacity:.85;margin-top:2px">일 (약 ${(tot/30.4).toFixed(1)}개월)</div>
+      <div style="font-size:10px;opacity:.65;margin-top:8px">착공 ${fmtDate(new Date(p.startDate))} → 준공 ${fmtDate(addDays(p.startDate,tot))}</div>
+      <div style="font-size:9.5px;opacity:.65;margin-top:5px;font-family:monospace">${prep}+${work}+${nw}+${clean} = ${tot}일</div>
+    </div>
+    <div class="mob-res-grid">
+      <div class="mob-res-item"><div style="font-size:16px;margin-bottom:3px">🔧</div><div style="font-size:9px;color:#6b7a99;font-weight:700">① 준비기간</div><div style="font-size:20px;font-weight:900;color:#1d4ed8">${prep}<span style="font-size:10px">일</span></div></div>
+      <div class="mob-res-item"><div style="font-size:16px;margin-bottom:3px">🔨</div><div style="font-size:9px;color:#6b7a99;font-weight:700">② 작업일수</div><div style="font-size:20px;font-weight:900;color:#f97316">${work}<span style="font-size:10px">일</span></div></div>
+      <div class="mob-res-item"><div style="font-size:16px;margin-bottom:3px">🌦</div><div style="font-size:9px;color:#6b7a99;font-weight:700">③ 비작업일수</div><div style="font-size:20px;font-weight:900;color:#6b7a99">${nw}<span style="font-size:10px">일</span></div></div>
+      <div class="mob-res-item"><div style="font-size:16px;margin-bottom:3px">✅</div><div style="font-size:9px;color:#6b7a99;font-weight:700">④ 정리기간</div><div style="font-size:20px;font-weight:900;color:#22c55e">${clean}<span style="font-size:10px">일</span></div></div>
+    </div>
+    <div class="mob-card">
+      <div style="font-size:10.5px;font-weight:800;color:#1e3a8a;margin-bottom:8px">📋 공사 개요</div>
+      <div style="font-size:11px;color:#374151;line-height:1.9;">
+        <div style="display:flex;justify-content:space-between"><span style="color:#6b7a99">공사유형</span><span style="font-weight:700">${t?.ico} ${t?.name}</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:#6b7a99">총 공사비</span><span style="font-weight:700">${p.cost}억원</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:#6b7a99">건물 규모</span><span style="font-weight:700">지상 ${p.fa}층 / 지하 ${p.fb}층</span></div>
+      </div>
+    </div>
+    <div style="font-size:9px;color:#94a3b8;text-align:center;margin-bottom:8px">국토교통부고시 제2024-1021호 기준 산정</div>
+    <button class="mob-fab">📱 공유하기</button>
+    <div style="height:20px"></div>
+  </div>`;
+}
+
+/* ====================================================
+   JPG EXPORT
+   ==================================================== */
+function exportMobileJPG(){
+  renderMobile();
+  switchTab('mobile');
+  const target=document.getElementById('mob-frame');
+  if(!target){alert('모바일 미리보기 탭으로 이동해주세요.');return;}
+  if(typeof domtoimage==='undefined'){alert('dom-to-image 라이브러리를 로드할 수 없습니다. 인터넷 연결을 확인해주세요.');return;}
+  const btn=document.getElementById('btnExportJPG');
+  if(btn){btn.textContent='⏳ 생성중...';btn.disabled=true;}
+  setTimeout(()=>{
+    domtoimage.toJpeg(target,{quality:0.95,bgcolor:'#000',width:target.offsetWidth,height:target.offsetHeight})
+    .then(dataUrl=>{
+      const a=document.createElement('a');a.download=`공기산정_모바일_${new Date().toLocaleDateString('ko').replace(/\. /g,'-').replace('.','')+'.jpg'}`;a.href=dataUrl;a.click();
+      if(btn){btn.textContent='📱 JPG 저장';btn.disabled=false;}
+    }).catch(err=>{console.error(err);alert('JPG 생성 중 오류가 발생했습니다.');if(btn){btn.textContent='📱 JPG 저장';btn.disabled=false;}});
+  },300);
+}
+
+function exportA4JPG(){
+  renderA4();
+  const target=document.getElementById('a4-page');
+  if(!target){alert('A4 미리보기를 먼저 확인해주세요.');return;}
+  if(typeof domtoimage==='undefined'){alert('dom-to-image 라이브러리를 로드할 수 없습니다.');return;}
+  domtoimage.toJpeg(target,{quality:0.95,bgcolor:'#ffffff',width:794})
+  .then(dataUrl=>{
+    const a=document.createElement('a');a.download=`공기산정_A4_${new Date().toLocaleDateString('ko').replace(/\. /g,'-').replace('.','')+'.jpg'}`;a.href=dataUrl;a.click();
+  }).catch(err=>{console.error(err);alert('A4 JPG 생성 중 오류가 발생했습니다.');});
+}
+
+function printA4(){
+  renderA4();
+  const src=document.getElementById('a4-page').outerHTML;
+  const pt=document.getElementById('a4-print-target');
+  pt.innerHTML=src;pt.style.display='block';
+  window.print();
+  setTimeout(()=>{pt.innerHTML='';pt.style.display='none';},1000);
+}
+
+/* ====================================================
+   MODAL
+   ==================================================== */
+function openCalcGuide(){document.getElementById('calcModal').style.display='flex';}
+function closeCalcGuide(){document.getElementById('calcModal').style.display='none';}
+function switchMTab(id,btn){
+  document.querySelectorAll('.mpanel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.mitab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  if(btn)btn.classList.add('on');
+}
+
+/* ====================================================
+   PWA
+   ==================================================== */
+let deferredPrompt=null,swReg=null;
+
+function setupPWA(){
+  // Manifest
+  const icon=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='%231d4ed8'/><text x='256' y='320' text-anchor='middle' font-size='240' font-family='sans-serif'>⏱</text></svg>`;
+  const iconURI='data:image/svg+xml;charset=utf-8,'+icon;
+  const manifest={name:'건축공사 공기산정 [MANMIN-Ver3.0]',short_name:'공기산정',description:'국토교통부고시 제2024-1021호 기준 공공 건설공사 공기산정 PWA',start_url:'./',display:'standalone',orientation:'portrait-primary',background_color:'#f0f4f9',theme_color:'#1d4ed8',lang:'ko',icons:[{src:iconURI,sizes:'192x192',type:'image/svg+xml',purpose:'any maskable'},{src:iconURI,sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'}]};
+  const mBlob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
+  // manifest.json is already linked in <head> via file reference
+
+  // Service Worker
+  if('serviceWorker' in navigator){
+    const sw=`const C='manmin-gongi-v1';self.addEventListener('install',e=>{self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(c=>{if(c)return c;return fetch(e.request).then(r=>{if(!r||r.status!==200||r.type==='opaque')return r;caches.open(C).then(cache=>cache.put(e.request,r.clone()));return r;}).catch(()=>new Response('<h1>오프라인</h1>',{headers:{'Content-Type':'text/html'}}));}))}); self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting();});`;
+    const swBlob=new Blob([sw],{type:'application/javascript'});
+    navigator.serviceWorker.register('./sw.js',{scope:'./'})
+    .then(reg=>{swReg=reg;reg.addEventListener('updatefound',()=>{const n=reg.installing;if(!n)return;n.addEventListener('statechange',()=>{if(n.state==='installed'&&navigator.serviceWorker.controller)document.getElementById('updateBanner').classList.add('show');});});})
+    .catch(e=>console.info('[SW]',e.message));
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!window._reload){window._reload=true;location.reload();}});
+  }
+
+  // Install Prompt
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(!sessionStorage.getItem('ib-dismissed'))setTimeout(()=>document.getElementById('installBanner').classList.add('show'),3000);});
+  document.getElementById('btnInstall').addEventListener('click',async()=>{if(!deferredPrompt)return;document.getElementById('installBanner').classList.remove('show');deferredPrompt.prompt();const{outcome}=await deferredPrompt.userChoice;deferredPrompt=null;if(outcome==='accepted')showToast('✅ 앱이 설치되었습니다!','online');});
+  window.addEventListener('appinstalled',()=>document.getElementById('installBanner').classList.remove('show'));
+
+  // Offline
+  window.addEventListener('offline',()=>showToast('📡 오프라인 — 로컬 데이터로 동작',''));
+  window.addEventListener('online',()=>showToast('✅ 온라인 연결됨','online'));
+  if(!navigator.onLine)setTimeout(()=>showToast('📡 오프라인 — 로컬 데이터로 동작',''),1000);
+}
+
+function dismissInstall(){document.getElementById('installBanner').classList.remove('show');sessionStorage.setItem('ib-dismissed','1');}
+function showToast(msg,type){const t=document.getElementById('offlineToast');t.textContent=msg;t.className='offline-toast '+(type||'')+' show';setTimeout(()=>t.classList.remove('show'),3200);}
+function applyUpdate(){if(swReg&&swReg.waiting)swReg.waiting.postMessage({type:'SKIP_WAITING'});document.getElementById('updateBanner').classList.remove('show');}
+
+/* ====================================================
+   INIT
+   ==================================================== */
+document.addEventListener('DOMContentLoaded',()=>{
+  S.proj.startDate=today();
+  refresh();renderProg();renderStep();
+  renderA4();renderMobile();
+  setupPWA();
+});
+</script>
+</body>
+</html>
