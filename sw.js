@@ -4,8 +4,8 @@
    전략: Cache-First (로컬 자산) + Network-First (외부 CDN)
    ═══════════════════════════════════════════════════════════════ */
 
-const CACHE_NAME   = 'construction-period-v3.0';
-const CDN_CACHE    = 'construction-period-cdn-v3.0';
+const CACHE_NAME   = 'construction-period-v3.2';
+const CDN_CACHE    = 'construction-period-cdn-v3.2';
 const OFFLINE_PAGE = './index.html';
 
 const APP_SHELL = [
