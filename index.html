@@ -12,9 +12,13 @@
 <meta name="apple-mobile-web-app-title" content="공기산정"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png"/>
+<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png"/>
 <link rel="icon" href="icons/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"/>
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png"/>
+<meta name="msapplication-TileColor" content="#1d4ed8"/>
+<meta name="msapplication-TileImage" content="icons/icon-144x144.png"/>
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
@@ -47,6 +51,23 @@ input[type="number"]{-moz-appearance:textfield;}
 .btn-ghost:hover{border-color:#1d4ed8;color:#1d4ed8;background:#eff6ff;}
 .btn-orange{background:#f97316;color:#fff;border:none;padding:8px 13px;border-radius:9px;font-size:11.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:all .15s;box-shadow:0 2px 8px rgba(249,115,22,.32);}
 .btn-orange:hover{background:#ea6c0e;}
+
+/* ── PWA 헤더 설치 버튼 ── */
+#pwa-hdr-btn{
+  display:none;align-items:center;gap:5px;
+  background:linear-gradient(135deg,#f97316,#ea580c);
+  color:#fff;border:none;padding:8px 13px;border-radius:9px;
+  font-size:11.5px;font-weight:800;cursor:pointer;
+  font-family:inherit;white-space:nowrap;flex-shrink:0;
+  transition:all .15s;animation:hdr-pulse 2.2s ease-in-out infinite;
+}
+#pwa-hdr-btn.visible{display:flex;}
+#pwa-hdr-btn:hover{background:linear-gradient(135deg,#ea580c,#c2410c);transform:translateY(-1px);}
+@keyframes hdr-pulse{
+  0%,100%{box-shadow:0 2px 8px rgba(249,115,22,.4);}
+  50%{box-shadow:0 2px 18px rgba(249,115,22,.75);}
+}
+@media(max-width:520px){#pwa-hdr-btn .pwa-hdr-txt{display:none;}}
 
 /* ── TAB BAR ── */
 .tab-bar{background:#bfdbfe;border-top:1px solid rgba(147,197,253,.35);overflow-x:auto;scrollbar-width:none;}
@@ -515,6 +536,9 @@ input[type="number"]{-moz-appearance:textfield;}
         </div>
       </div>
       <div class="hdr-btns">
+        <button id="pwa-hdr-btn" class="no-print" onclick="window.pwaTriggerInstall&&window.pwaTriggerInstall()" title="앱 설치">
+          📲 <span class="pwa-hdr-txt">설치</span>
+        </button>
         <button class="btn-ghost no-print" onclick="openCalcGuide()">📐 계산방법 안내</button>
         <button class="btn-blue no-print" id="btnPrintA4" onclick="printA4()">🖨 A4 출력</button>
         <button class="btn-orange no-print" onclick="exportMobileJPG()">📱 JPG 저장</button>
@@ -1656,29 +1680,86 @@ function switchMTab(id,btn){
 let deferredPrompt=null,swReg=null;
 
 function setupPWA(){
-  // Manifest
-  const icon=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='%231d4ed8'/><text x='256' y='320' text-anchor='middle' font-size='240' font-family='sans-serif'>⏱</text></svg>`;
-  const iconURI='data:image/svg+xml;charset=utf-8,'+icon;
-  const manifest={name:'건축공사 공기산정 [MANMIN-Ver3.0]',short_name:'공기산정',description:'국토교통부고시 제2024-1021호 기준 공공 건설공사 공기산정 PWA',start_url:'./',display:'standalone',orientation:'portrait-primary',background_color:'#f0f4f9',theme_color:'#1d4ed8',lang:'ko',icons:[{src:iconURI,sizes:'192x192',type:'image/svg+xml',purpose:'any maskable'},{src:iconURI,sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'}]};
-  const mBlob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
-  document.getElementById('pwa-manifest').href=URL.createObjectURL(mBlob);
-
-  // Service Worker
+  // Service Worker 등록
   if('serviceWorker' in navigator){
-    const sw=`const C='manmin-gongi-v3';self.addEventListener('install',e=>{self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(c=>{if(c)return c;return fetch(e.request).then(r=>{if(!r||r.status!==200||r.type==='opaque')return r;caches.open(C).then(cache=>cache.put(e.request,r.clone()));return r;}).catch(()=>new Response('<h1>오프라인</h1>',{headers:{'Content-Type':'text/html'}}));}))}); self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting();});`;
-    const swBlob=new Blob([sw],{type:'application/javascript'});
-    navigator.serviceWorker.register('./sw.js',{scope:'./'})
-    .then(reg=>{swReg=reg;reg.addEventListener('updatefound',()=>{const n=reg.installing;if(!n)return;n.addEventListener('statechange',()=>{if(n.state==='installed'&&navigator.serviceWorker.controller)document.getElementById('updateBanner').classList.add('show');});});})
-    .catch(e=>console.info('[SW]',e.message));
-    navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!window._reload){window._reload=true;location.reload();}});
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('./sw.js',{scope:'./'})
+      .then(reg=>{
+        swReg=reg;
+        reg.addEventListener('updatefound',()=>{
+          const n=reg.installing;
+          if(!n)return;
+          n.addEventListener('statechange',()=>{
+            if(n.state==='installed'&&navigator.serviceWorker.controller)
+              document.getElementById('updateBanner').classList.add('show');
+          });
+        });
+      })
+      .catch(e=>console.info('[SW]',e.message));
+      navigator.serviceWorker.addEventListener('controllerchange',()=>{
+        if(!window._reload){window._reload=true;location.reload();}
+      });
+    });
   }
 
-  // Install Prompt
-  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(!sessionStorage.getItem('ib-dismissed'))setTimeout(()=>document.getElementById('installBanner').classList.add('show'),3000);});
-  document.getElementById('btnInstall').addEventListener('click',async()=>{if(!deferredPrompt)return;document.getElementById('installBanner').classList.remove('show');deferredPrompt.prompt();const{outcome}=await deferredPrompt.userChoice;deferredPrompt=null;if(outcome==='accepted')showToast('✅ 앱이 설치되었습니다!','online');});
-  window.addEventListener('appinstalled',()=>document.getElementById('installBanner').classList.remove('show'));
+  // Install Prompt 캡처
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();
+    deferredPrompt=e;
+    // 헤더 설치 버튼 표시
+    const hdrBtn=document.getElementById('pwa-hdr-btn');
+    if(hdrBtn) hdrBtn.classList.add('visible');
+    // 배너 (세션당 1회, 3초 딜레이)
+    if(!sessionStorage.getItem('ib-dismissed'))
+      setTimeout(()=>document.getElementById('installBanner').classList.add('show'),3000);
+  });
 
-  // Offline
+  // 배너 내 설치 버튼
+  document.getElementById('btnInstall').addEventListener('click',async()=>{
+    if(!deferredPrompt)return;
+    document.getElementById('installBanner').classList.remove('show');
+    deferredPrompt.prompt();
+    const{outcome}=await deferredPrompt.userChoice;
+    deferredPrompt=null;
+    if(outcome==='accepted'){
+      showToast('✅ 앱이 설치되었습니다!','online');
+      const hdrBtn=document.getElementById('pwa-hdr-btn');
+      if(hdrBtn) hdrBtn.classList.remove('visible');
+    }
+  });
+
+  // 전역 설치 함수 (헤더 버튼 → 공통 진입점)
+  window.pwaTriggerInstall = async function(){
+    document.getElementById('installBanner').classList.remove('show');
+    if(!deferredPrompt){
+      alert('이미 설치되어 있거나 자동 설치를 지원하지 않는 브라우저입니다.\n\n📱 iOS Safari: 공유(□↑) → "홈 화면에 추가"\n💻 Chrome/Edge: 주소창 우측 ⊕ 아이콘');
+      return;
+    }
+    deferredPrompt.prompt();
+    const{outcome}=await deferredPrompt.userChoice;
+    deferredPrompt=null;
+    if(outcome==='accepted'){
+      showToast('✅ 앱이 설치되었습니다!','online');
+      const hdrBtn=document.getElementById('pwa-hdr-btn');
+      if(hdrBtn) hdrBtn.classList.remove('visible');
+    }
+  };
+
+  // 설치 완료
+  window.addEventListener('appinstalled',()=>{
+    document.getElementById('installBanner').classList.remove('show');
+    const hdrBtn=document.getElementById('pwa-hdr-btn');
+    if(hdrBtn) hdrBtn.classList.remove('visible');
+    deferredPrompt=null;
+  });
+
+  // standalone 모드 → 헤더 버튼 숨김
+  if(window.matchMedia('(display-mode:standalone)').matches||window.navigator.standalone===true){
+    const hdrBtn=document.getElementById('pwa-hdr-btn');
+    if(hdrBtn) hdrBtn.style.display='none';
+  }
+
+  // Offline/Online 알림
   window.addEventListener('offline',()=>showToast('📡 오프라인 — 로컬 데이터로 동작',''));
   window.addEventListener('online',()=>showToast('✅ 온라인 연결됨','online'));
   if(!navigator.onLine)setTimeout(()=>showToast('📡 오프라인 — 로컬 데이터로 동작',''),1000);
