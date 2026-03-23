@@ -179,68 +179,76 @@ input[type="number"]{-moz-appearance:textfield;}
 .info-strip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:9px 12px;margin-bottom:12px;display:flex;align-items:flex-start;gap:7px;}
 .info-strip p{font-size:11px;color:#1e40af;font-weight:600;line-height:1.7;}
 
-/* ── A4 PREVIEW ── */
+/* ── A4 PREVIEW (위생배관 MANMIN-Ver2.0 기준 적용) ── */
 .preview-bg{
   background:#94a3b8;
   border-radius:0 0 14px 14px;
-  padding:16px;
+  padding:20px;
+  /* 스크롤 가능 프리뷰 — 데스크탑/태블릿/모바일 공통 */
+  min-height:calc(100vh - 222px);
+  overflow-y:auto;
+  overflow-x:hidden;
+  position:relative;
   display:flex;
   justify-content:center;
-  align-items:center;
-  /* 뷰포트에서 UI 요소 높이 차감 → A4 전체가 보이는 높이 */
-  height:calc(100vh - 222px);
-  min-height:340px;
-  overflow:hidden;
-  position:relative;
+  align-items:flex-start;
 }
 #a4-page{
   background:#fff;
   width:794px;
   min-height:1123px;
-  padding:24px 48px 40px;
-  font-size:12px;
+  padding:20px 30px 36px;
+  font-size:11px;
 }
 .a4-scale-wrap{
-  transform-origin:center center;
   display:block;
+  transform-origin:top center;
+  width:794px;
   flex-shrink:0;
-  /* 중앙 정렬 기준점 */
 }
+/* 모바일/태블릿: 좌측 정렬로 전환 */
 @media(max-width:860px){
-  .preview-bg{padding:10px;height:calc(100vh - 212px);}
+  .preview-bg{
+    padding:8px;
+    justify-content:flex-start;
+    align-items:flex-start;
+  }
+  .a4-scale-wrap{
+    transform-origin:top left;
+  }
 }
 @media(max-width:480px){
-  .preview-bg{padding:6px;height:calc(100vh - 206px);}
+  .preview-bg{padding:6px;}
 }
-.a4-header{border-bottom:3px solid #1d4ed8;padding-bottom:14px;margin-bottom:20px;}
-.a4-title{font-size:20px;font-weight:900;color:#1e3a8a;margin-bottom:5px;}
-.a4-meta{font-size:10px;color:#6b7a99;font-weight:600;}
-.a4-stamp{position:absolute;top:40px;right:48px;border:3px solid #ef4444;padding:6px 12px;border-radius:5px;font-size:11px;font-weight:900;color:#ef4444;letter-spacing:.05em;transform:rotate(-8deg);opacity:.8;}
-.a4-section{margin-bottom:18px;}
-.a4-sec-title{font-size:12px;font-weight:800;color:#1e3a8a;border-left:3px solid #f97316;padding-left:8px;margin-bottom:8px;letter-spacing:.04em;}
-.a4-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
-.a4-item{border:1.5px solid #e2e8f0;border-radius:8px;padding:9px;text-align:center;}
-.a4-item-label{font-size:9px;color:#6b7a99;font-weight:700;margin-bottom:3px;}
-.a4-item-val{font-size:18px;font-weight:900;color:#1d4ed8;}
-.a4-item-unit{font-size:10px;color:#374151;}
+.a4-header{border-bottom:3px solid #1d4ed8;padding-bottom:10px;margin-bottom:14px;}
+.a4-title{font-size:17px;font-weight:900;color:#1e3a8a;margin-bottom:4px;}
+.a4-meta{font-size:9.5px;color:#6b7a99;font-weight:600;}
+.a4-stamp{position:absolute;top:36px;right:30px;border:3px solid #ef4444;padding:5px 10px;border-radius:5px;font-size:10.5px;font-weight:900;color:#ef4444;letter-spacing:.05em;transform:rotate(-8deg);opacity:.8;}
+.a4-section{margin-bottom:13px;}
+.a4-sec-title{font-size:11px;font-weight:800;color:#1e3a8a;border-left:3px solid #f97316;padding-left:7px;margin-bottom:6px;letter-spacing:.04em;}
+.a4-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:9px;}
+.a4-item{border:1.5px solid #e2e8f0;border-radius:7px;padding:7px;text-align:center;}
+.a4-item-label{font-size:8.5px;color:#6b7a99;font-weight:700;margin-bottom:2px;}
+.a4-item-val{font-size:16px;font-weight:900;color:#1d4ed8;}
+.a4-item-unit{font-size:9.5px;color:#374151;}
 .a4-item.total{background:#1e3a8a;border-color:#1e3a8a;}
 .a4-item.total .a4-item-label{color:rgba(255,255,255,.6);}
-.a4-item.total .a4-item-val{color:#fbbf24;font-size:22px;}
+.a4-item.total .a4-item-val{color:#fbbf24;font-size:19px;}
 .a4-item.total .a4-item-unit{color:#fff;}
-.a4-formula-box{background:#0f172a;color:#e2e8f0;border-radius:8px;padding:10px 12px;font-family:monospace;font-size:11px;line-height:1.9;margin-bottom:12px;}
+.a4-formula-box{background:#0f172a;color:#e2e8f0;border-radius:7px;padding:8px 10px;font-family:monospace;font-size:10.5px;line-height:1.8;margin-bottom:9px;}
 .a4-formula-box .hl{color:#fbbf24;font-weight:700;}
-.a4-tbl{width:100%;border-collapse:collapse;font-size:10.5px;margin-bottom:10px;}
-.a4-tbl th{background:#1d4ed8;color:#fff;padding:6px 8px;text-align:left;font-size:9.5px;font-weight:700;}
-.a4-tbl td{padding:6px 8px;border-bottom:1px solid #e2e8f0;}
+.a4-tbl{width:100%;border-collapse:collapse;font-size:10px;margin-bottom:8px;}
+.a4-tbl th{background:#1d4ed8;color:#fff;padding:5px 7px;text-align:left;font-size:9px;font-weight:700;}
+.a4-tbl td{padding:5px 7px;border-bottom:1px solid #e2e8f0;}
 .a4-tbl .sum td{background:#eff6ff;font-weight:800;color:#1e3a8a;}
-.a4-gantt-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
-.a4-gantt-lbl{width:68px;font-size:10px;font-weight:600;text-align:right;color:#374151;}
-.a4-gantt-track{flex:1;height:20px;background:#f0f4f9;border-radius:4px;position:relative;border:1px solid #e2e8f0;}
-.a4-gantt-bar{position:absolute;top:2px;height:16px;border-radius:3px;display:flex;align-items:center;padding:0 5px;font-size:9px;font-weight:700;color:#fff;overflow:hidden;}
-.a4-gantt-days{width:36px;text-align:right;font-size:10px;font-weight:700;color:#6b7a99;}
-.a4-footer{border-top:1px solid #e2e8f0;padding-top:8px;display:flex;justify-content:space-between;font-size:9px;color:#94a3b8;font-weight:600;margin-top:24px;}
-.a4-watermark{text-align:center;margin-bottom:16px;}
-.a4-watermark-text{font-size:13px;font-weight:900;color:#1d4ed8;letter-spacing:.15em;}
+.a4-gantt-row{display:flex;align-items:center;gap:5px;margin-bottom:4px;}
+.a4-gantt-lbl{width:62px;font-size:9.5px;font-weight:600;text-align:right;color:#374151;}
+.a4-gantt-track{flex:1;height:18px;background:#f0f4f9;border-radius:4px;position:relative;border:1px solid #e2e8f0;}
+.a4-gantt-bar{position:absolute;top:2px;height:14px;border-radius:3px;display:flex;align-items:center;padding:0 4px;font-size:8.5px;font-weight:700;color:#fff;overflow:hidden;}
+.a4-gantt-days{width:32px;text-align:right;font-size:9.5px;font-weight:700;color:#6b7a99;}
+.a4-footer{border-top:1px solid #e2e8f0;padding-top:7px;display:flex;justify-content:space-between;font-size:8.5px;color:#94a3b8;font-weight:600;margin-top:16px;}
+.a4-watermark{text-align:center;margin-bottom:12px;}
+.a4-watermark-text{font-size:12px;font-weight:900;color:#1d4ed8;letter-spacing:.15em;}
 
 /* ── MOBILE PREVIEW ── */
 .mob-preview-wrap{display:flex;justify-content:center;padding:20px;background:#94a3b8;border-radius:0 0 14px 14px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
@@ -382,24 +390,48 @@ input[type="number"]{-moz-appearance:textfield;}
 .update-banner.show{transform:translateY(0);}
 .update-banner button{background:#1d4ed8;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-family:inherit;font-size:11.5px;font-weight:800;cursor:pointer;}
 
-/* ── PRINT ── */
-@page{size:A4 portrait;margin:15mm 18mm 20mm;}
+/* ── PRINT (ISO A4 — MANMIN 위생배관 기준 적용) ── */
+@page{size:A4 portrait;margin:8mm 8mm 19mm;}
 @media print{
   *,*::before,*::after{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  /* 배경색·테두리 강제 출력 */
+  .a4-item,.a4-item.total,.a4-formula-box,.a4-tbl th,.a4-tbl .sum td{
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+  /* 폰트 강제 */
+  .a4-item-val,.a4-formula-box,.a4-gantt-days{
+    font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif!important;
+  }
   .no-print{display:none!important;}
-  html,body{margin:0!important;padding:0!important;width:210mm!important;background:#fff!important;}
+  /* html/body/root-app 숨기고 인쇄 타깃만 표시 */
+  html,body{margin:0!important;padding:0!important;width:auto!important;background:#fff!important;}
+  #root-app{display:none!important;}
   #a4-print-target{display:block!important;}
-  #root-app>*:not(#a4-print-target){display:none!important;}
-  /* ── 페이지 나눔 제어 ── */
+  /* 인쇄용 a4-page: 패딩 보정, 100% 너비 */
+  #a4-print-target #a4-page{
+    padding:10px 16px 24px!important;
+    width:100%!important;
+    box-shadow:none!important;
+    min-height:auto!important;
+    box-sizing:border-box!important;
+    font-size:11px!important;
+  }
+  /* ── 섹션 페이지 나눔 제어 ── */
   .a4-section{break-inside:avoid;page-break-inside:avoid;}
-  .a4-tbl{break-inside:auto;page-break-inside:auto;}
+  .a4-section.allow-break{break-inside:auto!important;page-break-inside:auto!important;}
+  /* 긴 테이블: 행 단위 나눔 허용, 헤더 반복 */
+  .a4-tbl{break-inside:auto;page-break-inside:auto;width:100%;}
   .a4-tbl thead{display:table-header-group;}
   .a4-tbl tr{break-inside:avoid;page-break-inside:avoid;}
-  .a4-grid{break-inside:avoid;page-break-inside:avoid;}
+  /* 섹션 제목 바로 다음에 테이블이 오면 같이 이동 */
+  .a4-sec-title+table,.a4-sec-title+.a4-tbl{break-before:avoid;page-break-before:avoid;}
+  .a4-sec-title{break-after:avoid;page-break-after:avoid;}
+  .a4-grid{break-inside:avoid;page-break-inside:avoid;display:grid!important;grid-template-columns:repeat(4,1fr)!important;}
   .a4-formula-box{break-inside:avoid;page-break-inside:avoid;}
   .a4-gantt-row{break-inside:avoid;page-break-inside:avoid;}
   .a4-header{break-inside:avoid;page-break-inside:avoid;}
-  /* ── 바닥글: 문서 흐름 내 마지막 요소 처리 (position:fixed 중복 제거) ── */
+  /* ── 바닥글 ── */
   .a4-footer{
     margin-top:16px;
     border-top:1px solid #e2e8f0;
@@ -412,7 +444,8 @@ input[type="number"]{-moz-appearance:textfield;}
     break-inside:avoid;
     page-break-inside:avoid;
   }
-  #a4-print-target #a4-page{padding:0;width:100%;}
+  /* ❸ 모바일 폰트 강제(16px)가 인쇄 시 A4 레이아웃 깨지는 것 방지 */
+  input,select,textarea{font-size:inherit!important;}
 }
 
 /* ── FADE ── */
@@ -441,6 +474,17 @@ input[type="number"]{-moz-appearance:textfield;}
   .opt-grid{grid-template-columns:repeat(3,1fr);}
   .res-grid{grid-template-columns:repeat(2,1fr);}
   .mob-frame{width:100%;max-width:412px;}
+}
+
+/* ── iOS Safari 폼 입력 자동 줌 방지 (font-size 16px 이상 강제) ── */
+@media screen and (max-width:768px){
+  input[type="text"],
+  input[type="number"],
+  input[type="search"],
+  select,
+  textarea{
+    font-size:16px!important;
+  }
 }
 </style>
 </head>
@@ -510,11 +554,12 @@ input[type="number"]{-moz-appearance:textfield;}
         <div class="card-head">
           <div class="card-icon">📄</div>
           <div class="card-title">A4 공기산정 근거서 미리보기</div>
-          <div class="card-badge" style="margin-left:auto">210mm × 297mm</div>
+          <div class="card-badge" style="margin-left:auto">210mm × 297mm · 여백 8mm</div>
         </div>
-        <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid #eef1f6;flex-wrap:wrap;">
+        <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid #eef1f6;flex-wrap:wrap;align-items:center;row-gap:6px;">
           <button class="btn-blue" onclick="printA4()">🖨 A4 인쇄</button>
-          <span style="font-size:11px;color:#6b7a99;align-self:center;flex:1;min-width:120px;">※ 공기산정 근거서 — 입찰 서류 첨부 의무 (고시 제5조)</span>
+          <button class="btn-ghost" onclick="renderA4();setTimeout(scaleA4Preview,80)">🔄 미리보기 갱신</button>
+          <span style="font-size:11px;color:#6b7a99;align-self:center;flex:1;min-width:120px;">※ 공기산정 근거서 — 입찰 서류 첨부 의무 (고시 제5조) · 용지: A4 세로 · 여백: 상하 8~19mm / 좌우 8mm</span>
         </div>
         <div class="preview-bg" id="a4PreviewBg">
           <div class="a4-scale-wrap" id="a4ScaleWrap">
@@ -1295,49 +1340,45 @@ function switchTab(tab){
 }
 
 /* ====================================================
-   A4 모바일 SCALE
+   A4 SCALE PREVIEW (위생배관 MANMIN-Ver2.0 기준 적용)
+   — top-left origin + 실제 높이 보정으로 안정적 레이아웃
    ==================================================== */
 function scaleA4Preview(){
-  const wrap=document.getElementById('a4ScaleWrap');
-  const bg=document.getElementById('a4PreviewBg');
-  const page=document.getElementById('a4-page');
+  var wrap=document.getElementById('a4ScaleWrap');
+  var bg=document.getElementById('a4PreviewBg');
+  var page=document.getElementById('a4-page');
   if(!wrap||!bg||!page)return;
+  var A4W=794;
 
-  const A4W=794;
-  // A4 실제 렌더 높이 (콘텐츠에 따라 1123px 이상 가능)
-  const A4H=page.offsetHeight||1123;
-
-  // transform 초기화 → 정확한 사이즈 측정
+  // ① transform 초기화 후 브라우저 레이아웃 재계산 대기 (double rAF)
   wrap.style.transform='none';
-  wrap.style.transformOrigin='center center';
+  wrap.style.height='';
 
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
-      const st=window.getComputedStyle(bg);
-      const padH=parseFloat(st.paddingLeft||0)+parseFloat(st.paddingRight||0);
-      const padV=parseFloat(st.paddingTop||0)+parseFloat(st.paddingBottom||0);
-      const availW=Math.max(bg.clientWidth-padH, 1);
-      const availH=Math.max(bg.clientHeight-padV, 1);
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      var style=window.getComputedStyle(bg);
+      var padH=parseFloat(style.paddingLeft||0)+parseFloat(style.paddingRight||0);
+      var availW=Math.max(bg.clientWidth-padH, 1);
 
-      // fit-in-box: 너비·높이 중 더 작은 비율로 축소
-      const scaleW=availW/A4W;
-      const scaleH=availH/A4H;
-      const scale=Math.min(scaleW, scaleH, 1); // 1 이상으로는 확대 안 함
-
-      if(scale>=1){
-        // 여유 있음: 원본 크기 중앙
+      if(availW>=A4W){
+        // 데스크탑: scale 없이 원본 크기, CSS flex가 중앙 배치
         wrap.style.transform='none';
-        wrap.style.transformOrigin='center center';
-      } else {
-        // 축소 필요: center-center 기준 scale
-        wrap.style.transformOrigin='center center';
-        wrap.style.transform=`scale(${scale})`;
+        wrap.style.transformOrigin='top center';
+        wrap.style.height='';
+      }else{
+        // 모바일/태블릿: 화면 너비에 맞게 축소
+        var scale=availW/A4W;
+        wrap.style.transformOrigin='top left';
+        wrap.style.transform='scale('+scale+')';
+        // ② transform 후 실제 높이를 읽어 보정 (스크롤 영역 확보)
+        var realH=page.offsetHeight;
+        wrap.style.height=(realH*scale)+'px';
       }
     });
   });
 }
 window.addEventListener('resize', scaleA4Preview);
-window.addEventListener('orientationchange', ()=>setTimeout(scaleA4Preview,250));
+window.addEventListener('orientationchange', function(){setTimeout(scaleA4Preview,250);});
 
 /* ====================================================
    A4 RENDER
@@ -1452,7 +1493,7 @@ function renderA4(){
     <span>작성일: ${new Date().toLocaleDateString('ko-KR')}</span>
   </div>`;
   // 렌더링 완료 후 모바일 scale 적용
-  requestAnimationFrame(scaleA4Preview);
+  requestAnimationFrame(function(){setTimeout(scaleA4Preview,80);});
 }
 
 /* ====================================================
@@ -1585,11 +1626,16 @@ function shareMobileJPG(){
 
 function printA4(){
   renderA4();
-  const src=document.getElementById('a4-page').outerHTML;
-  const pt=document.getElementById('a4-print-target');
-  pt.innerHTML=src;pt.style.display='block';
-  window.print();
-  setTimeout(()=>{pt.innerHTML='';pt.style.display='none';},1000);
+  // 위생배관 방식: A4 페이지 전체를 인쇄 타깃에 복사 후 출력
+  var src=document.getElementById('a4-page').outerHTML;
+  var pt=document.getElementById('a4-print-target');
+  pt.innerHTML=src;
+  pt.style.display='block';
+  // 짧은 지연으로 DOM 반영 후 인쇄 대화상자 호출
+  setTimeout(function(){
+    window.print();
+    setTimeout(function(){pt.innerHTML='';pt.style.display='none';},1200);
+  },120);
 }
 
 /* ====================================================
