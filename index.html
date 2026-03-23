@@ -180,13 +180,33 @@ input[type="number"]{-moz-appearance:textfield;}
 .info-strip p{font-size:11px;color:#1e40af;font-weight:600;line-height:1.7;}
 
 /* ── A4 PREVIEW ── */
-.preview-bg{background:#94a3b8;border-radius:0 0 14px 14px;padding:20px;display:flex;justify-content:center;overflow-x:auto;min-height:300px;}
+.preview-bg{
+  background:#94a3b8;
+  border-radius:0 0 14px 14px;
+  padding:20px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  overflow-x:auto;
+  overflow-y:auto;
+  min-height:300px;
+  -webkit-overflow-scrolling:touch;
+}
 #a4-page{background:#fff;width:794px;min-height:1123px;padding:24px 48px 40px;font-size:12px;}
 /* 모바일: transform scale로 794px → 화면 너비에 맞게 자동 축소 */
-.a4-scale-wrap{transform-origin:top center;display:inline-block;}
+.a4-scale-wrap{
+  transform-origin:top center;
+  display:block;
+  flex-shrink:0;
+}
+/* 태블릿 이하: 좌측 정렬로 전환하되 gap 줄임 */
 @media(max-width:860px){
-  .preview-bg{padding:10px;align-items:flex-start;justify-content:flex-start;}
+  .preview-bg{padding:10px;justify-content:flex-start;align-items:flex-start;}
   .a4-scale-wrap{transform-origin:top left;}
+}
+/* 모바일 소형: padding 최소화 */
+@media(max-width:480px){
+  .preview-bg{padding:6px;}
 }
 .a4-header{border-bottom:3px solid #1d4ed8;padding-bottom:14px;margin-bottom:20px;}
 .a4-title{font-size:20px;font-weight:900;color:#1e3a8a;margin-bottom:5px;}
@@ -219,15 +239,66 @@ input[type="number"]{-moz-appearance:textfield;}
 .a4-watermark-text{font-size:13px;font-weight:900;color:#1d4ed8;letter-spacing:.15em;}
 
 /* ── MOBILE PREVIEW ── */
-.mob-preview-wrap{display:flex;justify-content:center;padding:20px;background:#94a3b8;border-radius:0 0 14px 14px;}
-.mob-frame{width:390px;background:#1a1a1a;border-radius:24px;padding:8px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
-.mob-screen{background:#f0f4f9;border-radius:18px;overflow:hidden;min-height:700px;}
-.mob-statusbar{background:#1d4ed8;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:11px;color:rgba(255,255,255,.85);font-weight:700;}
+.mob-preview-wrap{display:flex;justify-content:center;padding:20px;background:#94a3b8;border-radius:0 0 14px 14px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+/* Samsung Galaxy S24 Ultra: CSS 412px × 915px, ratio 19.3:9, corner 28px */
+.mob-frame{
+  width:412px;
+  background:#101010;
+  border-radius:28px;
+  padding:7px;
+  box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 0 1.5px #2a2a2a;
+  flex-shrink:0;
+  position:relative;
+}
+/* 측면 버튼 (볼륨 + 전원) 시각 표현 */
+.mob-frame::before{
+  content:'';
+  position:absolute;
+  left:-4px; top:100px;
+  width:4px; height:60px;
+  background:#222; border-radius:3px 0 0 3px;
+  box-shadow:0 80px 0 #222, 0 -2px 0 #333;
+}
+.mob-frame::after{
+  content:'';
+  position:absolute;
+  right:-4px; top:140px;
+  width:4px; height:70px;
+  background:#222; border-radius:0 3px 3px 0;
+}
+.mob-screen{
+  background:#f0f4f9;
+  border-radius:22px;
+  overflow:hidden;
+  min-height:860px;
+}
+/* S24 Ultra 펀치홀 카메라 (상단 중앙) */
+.mob-statusbar{
+  background:#1d4ed8;
+  height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  font-size:11px;
+  color:rgba(255,255,255,.85);
+  font-weight:700;
+  position:relative;
+}
+.mob-statusbar::after{
+  content:'';
+  position:absolute;
+  top:8px; left:50%; transform:translateX(-50%);
+  width:10px; height:10px;
+  background:#000;
+  border-radius:50%;
+  box-shadow:0 0 0 1.5px #1a3fa8;
+}
 .mob-header{background:#dbeafe;padding:12px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(147,197,253,.4);}
 .mob-content{padding:12px;}
 .mob-card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,.06);}
 .mob-result-hero{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-radius:12px;padding:14px;text-align:center;color:#fff;margin-bottom:10px;}
-.mob-big-num{font-size:40px;font-weight:900;color:#fbbf24;line-height:1;}
+.mob-big-num{font-size:44px;font-weight:900;color:#fbbf24;line-height:1;}
 .mob-res-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
 .mob-res-item{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center;}
 .mob-fab{margin:0 12px;background:linear-gradient(135deg,#0c4da2,#1d4ed8);color:#fff;border:none;border-radius:14px;padding:13px;cursor:pointer;box-shadow:0 4px 16px rgba(12,77,162,.5);display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:800;font-family:inherit;width:calc(100% - 24px);}
@@ -365,7 +436,7 @@ input[type="number"]{-moz-appearance:textfield;}
 @media(max-width:480px){
   .opt-grid{grid-template-columns:repeat(3,1fr);}
   .res-grid{grid-template-columns:repeat(2,1fr);}
-  .mob-frame{width:100%;max-width:390px;}
+  .mob-frame{width:100%;max-width:412px;}
 }
 </style>
 </head>
@@ -398,7 +469,7 @@ input[type="number"]{-moz-appearance:textfield;}
       <div class="hdr-btns">
         <button class="btn-ghost no-print" onclick="openCalcGuide()">📐 계산방법 안내</button>
         <button class="btn-blue no-print" id="btnPrintA4" onclick="printA4()">🖨 A4 출력</button>
-        <button class="btn-orange no-print" id="btnExportJPG" onclick="exportMobileJPG()">📱 JPG 저장</button>
+        <button class="btn-orange no-print" onclick="exportMobileJPG()">📱 JPG 저장</button>
       </div>
     </div>
   </header>
@@ -439,7 +510,6 @@ input[type="number"]{-moz-appearance:textfield;}
         </div>
         <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid #eef1f6;flex-wrap:wrap;">
           <button class="btn-blue" onclick="printA4()">🖨 A4 인쇄</button>
-          <button class="btn-orange" onclick="exportA4JPG()">📷 A4 JPG 저장</button>
           <span style="font-size:11px;color:#6b7a99;align-self:center;flex:1;min-width:120px;">※ 공기산정 근거서 — 입찰 서류 첨부 의무 (고시 제5조)</span>
         </div>
         <div class="preview-bg" id="a4PreviewBg">
@@ -460,11 +530,12 @@ input[type="number"]{-moz-appearance:textfield;}
         <div class="card-head">
           <div class="card-icon">📱</div>
           <div class="card-title">모바일 산정결과 미리보기</div>
-          <div class="card-badge" style="margin-left:auto">iPhone 15 Pro (390px)</div>
+          <div class="card-badge" style="margin-left:auto">Galaxy S24 Ultra (412px)</div>
         </div>
-        <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid #eef1f6;flex-wrap:wrap;">
-          <button class="btn-orange" onclick="exportMobileJPG()">📱 모바일 JPG 저장</button>
-          <span style="font-size:11px;color:#6b7a99;align-self:center;">현장 공유·보고용 이미지로 저장</span>
+        <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid #eef1f6;flex-wrap:wrap;align-items:center;row-gap:6px;">
+          <button class="btn-orange" id="btnExportMobJPG" onclick="exportMobileJPG()">📱 JPG 저장</button>
+          <button class="btn-blue" id="btnShareMob" onclick="shareMobileJPG()" style="display:none">📤 공유</button>
+          <span id="mobJpgStatus" style="font-size:11px;color:#6b7a99;align-self:center;flex:1;">현장 공유·보고용 이미지로 저장</span>
         </div>
         <div class="mob-preview-wrap" id="mobPreviewBg">
           <div class="mob-frame" id="mob-frame">
@@ -1225,25 +1296,43 @@ function switchTab(tab){
 function scaleA4Preview(){
   const wrap=document.getElementById('a4ScaleWrap');
   const bg=document.getElementById('a4PreviewBg');
-  if(!wrap||!bg)return;
+  const page=document.getElementById('a4-page');
+  if(!wrap||!bg||!page)return;
   const A4W=794;
-  const pad=20; // preview-bg 좌우 padding 합산 기준
-  const availW=bg.clientWidth - pad*2;
-  if(availW<A4W){
-    const scale=availW/A4W;
-    wrap.style.transform=`scale(${scale})`;
-    // scale 후 실제 높이를 wrap 부모에 반영해 레이아웃 붕괴 방지
-    const page=document.getElementById('a4-page');
-    if(page){
-      const scaledH=page.offsetHeight*scale;
-      wrap.style.marginBottom=`-${page.offsetHeight*(1-scale)}px`;
-    }
-  }else{
-    wrap.style.transform='scale(1)';
-    wrap.style.marginBottom='0';
-  }
+
+  // transform 초기화 후 레이아웃 안정화 대기
+  wrap.style.transform='none';
+  wrap.style.height='';
+  wrap.style.marginBottom='0';
+
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      const style=window.getComputedStyle(bg);
+      const padL=parseFloat(style.paddingLeft||0);
+      const padR=parseFloat(style.paddingRight||0);
+      const availW=Math.max(bg.clientWidth-padL-padR, 1);
+
+      if(availW>=A4W){
+        // 데스크탑: 원본 크기, flex justify-content:center 로 자동 중앙
+        wrap.style.transform='none';
+        wrap.style.transformOrigin='top center';
+        wrap.style.height='';
+        wrap.style.marginBottom='0';
+      } else {
+        // 모바일/태블릿: scale 축소
+        const scale=availW/A4W;
+        wrap.style.transformOrigin='top left';
+        wrap.style.transform=`scale(${scale})`;
+        const realH=page.offsetHeight;
+        const scaledH=Math.ceil(realH*scale);
+        wrap.style.height=scaledH+'px';
+        wrap.style.marginBottom=`-${realH-scaledH}px`;
+      }
+    });
+  });
 }
-window.addEventListener('resize',scaleA4Preview);
+window.addEventListener('resize', scaleA4Preview);
+window.addEventListener('orientationchange', ()=>setTimeout(scaleA4Preview,200));
 
 /* ====================================================
    A4 RENDER
@@ -1372,9 +1461,9 @@ function renderMobile(){
 
   document.getElementById('mob-content').innerHTML=`
   <div class="mob-statusbar">
-    <span>${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}</span>
-    <span>MANMIN-Ver3.0</span>
-    <span>●●● 5G</span>
+    <span style="font-size:10px;font-weight:800;">${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}</span>
+    <span style="width:14px;display:block;"></span>
+    <span style="font-size:10px;display:flex;align-items:center;gap:4px;font-weight:700;">5G ●●●●</span>
   </div>
   <div class="mob-header">
     <div style="width:32px;height:32px;background:#1d4ed8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">⏱</div>
@@ -1414,33 +1503,80 @@ function renderMobile(){
 /* ====================================================
    JPG EXPORT
    ==================================================== */
+// 모바일 JPG 저장 후 공유탭 자동 표시
+let _mobJpgBlob=null;
+let _mobJpgFname='';
+
 function exportMobileJPG(){
   renderMobile();
   switchTab('mobile');
   const target=document.getElementById('mob-frame');
   if(!target){alert('모바일 미리보기 탭으로 이동해주세요.');return;}
-  if(typeof domtoimage==='undefined'){alert('dom-to-image 라이브러리를 로드할 수 없습니다. 인터넷 연결을 확인해주세요.');return;}
-  const btn=document.getElementById('btnExportJPG');
-  if(btn){btn.textContent='⏳ 생성중...';btn.disabled=true;}
+  if(typeof domtoimage==='undefined'){alert('dom-to-image 라이브러리를 로드할 수 없습니다.');return;}
+
+  const btn=document.getElementById('btnExportMobJPG');
+  const shareBtn=document.getElementById('btnShareMob');
+  const status=document.getElementById('mobJpgStatus');
+  if(btn){btn.textContent='⏳ 생성 중...';btn.disabled=true;}
+  if(shareBtn) shareBtn.style.display='none';
+  if(status) status.textContent='이미지 생성 중...';
+
+  const fname=`공기산정_모바일_${new Date().toLocaleDateString('ko').replace(/\. /g,'-').replace('.','')+'.jpg'}`;
+  _mobJpgFname=fname;
+
   setTimeout(()=>{
-    domtoimage.toJpeg(target,{quality:0.95,bgcolor:'#000',width:target.offsetWidth*2,height:target.offsetHeight*2,style:{transform:'scale(2)',transformOrigin:'top left'}})
-    .then(dataUrl=>{
-      const a=document.createElement('a');a.download=`공기산정_모바일_${new Date().toLocaleDateString('ko').replace(/\. /g,'-').replace('.','')+'.jpg'}`;a.href=dataUrl;a.click();
+    domtoimage.toBlob(target,{quality:0.95,bgcolor:'#000',
+      width:target.offsetWidth*2,height:target.offsetHeight*2,
+      style:{transform:'scale(2)',transformOrigin:'top left'}
+    }).then(blob=>{
+      _mobJpgBlob=blob;
+
+      // ① 다운로드
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url; a.download=fname; a.click();
+      setTimeout(()=>URL.revokeObjectURL(url),3000);
+
       if(btn){btn.textContent='📱 JPG 저장';btn.disabled=false;}
-    }).catch(err=>{console.error(err);alert('JPG 생성 중 오류가 발생했습니다.');if(btn){btn.textContent='📱 JPG 저장';btn.disabled=false;}});
+      if(status) status.textContent='✅ 저장 완료';
+      setTimeout(()=>{if(status)status.textContent='현장 공유·보고용 이미지로 저장';},3000);
+
+      // ② 공유 버튼 자동 표시 (항상 표시 - Web Share 미지원 기기는 클릭 시 안내)
+      if(shareBtn) shareBtn.style.display='flex';
+
+    }).catch(err=>{
+      console.error(err);
+      alert('JPG 생성 중 오류가 발생했습니다.');
+      if(btn){btn.textContent='📱 JPG 저장';btn.disabled=false;}
+      if(status) status.textContent='오류 발생 — 다시 시도해주세요.';
+    });
   },300);
 }
 
-function exportA4JPG(){
-  renderA4();
-  const target=document.getElementById('a4-page');
-  if(!target){alert('A4 미리보기를 먼저 확인해주세요.');return;}
-  if(typeof domtoimage==='undefined'){alert('dom-to-image 라이브러리를 로드할 수 없습니다.');return;}
-  domtoimage.toJpeg(target,{quality:0.95,bgcolor:'#ffffff',width:794})
-  .then(dataUrl=>{
-    const a=document.createElement('a');a.download=`공기산정_A4_${new Date().toLocaleDateString('ko').replace(/\. /g,'-').replace('.','')+'.jpg'}`;a.href=dataUrl;a.click();
-  }).catch(err=>{console.error(err);alert('A4 JPG 생성 중 오류가 발생했습니다.');});
+function shareMobileJPG(){
+  if(!_mobJpgBlob){
+    alert('먼저 JPG 저장 버튼을 눌러주세요.');
+    return;
+  }
+  if(navigator.share && navigator.canShare){
+    const file=new File([_mobJpgBlob],_mobJpgFname||'공기산정_모바일.jpg',{type:'image/jpeg'});
+    if(navigator.canShare({files:[file]})){
+      navigator.share({
+        title:'공기산정 결과',
+        text:'건설공사 적정 공기산정 결과 (MANMIN-Ver3.0)',
+        files:[file]
+      }).catch(e=>{if(e.name!=='AbortError') alert('공유 중 오류: '+e.message);});
+      return;
+    }
+  }
+  // Web Share 미지원 → 다시 다운로드
+  const url=URL.createObjectURL(_mobJpgBlob);
+  const a=document.createElement('a');
+  a.href=url; a.download=_mobJpgFname; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+  alert('이 브라우저는 공유 기능을 지원하지 않아 파일을 다시 다운로드합니다.');
 }
+
 
 function printA4(){
   renderA4();
