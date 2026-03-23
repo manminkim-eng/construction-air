@@ -183,30 +183,34 @@ input[type="number"]{-moz-appearance:textfield;}
 .preview-bg{
   background:#94a3b8;
   border-radius:0 0 14px 14px;
-  padding:20px;
+  padding:16px;
   display:flex;
   justify-content:center;
-  align-items:flex-start;
-  overflow-x:auto;
-  overflow-y:auto;
-  min-height:300px;
-  -webkit-overflow-scrolling:touch;
+  align-items:center;
+  /* 뷰포트에서 UI 요소 높이 차감 → A4 전체가 보이는 높이 */
+  height:calc(100vh - 222px);
+  min-height:340px;
+  overflow:hidden;
+  position:relative;
 }
-#a4-page{background:#fff;width:794px;min-height:1123px;padding:24px 48px 40px;font-size:12px;}
-/* 모바일: transform scale로 794px → 화면 너비에 맞게 자동 축소 */
+#a4-page{
+  background:#fff;
+  width:794px;
+  min-height:1123px;
+  padding:24px 48px 40px;
+  font-size:12px;
+}
 .a4-scale-wrap{
-  transform-origin:top center;
+  transform-origin:center center;
   display:block;
   flex-shrink:0;
+  /* 중앙 정렬 기준점 */
 }
-/* 태블릿 이하: 좌측 정렬로 전환하되 gap 줄임 */
 @media(max-width:860px){
-  .preview-bg{padding:10px;justify-content:flex-start;align-items:flex-start;}
-  .a4-scale-wrap{transform-origin:top left;}
+  .preview-bg{padding:10px;height:calc(100vh - 212px);}
 }
-/* 모바일 소형: padding 최소화 */
 @media(max-width:480px){
-  .preview-bg{padding:6px;}
+  .preview-bg{padding:6px;height:calc(100vh - 206px);}
 }
 .a4-header{border-bottom:3px solid #1d4ed8;padding-bottom:14px;margin-bottom:20px;}
 .a4-title{font-size:20px;font-weight:900;color:#1e3a8a;margin-bottom:5px;}
@@ -1286,7 +1290,7 @@ function switchTab(tab){
   document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');if(b.dataset.tab===tab)b.classList.add('active');});
   const panel=document.getElementById('tab-'+tab);
   if(panel){panel.classList.add('active');panel.classList.add('fade-in');}
-  if(tab==='a4'){renderA4();setTimeout(scaleA4Preview,50);}
+  if(tab==='a4'){renderA4();requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(scaleA4Preview,80)));}
   if(tab==='mobile')renderMobile();
 }
 
@@ -1298,41 +1302,42 @@ function scaleA4Preview(){
   const bg=document.getElementById('a4PreviewBg');
   const page=document.getElementById('a4-page');
   if(!wrap||!bg||!page)return;
-  const A4W=794;
 
-  // transform 초기화 후 레이아웃 안정화 대기
+  const A4W=794;
+  // A4 실제 렌더 높이 (콘텐츠에 따라 1123px 이상 가능)
+  const A4H=page.offsetHeight||1123;
+
+  // transform 초기화 → 정확한 사이즈 측정
   wrap.style.transform='none';
-  wrap.style.height='';
-  wrap.style.marginBottom='0';
+  wrap.style.transformOrigin='center center';
 
   requestAnimationFrame(()=>{
     requestAnimationFrame(()=>{
-      const style=window.getComputedStyle(bg);
-      const padL=parseFloat(style.paddingLeft||0);
-      const padR=parseFloat(style.paddingRight||0);
-      const availW=Math.max(bg.clientWidth-padL-padR, 1);
+      const st=window.getComputedStyle(bg);
+      const padH=parseFloat(st.paddingLeft||0)+parseFloat(st.paddingRight||0);
+      const padV=parseFloat(st.paddingTop||0)+parseFloat(st.paddingBottom||0);
+      const availW=Math.max(bg.clientWidth-padH, 1);
+      const availH=Math.max(bg.clientHeight-padV, 1);
 
-      if(availW>=A4W){
-        // 데스크탑: 원본 크기, flex justify-content:center 로 자동 중앙
+      // fit-in-box: 너비·높이 중 더 작은 비율로 축소
+      const scaleW=availW/A4W;
+      const scaleH=availH/A4H;
+      const scale=Math.min(scaleW, scaleH, 1); // 1 이상으로는 확대 안 함
+
+      if(scale>=1){
+        // 여유 있음: 원본 크기 중앙
         wrap.style.transform='none';
-        wrap.style.transformOrigin='top center';
-        wrap.style.height='';
-        wrap.style.marginBottom='0';
+        wrap.style.transformOrigin='center center';
       } else {
-        // 모바일/태블릿: scale 축소
-        const scale=availW/A4W;
-        wrap.style.transformOrigin='top left';
+        // 축소 필요: center-center 기준 scale
+        wrap.style.transformOrigin='center center';
         wrap.style.transform=`scale(${scale})`;
-        const realH=page.offsetHeight;
-        const scaledH=Math.ceil(realH*scale);
-        wrap.style.height=scaledH+'px';
-        wrap.style.marginBottom=`-${realH-scaledH}px`;
       }
     });
   });
 }
 window.addEventListener('resize', scaleA4Preview);
-window.addEventListener('orientationchange', ()=>setTimeout(scaleA4Preview,200));
+window.addEventListener('orientationchange', ()=>setTimeout(scaleA4Preview,250));
 
 /* ====================================================
    A4 RENDER
