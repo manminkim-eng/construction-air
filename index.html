@@ -782,7 +782,8 @@ input[type="number"]{-moz-appearance:textfield;}
           <button class="mclose" onclick="closeCalcGuide()">✕</button>
         </div>
         <div class="mitabs">
-          <button class="mitab on" onclick="switchMTab('m_overview',this)">📋 전체 흐름</button>
+          <button class="mitab on" onclick="switchMTab('m_howto',this)">🗺️ 이용방법</button>
+          <button class="mitab" onclick="switchMTab('m_overview',this)">📋 전체 흐름</button>
           <button class="mitab" onclick="switchMTab('m_prep',this)">🔧 준비기간</button>
           <button class="mitab" onclick="switchMTab('m_work',this)">🔨 작업일수</button>
           <button class="mitab" onclick="switchMTab('m_nw',this)">🌦 비작업일수</button>
@@ -792,7 +793,118 @@ input[type="number"]{-moz-appearance:textfield;}
       </div>
       <div class="mbd">
 
-        <div class="mpanel on" id="m_overview">
+        <div class="mpanel on" id="m_howto">
+
+          <!-- ── 핵심 안내 배너 ── -->
+          <div style="background:linear-gradient(135deg,#081e44,#1d4ed8);border-radius:13px;padding:16px 18px;margin-bottom:16px;">
+            <div style="font-size:13px;font-weight:900;color:#fbbf24;margin-bottom:4px;display:flex;align-items:center;gap:7px;">
+              <span style="font-size:20px;">🏗️</span> 공기산정 시스템 이용방법
+            </div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.7);line-height:1.6;">국토교통부고시 제2024-1021호 기준 · 5단계 순서에 따라 입력하면 적정 공사기간이 자동 산정됩니다.</div>
+          </div>
+
+          <!-- ── STEP 1 ── -->
+          <div style="display:flex;gap:11px;align-items:flex-start;background:#f8fafc;border:1.5px solid #e4e9f0;border-radius:12px;padding:13px 14px;margin-bottom:9px;">
+            <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#1d4ed8,#0c4da2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(29,78,216,.35);">1</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:12px;font-weight:900;color:#1e3a8a;margin-bottom:5px;display:flex;align-items:center;gap:5px;">📁 프로젝트 기본 정보 입력</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.8;">
+                ① <strong>공사명</strong>을 입력하세요 — 출력 보고서 상단에 표기됩니다.<br>
+                ② <strong>착공 예정일</strong>을 선택하세요 — 비작업일수 자동 산정의 기준이 됩니다.<br>
+                ③ <strong>총 공사비(억원)</strong>를 입력하세요 — 100억 이상 시 심의 대상 여부가 자동 표시됩니다.<br>
+                ④ <strong>공사 유형</strong>을 선택하세요 — 일반건물·공동주택·도로·교량 등 7개 유형 지원.<br>
+                ⑤ 건물 유형 선택 시 <strong>지상·지하 층수</strong>와 <strong>안전관리계획서 해당 여부</strong>를 추가 입력합니다.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── STEP 2 ── -->
+          <div style="display:flex;gap:11px;align-items:flex-start;background:#fff7ed;border:1.5px solid #fed7aa;border-radius:12px;padding:13px 14px;margin-bottom:9px;">
+            <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#f97316,#ea580c);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(249,115,22,.35);">2</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:12px;font-weight:900;color:#9a3412;margin-bottom:5px;display:flex;align-items:center;gap:5px;">🔧 준비기간 확인</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.8;">
+                ① 고시 기준에 따라 <strong>준비기간이 자동 산출</strong>됩니다 — 별도 입력 불필요.<br>
+                ② 용지보상·문화재 조사·한전 지장물 이설 등 <strong>특수 상황이 있는 경우</strong> 별도 추가일수를 직접 입력하세요.<br>
+                ③ 준비기간 범위: 일반건물 10~45일 / 교량·철도 90일 / 고속도로 180일.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── STEP 3 ── -->
+          <div style="display:flex;gap:11px;align-items:flex-start;background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:13px 14px;margin-bottom:9px;">
+            <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#16a34a,#15803d);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(22,163,74,.35);">3</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:12px;font-weight:900;color:#14532d;margin-bottom:5px;display:flex;align-items:center;gap:5px;">🔨 공종별 작업일수 확인 및 수정</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.8;">
+                ① <strong>주공정(Critical Path) 기준 공종별 작업일수</strong>가 자동 산출됩니다.<br>
+                ② 각 공종의 일수는 <strong>직접 수정</strong>이 가능합니다 — 설계 조건에 맞게 조정하세요.<br>
+                ③ <strong>커스텀 공종 추가</strong> 기능으로 특수 공종(전기, 통신, 소방 등)을 별도 입력할 수 있습니다.<br>
+                ④ 수정 후 <strong>합계 작업일수</strong>가 실시간으로 반영됩니다.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── STEP 4 ── -->
+          <div style="display:flex;gap:11px;align-items:flex-start;background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:12px;padding:13px 14px;margin-bottom:9px;">
+            <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#7c3aed,#6d28d9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(124,58,237,.35);">4</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:12px;font-weight:900;color:#4c1d95;margin-bottom:5px;display:flex;align-items:center;gap:5px;">🌦️ 비작업일수 자동 산정 확인</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.8;">
+                ① 착공일 기준으로 <strong>월별 기상·공휴일 비작업일수</strong>가 자동 계산됩니다.<br>
+                ② 산정 공식: <strong>비작업일수 = A(기상) + B(공휴일) − C(중복)</strong>, 월 최솟값 8일 보장.<br>
+                ③ 2024~2027년 연도별 공휴일·기상통계가 내장되어 있습니다.<br>
+                ④ 제주·강원 산악 등 지역 편차가 큰 경우 <strong>월별 비작업일수 직접 수정</strong>이 가능합니다.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── STEP 5 ── -->
+          <div style="display:flex;gap:11px;align-items:flex-start;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:13px 14px;margin-bottom:16px;">
+            <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#0284c7);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(14,165,233,.35);">5</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:12px;font-weight:900;color:#075985;margin-bottom:5px;display:flex;align-items:center;gap:5px;">📄 최종 결과 확인 및 출력</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.8;">
+                ① <strong>총 공사기간</strong>과 구성 요소(준비·작업·비작업·정리)가 표시됩니다.<br>
+                ② 공동주택은 <strong>표준공기 회귀공식 검증</strong> 결과(±20% 기준)가 함께 표시됩니다.<br>
+                ③ <strong>🖨️ A4 출력</strong> 버튼으로 공식 산정 근거 보고서를 출력할 수 있습니다.<br>
+                ④ <strong>📱 공유하기</strong> 버튼으로 결과를 캡처·공유(JPG)할 수 있습니다.<br>
+                ⑤ <strong>🔄 초기화</strong> 버튼을 누르면 모든 입력값이 초기화됩니다.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── 주요 기능 안내 ── -->
+          <div class="msec">💡 주요 기능 안내</div>
+          <div class="mg2">
+            <div class="mcard" style="border-left:3px solid #1d4ed8;">
+              <div style="font-size:11px;font-weight:800;color:#1d4ed8;margin-bottom:5px;">📐 계산방법 안내 버튼</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.7;">STEP 1 하단 또는 상단 헤더의 「📐 계산방법 안내」 버튼을 클릭하면 이 창이 열립니다. 탭을 전환하여 전체 흐름·준비기간·작업일수·비작업일수·검증 공식·기상기준을 확인하세요.</div>
+            </div>
+            <div class="mcard" style="border-left:3px solid #f97316;">
+              <div style="font-size:11px;font-weight:800;color:#f97316;margin-bottom:5px;">🖨️ A4 인쇄 출력</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.7;">STEP 5 결과 화면에서 「🖨️ A4 출력」을 클릭하면 공사기간 산정 근거 보고서가 ISO A4 형식으로 출력됩니다. 입찰공고·계약 서류 첨부용으로 바로 활용 가능합니다.</div>
+            </div>
+            <div class="mcard" style="border-left:3px solid #22c55e;">
+              <div style="font-size:11px;font-weight:800;color:#16a34a;margin-bottom:5px;">📲 PWA 앱 설치</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.7;">상단 「📲 설치」 버튼 또는 브라우저 주소창 아이콘을 통해 앱으로 설치하면 오프라인 환경에서도 사용 가능합니다. iOS Safari: 공유 버튼 → 홈 화면에 추가.</div>
+            </div>
+            <div class="mcard" style="border-left:3px solid #7c3aed;">
+              <div style="font-size:11px;font-weight:800;color:#7c3aed;margin-bottom:5px;">⚠️ 심의 대상 자동 알림</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.7;">총공사비 100억원 이상(시·군·구 50억 이상) 입력 시 지방건설기술심의위원회 심의 필요 경고가 자동으로 표시됩니다. 심의 결과에 따라 공기를 조정하세요.</div>
+            </div>
+          </div>
+
+          <!-- ── 법적 근거 ── -->
+          <div class="mhi" style="margin-top:4px;">
+            <strong>📌 법적 근거:</strong> 건설기술진흥법 제45조의2 · 국토교통부고시 제2024-1021호<br/>
+            <strong>📌 적용 대상:</strong> 모든 공공 건설공사 (발주자 의무 적용)<br/>
+            <strong>📌 문의:</strong> 산정 결과는 설계 조건에 따라 전문가 검토 후 최종 확정하시기 바랍니다.
+          </div>
+
+        </div>
+
+        <div class="mpanel" id="m_overview">
           <div class="msec">공사기간 산정 공식</div>
           <div style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:12px;padding:14px 18px;text-align:center;margin-bottom:12px;">
             <div style="font-size:11px;color:#6b7a99;margin-bottom:6px;font-weight:600;">국토교통부고시 제2024-1021호 제4조</div>
@@ -1665,7 +1777,16 @@ function printA4(){
 /* ====================================================
    MODAL
    ==================================================== */
-function openCalcGuide(){document.getElementById('calcModal').style.display='flex';}
+function openCalcGuide(){
+  document.getElementById('calcModal').style.display='flex';
+  // 항상 이용방법 탭을 먼저 표시
+  document.querySelectorAll('.mpanel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.mitab').forEach(b=>b.classList.remove('on'));
+  const hw=document.getElementById('m_howto');
+  if(hw)hw.classList.add('on');
+  const tabs=document.querySelectorAll('.mitab');
+  if(tabs.length>0)tabs[0].classList.add('on');
+}
 function closeCalcGuide(){document.getElementById('calcModal').style.display='none';}
 function switchMTab(id,btn){
   document.querySelectorAll('.mpanel').forEach(p=>p.classList.remove('on'));
