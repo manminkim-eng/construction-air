@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
-<title>건축공사 공기산정 시스템 [MANMIN-Ver3.0]</title>
+<title>건축공사 공기산정 시스템 · MANMIN Ver-5.0</title>
 <meta name="description" content="공공 건설공사 적정 공기산정 PWA — 국토교통부고시 제2024-1021호"/>
-<meta name="theme-color" content="#1d4ed8"/>
+<meta name="theme-color" content="#15803d"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -17,86 +17,82 @@
 <link rel="icon" href="icons/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"/>
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png"/>
-<meta name="msapplication-TileColor" content="#1d4ed8"/>
+<meta name="msapplication-TileColor" content="#15803d"/>
 <meta name="msapplication-TileImage" content="icons/icon-144x144.png"/>
+<link rel="stylesheet" href="./assets/fonts/manmin-fonts.css"/><!-- v5.0 로컬 폴백 폰트 — CDN 차단·오프라인 대비. CDN link 보다 먼저 로드되어야 한다 -->
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif!important;}
+/* v5.0 — 유니버설 셀렉터에서 font-family 를 뺐다.
+   *{font-family:…!important} 는 .mono·JetBrains Mono·Orbitron 선언을 전부 무효화한다(§3-7). */
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body,button,input,select,textarea,table,th,td,div,span,p,h1,h2,h3,h4,h5,h6,li,label,strong,em,small
+  {font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR Local','Malgun Gothic',sans-serif;}
 body{background:#f0f4f9;color:#1a2744;min-height:100vh;}
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:#f0f4f9;}
-::-webkit-scrollbar-thumb{background:#bfdbfe;border-radius:10px;}
+::-webkit-scrollbar-thumb{background:#bbf7d0;border-radius:10px;}
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 input[type="number"]{-moz-appearance:textfield;}
 .mono{font-family:'JetBrains Mono','Courier New',monospace!important;}
 
 /* ── HEADER ── */
-.app-header{background:#dbeafe;position:sticky;top:0;z-index:40;box-shadow:0 2px 16px rgba(147,197,253,.45);}
-.header-inner{max-width:1300px;margin:0 auto;padding:0 16px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.brand-logo{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
-.brand-icon{width:38px;height:38px;background:#1d4ed8;border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(29,78,216,.38);flex-shrink:0;font-size:18px;}
+/* v5.0 — 헤더+탭바를 하나의 그라데이션 면으로 통합한다(§3-2-1). sticky 금지(§3-1).
+   v5.0-HDR (2026-09-02 확정 §18-1) — 줄높이 px 고정 · flex-start · 활성탭 단색+바 · 헤더 버튼 0개 */
+.hdr-shell{background:linear-gradient(135deg,#052e16 0%,#15803d 50%,#16a34a 100%);
+  box-shadow:0 2px 20px rgba(21,128,61,.35);}
+.app-header{background:transparent;color:#fff;}
+.header-inner{max-width:1300px;margin:0 auto;padding:20px 24px 16px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.brand-logo{display:flex;align-items:flex-start;min-width:0;}
 .brand-texts{min-width:0;}
-.brand-title{font-size:15px;font-weight:900;color:#1e3a8a;letter-spacing:-.02em;line-height:1.2;white-space:nowrap;}
-.brand-sub{font-size:9.5px;color:#3b82f6;margin-top:2px;font-weight:700;white-space:nowrap;}
-.ver-badge{background:linear-gradient(135deg,#1d4ed8,#0c4da2);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;letter-spacing:.04em;}
-.hdr-btns{display:flex;gap:7px;flex-shrink:0;}
-.btn-red{background:#e63312;color:#fff;border:none;padding:8px 13px;border-radius:9px;font-size:11.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:all .15s;box-shadow:0 2px 8px rgba(230,51,18,.32);white-space:nowrap;}
-.btn-red:hover{background:#c62a0c;}
-.btn-blue{background:#1d4ed8;color:#fff;border:none;padding:8px 12px;border-radius:9px;font-size:11.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:all .15s;box-shadow:0 2px 8px rgba(29,78,216,.28);white-space:nowrap;}
-.btn-blue:hover{background:#1e40af;}
-.btn-ghost{background:#fff;color:#374151;border:1.5px solid #d1d5db;padding:8px 12px;border-radius:9px;font-size:11.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:all .15s;}
-.btn-ghost:hover{border-color:#1d4ed8;color:#1d4ed8;background:#eff6ff;}
-.btn-orange{background:#f97316;color:#fff;border:none;padding:8px 13px;border-radius:9px;font-size:11.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:all .15s;box-shadow:0 2px 8px rgba(249,115,22,.32);}
-.btn-orange:hover{background:#ea6c0e;}
+.hdr-eyebrow{font-size:11px;font-weight:600;opacity:.7;color:#fff;letter-spacing:.15em;line-height:16px;
+  text-transform:uppercase;margin-bottom:6px;}
+.hdr-h1{font-size:26px;font-weight:900;color:#fff;letter-spacing:.04em;line-height:1.2;}
+.hdr-sub{font-size:11px;margin-top:8px;color:#fff;opacity:.85;letter-spacing:.02em;line-height:17px;}
+.hdr-manmin{font-family:'Orbitron',sans-serif!important;font-weight:900;font-size:12px;
+  color:#86efac;letter-spacing:.08em;text-shadow:0 0 8px rgba(134,239,172,.6);
+  white-space:nowrap;display:inline-block;line-height:17px;vertical-align:top;}
+.hdr-right-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+  padding-bottom:2px;flex-shrink:0;}
+.hdr-right{text-align:right;opacity:.75;color:#fff;font-size:11px;line-height:16px;}   /* 4줄 13/11/11/10 = 70px ≤ 78.2 */
+.hdr-right strong{font-size:13px;font-weight:700;line-height:19px;}
+.hdr-right em{font-size:10px;color:#86efac;font-style:normal;display:block;margin-top:4px;line-height:15px;}
+@media(max-width:768px){ .hdr-right{display:none;} .hdr-right-wrap{gap:0;} }
+@media(max-width:640px){
+  .hdr-h1{font-size:18px;}
+  /* eyebrow 표시 · sub 11px · 각인 12px 유지 · 좌우 14px · 유령 gap 제거 (01 마스터 실측 §18-4) */
+  .header-inner{padding:20px 14px 16px;row-gap:0;}
+  .hdr-right-wrap{padding-bottom:0;}
+  .tab-bar-inner{padding:4px 14px 0;}
+}
 
-/* ── PWA 헤더 설치 버튼 ── */
-#pwa-hdr-btn{
-  display:none;align-items:center;gap:5px;
-  background:linear-gradient(135deg,#f97316,#ea580c);
-  color:#fff;border:none;padding:8px 13px;border-radius:9px;
-  font-size:11.5px;font-weight:800;cursor:pointer;
-  font-family:inherit;white-space:nowrap;flex-shrink:0;
-  transition:all .15s;animation:hdr-pulse 2.2s ease-in-out infinite;
-}
-#pwa-hdr-btn.visible{display:flex;}
-#pwa-hdr-btn:hover{background:linear-gradient(135deg,#ea580c,#c2410c);transform:translateY(-1px);}
-@keyframes hdr-pulse{
-  0%,100%{box-shadow:0 2px 8px rgba(249,115,22,.4);}
-  50%{box-shadow:0 2px 18px rgba(249,115,22,.75);}
-}
-@media(max-width:520px){#pwa-hdr-btn .pwa-hdr-txt{display:none;}}
-/* ══ PWA 헤더 버튼 강화 (공기산정 Edition) ══ */
-#pwa-hdr-btn{
-  display:none;align-items:center;gap:5px;
-  background:linear-gradient(135deg,#f97316,#1d4ed8) !important;
-  color:#fff !important;border:none;padding:8px 13px;border-radius:9px;
-  font-size:11.5px;font-weight:800;cursor:pointer;
-  font-family:inherit;white-space:nowrap;flex-shrink:0;
-  transition:all .2s;
-  box-shadow:0 2px 12px rgba(249,115,22,.45);
-  animation:air-pwa-glow 2.5s ease-in-out infinite;
-}
-#pwa-hdr-btn.visible{display:flex !important;}
-#pwa-hdr-btn:hover{
-  background:linear-gradient(135deg,#ea580c,#1e40af) !important;
-  transform:translateY(-1px) !important;
-  box-shadow:0 4px 18px rgba(249,115,22,.65) !important;
-  animation:none !important;
-}
-@keyframes air-pwa-glow{
-  0%,100%{box-shadow:0 2px 12px rgba(249,115,22,.45);}
-  50%{box-shadow:0 2px 22px rgba(249,115,22,.75),0 0 10px rgba(29,78,216,.25);}
-}
+/* ── TAB BAR ── */
+.tab-bar{background:transparent;overflow-x:auto;scrollbar-width:none;}   /* 배경은 .hdr-shell 이 담당 */
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab-bar-inner{max-width:1300px;margin:0 auto;padding:4px 24px 0;display:flex;}
+.tb{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.75);font-family:inherit;
+  padding:11px 16px;font-size:13px;font-weight:700;letter-spacing:.02em;line-height:19px;
+  border-bottom:3px solid transparent;   /* 11+19+11+3 = 44px */
+  transition:all .15s;display:flex;align-items:center;gap:5px;
+  white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+.tb:hover{color:#fff;background:rgba(255,255,255,.09);}
+.tb.active{color:#fff;background:#15803d;border-bottom-color:#86efac;}
+/* v5.0-HDR — 요약 스트립 (헤더 3층) */
+.sum-bar-wrap{background:#0f172a;padding:10px 0;}
+.sum-bar{max-width:1300px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;gap:14px;}
+.sum-item{font-size:12px;color:#94a3b8;line-height:18px;}
+.sum-item b{font-family:'JetBrains Mono','Noto Sans KR',monospace;font-weight:700;color:#86efac;}
+@media(max-width:640px){.sum-bar{padding:0 14px;}.sum-item{font-size:11px;}}
 
 /* ══ 설치 배너 강화 ══ */
 .install-banner{
-  background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 60%,#1e40af 100%) !important;
+  background:linear-gradient(135deg,#052e16 0%,#15803d 60%,#166534 100%) !important;
   border-top:2px solid rgba(191,219,254,.4) !important;
   border-radius:20px 20px 0 0 !important;
-  box-shadow:0 -6px 32px rgba(29,78,216,.55) !important;
+  box-shadow:0 -6px 32px rgba(21,128,61,.55) !important;
   padding:14px 18px calc(14px + env(safe-area-inset-bottom,0px)) !important;
   gap:12px !important;
 }
@@ -105,12 +101,12 @@ input[type="number"]{-moz-appearance:textfield;}
 .ib-ico{
   width:52px !important;height:52px !important;font-size:0 !important;
   border-radius:13px !important;overflow:hidden;flex-shrink:0;
-  box-shadow:0 2px 12px rgba(29,78,216,.35);
+  box-shadow:0 2px 12px rgba(21,128,61,.35);
   background:#fff;
 }
 .ib-ico img{width:100%;height:100%;object-fit:cover;display:block;border-radius:11px;}
 .ib-ttl{font-size:14px !important;font-weight:800 !important;color:#fff !important;}
-.ib-sub{font-size:11px !important;color:#93c5fd !important;margin-top:2px !important;opacity:1 !important;}
+.ib-sub{font-size:11px !important;color:#86efac !important;margin-top:2px !important;opacity:1 !important;}
 .ib-install{
   background:linear-gradient(135deg,#f97316,#ea580c) !important;
   color:#fff !important;border:none;border-radius:10px !important;
@@ -123,22 +119,22 @@ input[type="number"]{-moz-appearance:textfield;}
 .ib-install:hover{transform:translateY(-1px) !important;}
 .ib-close{
   background:rgba(255,255,255,.12) !important;
-  color:#93c5fd !important;border:1px solid rgba(191,219,254,.3) !important;
+  color:#86efac !important;border:1px solid rgba(191,219,254,.3) !important;
   border-radius:10px !important;padding:10px 13px !important;
   font-family:inherit;font-size:13px !important;font-weight:700 !important;
   cursor:pointer;white-space:nowrap;transition:all .15s !important;
 }
-.ib-close:hover{color:#eff6ff !important;}
+.ib-close:hover{color:#f0fdf4 !important;}
 
 /* ══ iOS 안내 모달 ══ */
 #ios-modal-air{
   position:fixed;bottom:0;left:0;right:0;z-index:10000;
-  background:linear-gradient(135deg,#1e3a8a,#1d4ed8);
+  background:linear-gradient(135deg,#052e16,#15803d);
   border-top:2px solid rgba(191,219,254,.5);
   border-radius:20px 20px 0 0;
   padding:22px 20px calc(18px + env(safe-area-inset-bottom,0px));
   display:none;
-  box-shadow:0 -8px 40px rgba(29,78,216,.55);
+  box-shadow:0 -8px 40px rgba(21,128,61,.55);
   animation:air-slide-up .35s cubic-bezier(.22,.61,.36,1);
 }
 #ios-modal-air.show{display:block;}
@@ -154,49 +150,46 @@ input[type="number"]{-moz-appearance:textfield;}
   background:rgba(249,115,22,.35);border:1px solid rgba(249,115,22,.6);
   color:#fed7aa;font-size:11px;font-weight:800;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.am-txt{font-size:13px;color:#bfdbfe;line-height:1.5;}
+.am-txt{font-size:13px;color:#bbf7d0;line-height:1.5;}
 .am-txt strong{color:#fff;}
-.am-foot{text-align:center;font-size:11px;color:#93c5fd;margin-top:12px;}
+.am-foot{text-align:center;font-size:11px;color:#86efac;margin-top:12px;}
 
 @media(max-width:480px){
-  #pwa-hdr-btn .pwa-hdr-txt{display:none;}
-  #pwa-hdr-btn{padding:8px 10px;}
   .ib-ico{width:42px !important;height:42px !important;border-radius:10px !important;}
   .ib-ttl{font-size:13px !important;}
   .ib-sub{display:none !important;}
 }
-@media(max-width:360px){.ib-sub{display:none !important;}}
+@media(max-width:420px){.ib-sub{display:none !important;}}
 
 
-/* ── TAB BAR ── */
-.tab-bar{background:#bfdbfe;border-top:1px solid rgba(147,197,253,.35);overflow-x:auto;scrollbar-width:none;}
-.tab-bar::-webkit-scrollbar{display:none;}
-.tab-bar-inner{max-width:1300px;margin:0 auto;padding:0 8px;display:flex;}
-.tab-btn{background:none;border:none;cursor:pointer;color:#1e40af;font-family:inherit;padding:10px 14px;font-size:11.5px;font-weight:700;position:relative;transition:color .15s,background .15s;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;letter-spacing:.02em;}
-.tab-btn:hover{color:#1e3a8a;background:rgba(30,58,138,.07);}
-.tab-btn.active{color:#1e3a8a;}
-.tab-btn.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:#f97316;border-radius:2px 2px 0 0;}
+/* ── 본문 버튼 (스텝 위저드가 계산 스크립트에서 렌더 · 클래스명 고정) ── */
+.btn-blue{background:#15803d;color:#fff;border:none;padding:8px 12px;border-radius:9px;font-size:11.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:inherit;transition:background .15s;white-space:nowrap;}
+.btn-blue:hover{background:#166534;}
+.btn-ghost{background:#fff;color:#374151;border:1.5px solid #d1d5db;padding:8px 12px;border-radius:9px;font-size:11.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:inherit;transition:all .15s;white-space:nowrap;}
+.btn-ghost:hover{border-color:#15803d;color:#15803d;background:#f0fdf4;}
+.btn-orange{background:#f97316;color:#fff;border:none;padding:8px 13px;border-radius:9px;font-size:11.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:inherit;transition:background .15s;white-space:nowrap;}
+.btn-orange:hover{background:#ea6c0e;}
 
 /* ── MAIN ── */
 .main-wrap{max-width:1300px;margin:0 auto;padding:16px 14px 100px;}
 .tab-panel{display:none;}.tab-panel.active{display:block;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
-@media(max-width:900px){.two-col{grid-template-columns:1fr;}}
+@media(max-width:860px){.two-col{grid-template-columns:1fr;}}
 
 /* ── CARD ── */
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 1px 4px rgba(15,23,42,.06);overflow:hidden;margin-bottom:14px;}
 .card-head{display:flex;align-items:center;gap:9px;padding:13px 15px;border-bottom:1px solid #eef1f6;}
-.card-icon{width:27px;height:27px;border-radius:7px;background:#eff6ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;}
+.card-icon{width:27px;height:27px;border-radius:7px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;}
 .card-title{font-size:11.5px;font-weight:800;color:#1a2744;letter-spacing:.04em;}
-.card-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.card-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
 .card-body{padding:13px 15px;}
 
 /* ── FORM ── */
 .flbl{font-size:10px;font-weight:700;color:#6b7a99;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;display:block;}
 .finput{width:100%;padding:8px 11px;background:#f8fafd;border:1.5px solid #dde3ed;border-radius:8px;color:#1a2744;font-size:13px;font-weight:600;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s;}
-.finput:focus{border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.1);background:#fff;}
+.finput:focus{border-color:#15803d;box-shadow:0 0 0 3px rgba(21,128,61,.1);background:#fff;}
 .fselect{width:100%;padding:8px 26px 8px 10px;background:#f8fafd;border:1.5px solid #dde3ed;border-radius:8px;color:#1a2744;font-size:12px;font-weight:700;font-family:inherit;outline:none;cursor:pointer;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231d4ed8' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;}
-.fselect:focus{border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.1);}
+.fselect:focus{border-color:#15803d;box-shadow:0 0 0 3px rgba(21,128,61,.1);}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
 .frow.triple{grid-template-columns:1fr 1fr 1fr;}
 @media(max-width:480px){.frow{grid-template-columns:1fr;}.frow.triple{grid-template-columns:1fr 1fr;}}
@@ -204,13 +197,13 @@ input[type="number"]{-moz-appearance:textfield;}
 .fgroup.full{grid-column:1/-1;}
 .input-sfx{display:flex;}
 .input-sfx .finput{border-radius:8px 0 0 8px;}
-.sfx-lbl{padding:8px 11px;background:#eff6ff;border:1.5px solid #dde3ed;border-left:none;border-radius:0 8px 8px 0;font-size:12px;font-weight:700;color:#3b82f6;white-space:nowrap;display:flex;align-items:center;}
+.sfx-lbl{padding:8px 11px;background:#f0fdf4;border:1.5px solid #dde3ed;border-left:none;border-radius:0 8px 8px 0;font-size:12px;font-weight:700;color:#22c55e;white-space:nowrap;display:flex;align-items:center;}
 
 /* ── OPT CARDS ── */
 .opt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;}
 .opt-card{border:2px solid #e2e8f0;border-radius:10px;padding:10px;cursor:pointer;transition:all .15s;text-align:center;background:#f8fafd;}
-.opt-card:hover{border-color:#bfdbfe;background:#f0f9ff;}
-.opt-card.sel{border-color:#1d4ed8;background:#eff6ff;}
+.opt-card:hover{border-color:#bbf7d0;background:#f0f9ff;}
+.opt-card.sel{border-color:#15803d;background:#f0fdf4;}
 .opt-ico{font-size:22px;margin-bottom:4px;}
 .opt-name{font-size:11.5px;font-weight:800;color:#1a2744;}
 .opt-meta{font-size:10px;color:#6b7a99;margin-top:2px;}
@@ -218,24 +211,24 @@ input[type="number"]{-moz-appearance:textfield;}
 /* ── STEPPER ── */
 .stepper{display:flex;border:1.5px solid #dde3ed;border-radius:8px;overflow:hidden;}
 .stp-btn{width:32px;height:36px;background:#f0f4f9;border:none;font-size:16px;cursor:pointer;color:#6b7a99;transition:all .15s;flex-shrink:0;}
-.stp-btn:hover{background:#1d4ed8;color:#fff;}
+.stp-btn:hover{background:#15803d;color:#fff;}
 .stp-inp{flex:1;border:none!important;border-left:1.5px solid #dde3ed!important;border-right:1.5px solid #dde3ed!important;border-radius:0!important;text-align:center;font-weight:700;padding:7px 4px!important;min-width:48px;background:#fff;outline:none!important;color:#1a2744;font-size:13px;}
 
 /* ── RESULT BOX ── */
-.result-hero{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);padding:20px;border-radius:14px;color:#fff;text-align:center;margin-bottom:14px;}
+.result-hero{background:linear-gradient(135deg,#052e16,#15803d);padding:20px;border-radius:14px;color:#fff;text-align:center;margin-bottom:14px;}
 .rh-sub{font-size:10.5px;opacity:.65;margin-bottom:4px;font-weight:600;}
 .rh-num{font-size:64px;font-weight:900;color:#fbbf24;line-height:1;}
 .rh-unit{font-size:16px;font-weight:700;opacity:.85;margin-top:2px;}
 .rh-dates{font-size:11.5px;opacity:.72;margin-top:10px;}
 .rh-formula{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15);font-size:11px;opacity:.72;font-family:monospace;}
 .res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
-@media(max-width:600px){.res-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.res-grid{grid-template-columns:repeat(2,1fr);}}
 .res-item{background:#f8fafd;border:1.5px solid #e2e8f0;border-radius:12px;padding:12px;text-align:center;}
-.res-item.hl{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-color:transparent;color:#fff;}
+.res-item.hl{background:linear-gradient(135deg,#052e16,#15803d);border-color:transparent;color:#fff;}
 .res-item.hl .ri-label{color:rgba(255,255,255,.6);}
 .ri-ico{font-size:18px;margin-bottom:4px;}
 .ri-label{font-size:10px;color:#6b7a99;font-weight:600;margin-bottom:3px;}
-.ri-val{font-size:22px;font-weight:900;color:#1d4ed8;}
+.ri-val{font-size:22px;font-weight:900;color:#15803d;}
 .ri-unit{font-size:11px;}
 .res-item.hl .ri-val{color:#fbbf24;}
 .ri-sub{font-size:9.5px;color:#6b7a99;margin-top:2px;}
@@ -249,24 +242,24 @@ input[type="number"]{-moz-appearance:textfield;}
 
 /* ── TABLE ── */
 .tbl{width:100%;border-collapse:collapse;}
-.tbl th{background:#1d4ed8;color:#fff;padding:8px 10px;font-size:11px;font-weight:700;text-align:left;}
+.tbl th{background:#15803d;color:#fff;padding:8px 10px;font-size:11px;font-weight:700;text-align:left;}
 .tbl th:first-child{border-radius:7px 0 0 0;}
 .tbl th:last-child{border-radius:0 7px 0 0;}
 .tbl td{padding:8px 10px;border-bottom:1px solid #e2e8f0;font-size:12px;}
 .tbl tr:hover td{background:#f8fafd;}
-.tbl .cat-row td{background:#eff6ff;font-weight:800;font-size:11px;color:#1e40af;padding:5px 10px;}
-.tbl .sum-row td{background:#1d4ed8;color:#fff;font-weight:900;}
+.tbl .cat-row td{background:#f0fdf4;font-weight:800;font-size:11px;color:#166534;padding:5px 10px;}
+.tbl .sum-row td{background:#15803d;color:#fff;font-weight:900;}
 
 /* ── NW TABLE ── */
 .nw-tbl{width:100%;border-collapse:collapse;font-size:11px;}
-.nw-tbl th{background:#1d4ed8;color:#fff;padding:6px 7px;text-align:center;font-size:10px;}
+.nw-tbl th{background:#15803d;color:#fff;padding:6px 7px;text-align:center;font-size:10px;}
 .nw-tbl td{padding:6px 7px;border-bottom:1px solid #e2e8f0;text-align:center;}
-.nw-tbl .act-row td{background:#eff6ff;font-weight:600;}
-.nw-tbl .sum-row td{background:#e0eaff;font-weight:800;color:#1e3a8a;}
+.nw-tbl .act-row td{background:#f0fdf4;font-weight:600;}
+.nw-tbl .sum-row td{background:#e0eaff;font-weight:800;color:#052e16;}
 
 /* ── ALERT ── */
 .alert{border-radius:9px;padding:10px 13px;display:flex;gap:8px;align-items:flex-start;font-size:11.5px;line-height:1.6;margin-bottom:12px;}
-.alert-info{background:#eff6ff;border-left:3px solid #1d4ed8;color:#1e40af;}
+.alert-info{background:#f0fdf4;border-left:3px solid #15803d;color:#166534;}
 .alert-success{background:#f0fdf4;border-left:3px solid #22c55e;color:#166534;}
 .alert-warning{background:#fffbeb;border-left:3px solid #f59e0b;color:#92400e;}
 .alert-danger{background:#fff1f2;border-left:3px solid #ef4444;color:#991b1b;}
@@ -277,7 +270,7 @@ input[type="number"]{-moz-appearance:textfield;}
 .vbar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;flex-wrap:wrap;gap:5px;}
 .prog-track{height:12px;background:#e2e8f0;border-radius:6px;position:relative;overflow:visible;}
 .prog-ok{position:absolute;top:0;height:100%;background:#dcfce7;border:2px solid #22c55e;border-radius:6px;}
-.prog-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;background:#1d4ed8;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.prog-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;background:#15803d;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);}
 
 /* ── FORMULA BOX ── */
 .formula{background:#0f172a;color:#e2e8f0;border-radius:9px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;margin:10px 0;}
@@ -286,7 +279,7 @@ input[type="number"]{-moz-appearance:textfield;}
 
 /* ── LEGAL BADGE ── */
 .legal-ref{font-size:10.5px;color:#6b7a99;background:#f8fafd;border-radius:8px;padding:6px 11px;margin-top:7px;display:flex;align-items:center;gap:5px;}
-.tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;background:#eff6ff;color:#1d4ed8;}
+.tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;background:#f0fdf4;color:#15803d;}
 
 /* ── SUMLIST ── */
 .sumlist{list-style:none;}
@@ -296,71 +289,94 @@ input[type="number"]{-moz-appearance:textfield;}
 .sumlist .v{font-weight:700;text-align:right;}
 
 /* ── INFO STRIP ── */
-.info-strip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:9px 12px;margin-bottom:12px;display:flex;align-items:flex-start;gap:7px;}
-.info-strip p{font-size:11px;color:#1e40af;font-weight:600;line-height:1.7;}
+.info-strip{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:9px 12px;margin-bottom:12px;display:flex;align-items:flex-start;gap:7px;}
+.info-strip p{font-size:11px;color:#166534;font-weight:600;line-height:1.7;}
 
-/* ── A4 PREVIEW (위생배관 MANMIN-Ver2.0 기준 적용) ── */
-.preview-bg{
-  background:#94a3b8;
-  border-radius:0 0 14px 14px;
-  padding:20px;
-  /* 스크롤 가능 프리뷰 — 데스크탑/태블릿/모바일 공통 */
-  min-height:calc(100vh - 222px);
-  overflow-y:auto;
-  overflow-x:hidden;
-  position:relative;
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-}
-#a4-page{
-  background:#fff;
-  width:794px;
-  min-height:1123px;
-  padding:20px 30px 36px;
-  font-size:11px;
-}
-.a4-scale-wrap{
-  display:block;
-  transform-origin:top center;
-  width:794px;
-  flex-shrink:0;
-}
-/* 모바일/태블릿: 좌측 정렬로 전환 */
-@media(max-width:860px){
-  .preview-bg{
-    padding:8px;
-    justify-content:flex-start;
-    align-items:flex-start;
-  }
-  .a4-scale-wrap{
-    transform-origin:top left;
-  }
-}
+/* ── A4 미리보기 (v5.0 §3-3 · §3-4 · §3-4-1 · §17-2) ── */
+.a4-export-bar{background:#fff;border:1px solid #dcfce7;border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.bar-lbl{font-size:11px;font-weight:700;color:#166534;}
+/* 출력 버튼 규격 (§3-6). 진입점은 이 출력바 한 곳뿐이다(헤더 버튼·FAB 출력·모바일 탭 제거). */
+.btn-export,.mm-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:9px 16px;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;
+  border:none;font-family:inherit;white-space:nowrap;line-height:1.2;min-height:38px;
+  transition:background .15s,box-shadow .15s,transform .1s;}
+.mm-btn-print{background:#15803d;color:#fff;}
+.mm-btn-jpg{background:#7e22ce;color:#fff;}
+/* ⛔ width:100% 는 출력바 안으로 한정한다(§16-5). 전역이면 저장 시트 닫기 버튼까지 100% 를 먹는다. */
+@media(max-width:480px){ .a4-export-bar{flex-direction:column;align-items:stretch;}
+  .a4-export-bar .btn-export,.a4-export-bar .mm-btn{width:100%;} }
+.a4-wrap{background:#64748b;padding:20px 20px 32px;min-height:300px;display:flex;justify-content:center;align-items:flex-start;border-radius:10px;overflow:hidden;}
+@media(max-width:640px){.a4-wrap{padding:8px 8px 24px;}}
+.a4-scale-wrap{display:block;transform-origin:top center;flex-shrink:0;}
+/* ⛔ .a4-page 는 언제나 794px 고정(§17-2). 좁은 화면은 .a4-scale-wrap 의 transform:scale() 이 담당한다.
+   화면 여백 = @page 여백 (14/12/22/14mm → 53/45/83/53px) → 내용 영역 696×986px = 184×261mm */
+#a4-page{background:#fff;width:794px;min-height:1122px;margin:0;padding:53px 45px 83px 53px;box-shadow:0 8px 40px rgba(0,0,0,.28);font-size:11px;color:#111827;display:block;position:relative;
+  font-family:'Noto Sans KR Local','Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+#a4-page .mono,#a4-page code{font-family:'JetBrains Mono','Noto Sans KR Local',monospace;}
+/* JPG 저장 시트 (§3-5 · §3-5-3) — 1매여도 뜬다. */
+#mm-save-ov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(12,26,46,.82);
+  align-items:center;justify-content:center;padding:18px;}
+#mm-save-ov.show{display:flex;}
+.mm-sheet{background:#fff;border:1px solid #dcfce7;border-radius:14px;width:100%;max-width:720px;
+  max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.45);}
+.mm-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 18px;border-bottom:1px solid #e2e8f0;}
+.mm-sheet-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;
+  letter-spacing:.12em;color:#15803d;text-transform:uppercase;}
+.mm-sheet-note{font-size:11px;color:#64748b;margin-top:4px;}
+.mm-sheet-body{padding:16px 18px;overflow-y:auto;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+.mm-shot{background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:9px;
+  display:flex;flex-direction:column;gap:8px;}
+.mm-shot img{width:100%;height:auto;border-radius:4px;background:#fff;display:block;
+  border:1px solid #e2e8f0;}
+.mm-shot-btn{display:flex;align-items:center;justify-content:center;gap:5px;padding:7px 10px;
+  border-radius:7px;border:1px solid #c4b5fd;background:none;color:#7e22ce;
+  font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;transition:background .15s;}
+.mm-shot-btn:hover{background:#f5f3ff;}
+.mm-sheet-foot{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;
+  padding:13px 18px;border-top:1px solid #e2e8f0;}
+.mm-btn-close{background:#e2e8f0;color:#334155;}
+.mm-sheet-head > div:first-child{flex:1 1 auto;min-width:0;}
+.mm-sheet-head .btn-export{flex:0 0 auto;}
 @media(max-width:480px){
-  .preview-bg{padding:6px;}
+  .mm-sheet-body{grid-template-columns:1fr;padding:12px;}
+  .mm-sheet-body.multi{grid-template-columns:repeat(2,1fr);}
+  .mm-sheet-foot{justify-content:stretch;} .mm-sheet-foot .btn-export{flex:1;}
+  .mm-sheet-head{padding:12px 14px;gap:8px;}
+  .mm-sheet-title{font-size:10px;}
+  .mm-sheet-note{font-size:10px;line-height:1.45;}
+  .mm-sheet-head .btn-export{padding:6px 9px!important;min-height:28px!important;
+    font-size:10.5px!important;align-self:flex-start;}
+  .mm-shot{padding:7px;} .mm-shot-btn{padding:6px;font-size:11px;}
+  .mm-shot img{max-height:46vh;object-fit:contain;}
 }
-.a4-header{border-bottom:3px solid #1d4ed8;padding-bottom:10px;margin-bottom:14px;}
-.a4-title{font-size:17px;font-weight:900;color:#1e3a8a;margin-bottom:4px;}
+/* 버전 각인 (§3-3). position:fixed 라 인쇄 시 매 페이지 우하단에 찍힌다. */
+#dev-stamp{display:none;}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(14px);background:#0c1a2e;color:#fff;padding:8px 16px;border-radius:16px;font-size:12px;font-weight:700;opacity:0;transition:all .25s;z-index:9500;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.a4-header{border-bottom:3px solid #15803d;padding-bottom:10px;margin-bottom:14px;}
+.a4-title{font-size:17px;font-weight:900;color:#052e16;margin-bottom:4px;}
 .a4-meta{font-size:9.5px;color:#6b7a99;font-weight:600;}
 .a4-stamp{position:absolute;top:36px;right:30px;border:3px solid #ef4444;padding:5px 10px;border-radius:5px;font-size:10.5px;font-weight:900;color:#ef4444;letter-spacing:.05em;transform:rotate(-8deg);opacity:.8;}
 .a4-section{margin-bottom:13px;}
-.a4-sec-title{font-size:11px;font-weight:800;color:#1e3a8a;border-left:3px solid #f97316;padding-left:7px;margin-bottom:6px;letter-spacing:.04em;}
+.a4-sec-title{font-size:11px;font-weight:800;color:#052e16;border-left:3px solid #f97316;padding-left:7px;margin-bottom:6px;letter-spacing:.04em;}
 .a4-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:9px;}
 .a4-item{border:1.5px solid #e2e8f0;border-radius:7px;padding:7px;text-align:center;}
 .a4-item-label{font-size:8.5px;color:#6b7a99;font-weight:700;margin-bottom:2px;}
-.a4-item-val{font-size:16px;font-weight:900;color:#1d4ed8;}
+.a4-item-val{font-size:16px;font-weight:900;color:#15803d;}
 .a4-item-unit{font-size:9.5px;color:#374151;}
-.a4-item.total{background:#1e3a8a;border-color:#1e3a8a;}
+.a4-item.total{background:#052e16;border-color:#052e16;}
 .a4-item.total .a4-item-label{color:rgba(255,255,255,.6);}
 .a4-item.total .a4-item-val{color:#fbbf24;font-size:19px;}
 .a4-item.total .a4-item-unit{color:#fff;}
 .a4-formula-box{background:#0f172a;color:#e2e8f0;border-radius:7px;padding:8px 10px;font-family:monospace;font-size:10.5px;line-height:1.8;margin-bottom:9px;}
 .a4-formula-box .hl{color:#fbbf24;font-weight:700;}
 .a4-tbl{width:100%;border-collapse:collapse;font-size:10px;margin-bottom:8px;}
-.a4-tbl th{background:#1d4ed8;color:#fff;padding:5px 7px;text-align:left;font-size:9px;font-weight:700;}
+.a4-tbl th{background:#15803d;color:#fff;padding:5px 7px;text-align:left;font-size:9px;font-weight:700;}
 .a4-tbl td{padding:5px 7px;border-bottom:1px solid #e2e8f0;}
-.a4-tbl .sum td{background:#eff6ff;font-weight:800;color:#1e3a8a;}
+.a4-tbl .sum td{background:#f0fdf4;font-weight:800;color:#052e16;}
 .a4-gantt-row{display:flex;align-items:center;gap:5px;margin-bottom:4px;}
 .a4-gantt-lbl{width:62px;font-size:9.5px;font-weight:600;text-align:right;color:#374151;}
 .a4-gantt-track{flex:1;height:18px;background:#f0f4f9;border-radius:4px;position:relative;border:1px solid #e2e8f0;}
@@ -368,125 +384,48 @@ input[type="number"]{-moz-appearance:textfield;}
 .a4-gantt-days{width:32px;text-align:right;font-size:9.5px;font-weight:700;color:#6b7a99;}
 .a4-footer{border-top:1px solid #e2e8f0;padding-top:7px;display:flex;justify-content:space-between;font-size:8.5px;color:#94a3b8;font-weight:600;margin-top:16px;}
 .a4-watermark{text-align:center;margin-bottom:12px;}
-.a4-watermark-text{font-size:12px;font-weight:900;color:#1d4ed8;letter-spacing:.15em;}
-
-/* ── MOBILE PREVIEW ── */
-.mob-preview-wrap{display:flex;justify-content:center;padding:20px;background:#94a3b8;border-radius:0 0 14px 14px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
-/* Samsung Galaxy S24 Ultra: CSS 412px × 915px, ratio 19.3:9, corner 28px */
-.mob-frame{
-  width:412px;
-  background:#101010;
-  border-radius:28px;
-  padding:7px;
-  box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 0 1.5px #2a2a2a;
-  flex-shrink:0;
-  position:relative;
-}
-/* 측면 버튼 (볼륨 + 전원) 시각 표현 */
-.mob-frame::before{
-  content:'';
-  position:absolute;
-  left:-4px; top:100px;
-  width:4px; height:60px;
-  background:#222; border-radius:3px 0 0 3px;
-  box-shadow:0 80px 0 #222, 0 -2px 0 #333;
-}
-.mob-frame::after{
-  content:'';
-  position:absolute;
-  right:-4px; top:140px;
-  width:4px; height:70px;
-  background:#222; border-radius:0 3px 3px 0;
-}
-.mob-screen{
-  background:#f0f4f9;
-  border-radius:22px;
-  overflow:hidden;
-  min-height:860px;
-}
-/* S24 Ultra 펀치홀 카메라 (상단 중앙) */
-.mob-statusbar{
-  background:#1d4ed8;
-  height:46px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px;
-  font-size:11px;
-  color:rgba(255,255,255,.85);
-  font-weight:700;
-  position:relative;
-}
-.mob-statusbar::after{
-  content:'';
-  position:absolute;
-  top:8px; left:50%; transform:translateX(-50%);
-  width:10px; height:10px;
-  background:#000;
-  border-radius:50%;
-  box-shadow:0 0 0 1.5px #1a3fa8;
-}
-.mob-header{background:#dbeafe;padding:12px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(147,197,253,.4);}
-.mob-content{padding:12px;}
-.mob-card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,.06);}
-.mob-result-hero{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-radius:12px;padding:14px;text-align:center;color:#fff;margin-bottom:10px;}
-.mob-big-num{font-size:44px;font-weight:900;color:#fbbf24;line-height:1;}
-.mob-res-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
-.mob-res-item{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center;}
-.mob-fab{margin:0 12px;background:linear-gradient(135deg,#0c4da2,#1d4ed8);color:#fff;border:none;border-radius:14px;padding:13px;cursor:pointer;box-shadow:0 4px 16px rgba(12,77,162,.5);display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:800;font-family:inherit;width:calc(100% - 24px);}
+.a4-watermark-text{font-size:12px;font-weight:900;color:#15803d;letter-spacing:.15em;}
 
 /* ── LEGAL TAB ── */
 .legal-section{margin-bottom:18px;}
-.legal-sec-title{font-size:13px;font-weight:900;color:#1e3a8a;border-left:4px solid #f97316;padding-left:10px;margin-bottom:10px;letter-spacing:.03em;}
+.legal-sec-title{font-size:13px;font-weight:900;color:#052e16;border-left:4px solid #f97316;padding-left:10px;margin-bottom:10px;letter-spacing:.03em;}
 .legal-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
-.legal-law-title{font-size:12px;font-weight:800;color:#1d4ed8;margin-bottom:7px;}
+.legal-law-title{font-size:12px;font-weight:800;color:#15803d;margin-bottom:7px;}
 .legal-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:11.5px;}
 .legal-row:last-child{border-bottom:none;}
 .legal-row .lk{color:#6b7a99;font-weight:600;}
 .legal-row .lv{font-weight:700;color:#1a2744;text-align:right;}
-.law-badge{display:inline-flex;align-items:center;gap:4px;background:#eff6ff;color:#1d4ed8;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:800;border:1px solid #bfdbfe;margin:2px;}
+.law-badge{display:inline-flex;align-items:center;gap:4px;background:#f0fdf4;color:#15803d;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:800;border:1px solid #bbf7d0;margin:2px;}
 .law-badge.orange{background:#fff7ed;color:#c2410c;border-color:#fed7aa;}
 .law-badge.green{background:#f0fdf4;color:#166534;border-color:#bbf7d0;}
 .law-badge.red{background:#fff1f2;color:#be123c;border-color:#fecdd3;}
 .component-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
-@media(max-width:580px){.component-grid{grid-template-columns:1fr;}}
+@media(max-width:640px){.component-grid{grid-template-columns:1fr;}}
 .comp-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:13px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
-.comp-number{font-size:24px;font-weight:900;color:#1d4ed8;line-height:1;}
+.comp-number{font-size:24px;font-weight:900;color:#15803d;line-height:1;}
 .comp-label{font-size:11.5px;font-weight:800;color:#1a2744;margin:4px 0 5px;}
 .comp-sub{font-size:10.5px;color:#6b7a99;line-height:1.6;}
-.comp-law{font-size:9.5px;color:#3b82f6;font-weight:700;margin-top:5px;}
+.comp-law{font-size:9.5px;color:#22c55e;font-weight:700;margin-top:5px;}
 
-/* ══ FAB — 계산방법 안내 ══ */
-.guide-fab{
-  position:fixed;right:18px;
-  bottom:calc(22px + env(safe-area-inset-bottom));
-  z-index:800;width:54px;height:54px;
-  background:linear-gradient(135deg,#1e3a8a,#1d4ed8);
-  color:#fff;border:none;border-radius:50%;cursor:pointer;
-  font-size:22px;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 20px rgba(29,78,216,.55);
-  transition:transform .2s,box-shadow .2s;
-  animation:fab-pulse 2.8s ease-in-out infinite;
+/* ══ FAB · 모달 (v5.0 §18-11 — 09 제연 기준본 규격 · 색만 기계 토큰) ══ */
+#fab-group{position:fixed;bottom:18px;right:18px;z-index:1200;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+.help-fab{
+  position:relative;z-index:auto;
+  background:linear-gradient(135deg,#052e16 0%,#15803d 55%,#16a34a 100%);
+  border:1px solid rgba(134,239,172,.3);
+  color:#fff;border-radius:16px;padding:11px 8px;width:72px;min-width:72px;cursor:pointer;font-family:inherit;   /* 두 버튼 폭·높이 완전 동일 (§16-18 취지 · MIN 2026-09-03) */
+  box-shadow:0 4px 20px rgba(21,128,61,.65);
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  line-height:1.3;transition:transform .15s,box-shadow .15s;
+  animation:fabIn .55s cubic-bezier(.34,1.56,.64,1) forwards;
 }
-.guide-fab:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(29,78,216,.75);}
-@keyframes fab-pulse{
-  0%,100%{box-shadow:0 4px 20px rgba(29,78,216,.55);}
-  50%{box-shadow:0 4px 30px rgba(29,78,216,.9),0 0 0 8px rgba(29,78,216,.12);}
-}
-.guide-fab-tip{
-  position:fixed;z-index:799;
-  background:#1e3a8a;color:#fff;
-  padding:5px 12px;border-radius:8px;
-  font-size:11.5px;font-weight:700;
-  opacity:0;pointer-events:none;
-  transition:opacity .15s;white-space:nowrap;
-}
-.guide-fab-tip::after{
-  content:'';position:absolute;right:14px;bottom:-5px;
-  border:5px solid transparent;
-  border-top-color:#1e3a8a;border-bottom:none;
-}
-.guide-fab-tip.show{opacity:1;}
+@keyframes fabIn{from{opacity:0;transform:scale(.3) rotate(-20deg);}to{opacity:1;transform:scale(1) rotate(0);}}
+.help-fab:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(21,128,61,.65);}
+.help-fab:active{transform:translateY(0);}
+.help-fab .fab-icon{font-size:20px;line-height:1;}
+.help-fab .fab-lbl{font-size:10px;font-weight:800;letter-spacing:.04em;color:#fff;}
+.help-fab .fab-sub{font-size:9px;opacity:.8;}
+
 
 /* ══ Bottom Sheet 오버레이 ══ */
 .bs-ov{
@@ -511,8 +450,8 @@ input[type="number"]{-moz-appearance:textfield;}
   border-radius:20px 20px 0 0;
   max-height:78vh;                          /* 전체가 아닌 일부 높이 */
   display:flex;flex-direction:column;
-  box-shadow:0 -8px 48px rgba(29,78,216,.25),
-             0 -1px 0 rgba(29,78,216,.08);
+  box-shadow:0 -8px 48px rgba(21,128,61,.25),
+             0 -1px 0 rgba(21,128,61,.08);
   transition:transform .36s cubic-bezier(.16,1,.3,1);
   padding-bottom:env(safe-area-inset-bottom);
 }
@@ -524,10 +463,10 @@ input[type="number"]{-moz-appearance:textfield;}
 .bs-drag{display:flex;justify-content:center;padding:10px 0 0;cursor:grab;flex-shrink:0;}
 .bs-drag-bar{width:38px;height:4px;background:#d1d5db;border-radius:2px;}
 
-/* ══ Bottom Sheet 헤더 — 앱 헤더와 동일 색상 #dbeafe ══ */
+/* ══ Bottom Sheet 헤더 — 앱 헤더와 동일 색상 #dcfce7 ══ */
 .bs-head{
-  background:#dbeafe;
-  border-bottom:1px solid #bfdbfe;
+  background:#dcfce7;
+  border-bottom:1px solid #bbf7d0;
   padding:12px 18px 0;flex-shrink:0;
 }
 .bs-head-row{
@@ -537,37 +476,37 @@ input[type="number"]{-moz-appearance:textfield;}
 }
 .bs-head-left{display:flex;align-items:center;gap:10px;}
 .bs-head-icon{
-  width:34px;height:34px;background:#1d4ed8;
+  width:34px;height:34px;background:#15803d;
   border-radius:8px;display:flex;align-items:center;
   justify-content:center;font-size:16px;flex-shrink:0;
-  box-shadow:0 2px 8px rgba(29,78,216,.3);
+  box-shadow:0 2px 8px rgba(21,128,61,.3);
 }
-.bs-head-title{font-size:14px;font-weight:900;color:#1e3a8a;letter-spacing:-.01em;}
-.bs-head-sub{font-size:9.5px;color:#3b82f6;font-weight:600;margin-top:1px;}
+.bs-head-title{font-size:14px;font-weight:900;color:#052e16;letter-spacing:-.01em;}
+.bs-head-sub{font-size:9.5px;color:#22c55e;font-weight:600;margin-top:1px;}
 .bs-close{
-  width:30px;height:30px;border:none;background:#eff6ff;
+  width:30px;height:30px;border:none;background:#f0fdf4;
   border-radius:7px;cursor:pointer;font-size:14px;color:#6b7a99;
   display:flex;align-items:center;justify-content:center;
   transition:all .15s;flex-shrink:0;font-family:inherit;
 }
-.bs-close:hover{background:#bfdbfe;color:#1e3a8a;}
+.bs-close:hover{background:#bbf7d0;color:#052e16;}
 
 /* ══ 탭바 — 헤더 배경 계속 ══ */
 .bs-tabs{
   display:flex;overflow-x:auto;scrollbar-width:none;
-  padding:0 14px;background:#dbeafe;
+  padding:0 14px;background:#dcfce7;
 }
 .bs-tabs::-webkit-scrollbar{display:none;}
 .bs-tab{
   padding:9px 13px;border:none;background:transparent;
-  color:#2563eb;font-size:11px;font-weight:700;
+  color:#16a34a;font-size:11px;font-weight:700;
   font-family:inherit;cursor:pointer;white-space:nowrap;
   border-bottom:3px solid transparent;
   transition:color .15s,border-color .15s;flex-shrink:0;
   display:flex;align-items:center;gap:4px;
 }
-.bs-tab:hover{color:#1e3a8a;background:rgba(29,78,216,.07);}
-.bs-tab.on{color:#1e3a8a;border-bottom-color:#f97316;font-weight:800;}
+.bs-tab:hover{color:#052e16;background:rgba(21,128,61,.07);}
+.bs-tab.on{color:#052e16;border-bottom-color:#86efac;font-weight:800;}
 
 /* ══ 바디 ══ */
 .bs-body{
@@ -576,7 +515,7 @@ input[type="number"]{-moz-appearance:textfield;}
 }
 .bs-body::-webkit-scrollbar{width:4px;}
 .bs-body::-webkit-scrollbar-track{background:transparent;}
-.bs-body::-webkit-scrollbar-thumb{background:#bfdbfe;border-radius:4px;}
+.bs-body::-webkit-scrollbar-thumb{background:#bbf7d0;border-radius:4px;}
 
 /* ══ 패널 ══ */
 .bs-panel{display:none;}
@@ -585,29 +524,29 @@ input[type="number"]{-moz-appearance:textfield;}
 /* ══ 섹션·콘텐츠 (기존 msec/mcard 유지) ══ */
 .msec{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
   margin:14px 0 7px;display:flex;align-items:center;gap:6px;
-  padding:5px 9px;background:#eff6ff;border-left:3px solid #1d4ed8;
-  border-radius:0 6px 6px 0;color:#1e3a8a;}
+  padding:5px 9px;background:#f0fdf4;border-left:3px solid #15803d;
+  border-radius:0 6px 6px 0;color:#052e16;}
 .msec:first-child{margin-top:0;}
 .mcard{background:#f8fafc;border:1px solid #e4e9f0;border-radius:10px;padding:11px 12px;margin-bottom:7px;}
 .meq{display:block;font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;
-  color:#1d4ed8;background:#eff6ff;border:1.5px solid #bfdbfe;
+  color:#15803d;background:#f0fdf4;border:1.5px solid #bbf7d0;
   border-radius:8px;padding:9px 12px;margin:5px 0;word-break:break-all;line-height:1.75;}
 .meq.amber{color:#92400e;background:#fefce8;border-color:#fde68a;}
-.mhi{border:1.5px solid #bfdbfe;background:#eff6ff;border-radius:10px;
-  padding:11px 12px;margin-bottom:7px;font-size:11px;line-height:1.8;color:#1e3a8a;}
+.mhi{border:1.5px solid #bbf7d0;background:#f0fdf4;border-radius:10px;
+  padding:11px 12px;margin-bottom:7px;font-size:11px;line-height:1.8;color:#052e16;}
 .mhi.amber{border-color:#fde68a;background:#fefce8;color:#854d0e;}
 .mg2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:7px;}
 @media(max-width:480px){.mg2{grid-template-columns:1fr;}}
 .mtbl{width:100%;border-collapse:collapse;font-size:11px;border-radius:8px;overflow:hidden;}
-.mtbl th{background:#1d4ed8;color:#fff;padding:7px 9px;text-align:center;font-weight:800;font-size:10px;}
+.mtbl th{background:#15803d;color:#fff;padding:7px 9px;text-align:center;font-weight:800;font-size:10px;}
 .mtbl td{padding:7px 9px;border-bottom:1px solid #e4e9f0;}
 .mtbl tr:last-child td{border-bottom:none;}
 .mtbl tr:nth-child(even) td{background:#f8fafc;}
-.mtbl tbody tr:hover td{background:#eff6ff;}
+.mtbl tbody tr:hover td{background:#f0fdf4;}
 .mtbl td:first-child{font-weight:700;color:#1a2744;padding-left:11px;}
 
 /* 반응형 */
-@media(max-width:680px){
+@media(max-width:540px){
   /* 모바일: 좌우 여백 없이 전체 폭 */
   .bs-sheet{
     left:0;right:0;
@@ -623,11 +562,11 @@ input[type="number"]{-moz-appearance:textfield;}
   .bs-tab{padding:8px 10px;font-size:10.5px;}
 }
 @media print{
-  .guide-fab,.guide-fab-tip,.bs-ov,.bs-sheet{display:none!important;}
+  #fab-group,.bs-ov,.bs-sheet{display:none!important;}
 }
 
 /* ── PWA INSTALL BANNER ── */
-.install-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;box-shadow:0 -4px 24px rgba(29,78,216,.4);transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);border-radius:16px 16px 0 0;}
+.install-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#052e16,#15803d);color:#fff;padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;box-shadow:0 -4px 24px rgba(21,128,61,.4);transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);border-radius:16px 16px 0 0;}
 .install-banner.show{transform:translateY(0);}
 .ib-ico{font-size:26px;flex-shrink:0;}
 .ib-txt{flex:1;}
@@ -645,10 +584,10 @@ input[type="number"]{-moz-appearance:textfield;}
 /* ── UPDATE BANNER ── */
 .update-banner{position:fixed;top:0;left:0;right:0;z-index:9990;background:#f97316;color:#fff;padding:9px 14px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:12.5px;font-weight:700;transform:translateY(-100%);transition:transform .3s;box-shadow:0 2px 10px rgba(0,0,0,.15);}
 .update-banner.show{transform:translateY(0);}
-.update-banner button{background:#1d4ed8;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-family:inherit;font-size:11.5px;font-weight:800;cursor:pointer;}
+.update-banner button{background:#15803d;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-family:inherit;font-size:11.5px;font-weight:800;cursor:pointer;}
 
-/* ── PRINT (ISO A4 — MANMIN 위생배관 기준 적용) ── */
-@page{size:A4 portrait;margin:8mm 8mm 19mm;}
+/* ── PRINT (v5.0 §3-3 · §16-9 · §16-13 · §16-15 · §17-3) ── */
+@page{size:A4 portrait;margin:14mm 12mm 22mm 14mm;}
 @media print{
   *,*::before,*::after{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   /* 배경색·테두리 강제 출력 */
@@ -660,19 +599,25 @@ input[type="number"]{-moz-appearance:textfield;}
   .a4-item-val,.a4-formula-box,.a4-gantt-days{
     font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif!important;
   }
-  .no-print{display:none!important;}
-  /* html/body/root-app 숨기고 인쇄 타깃만 표시 */
+  /* ⛔ v5.0 — 복제본(#a4-print-target) 인쇄를 없애고 같은 DOM 을 인쇄한다(§2② · §16-15). */
+  .hdr-shell,.app-header,.tab-bar,.sum-bar-wrap,.main-wrap .tab-panel:not(#tab-a4),.a4-export-bar,
+  #fab-group,.bs-ov,.bs-sheet,.toast,.install-banner,.offline-toast,.update-banner,#ios-modal-air,#mm-save-ov,.no-print{display:none!important;}
   html,body{margin:0!important;padding:0!important;width:auto!important;background:#fff!important;}
-  #root-app{display:none!important;}
-  #a4-print-target{display:block!important;}
-  /* 인쇄용 a4-page: 패딩 보정, 100% 너비 */
-  #a4-print-target #a4-page{
-    padding:10px 16px 24px!important;
+  #tab-a4{display:block!important;}
+  /* A4 조상 체인의 패딩·카드 장식 해제 — 남으면 A4 가 아래로 밀린다 */
+  .main-wrap{padding:0!important;margin:0!important;max-width:none!important;}
+  #tab-a4 .card{border:none!important;border-radius:0!important;box-shadow:none!important;background:#fff!important;}
+  #tab-a4 .card-head{display:none!important;}
+  .a4-wrap{background:#fff!important;padding:0!important;min-height:unset!important;border-radius:0!important;display:block!important;overflow:visible!important;}
+  .a4-scale-wrap{transform:none!important;margin:0!important;height:auto!important;width:auto!important;max-width:none!important;}
+  /* 여백은 @page 하나로만 일원화한다(§3-3) */
+  #a4-page{
+    padding:0!important;
     width:100%!important;
     box-shadow:none!important;
     min-height:auto!important;
     box-sizing:border-box!important;
-    font-size:11px!important;
+    font-size:9.5px!important;
   }
   /* ── 섹션 페이지 나눔 제어 ── */
   .a4-section{break-inside:avoid;page-break-inside:avoid;}
@@ -711,26 +656,20 @@ input[type="number"]{-moz-appearance:textfield;}
 
 /* ── STEP PROGRESS ── */
 .step-progress{display:flex;align-items:center;gap:4px;}
-.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;border:2px solid rgba(30,58,138,.22);color:rgba(30,58,138,.4);cursor:pointer;transition:all .2s;flex-shrink:0;}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;border:2px solid rgba(5,46,22,.22);color:rgba(5,46,22,.4);cursor:pointer;transition:all .2s;flex-shrink:0;}
 .step-dot.active{background:#f97316;border-color:#f97316;color:#fff;}
-.step-dot.done{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8;}
-.step-line{width:12px;height:2px;background:rgba(30,58,138,.15);}
-.step-line.done{background:#bfdbfe;}
+.step-dot.done{background:#f0fdf4;border-color:#bbf7d0;color:#15803d;}
+.step-line{width:12px;height:2px;background:rgba(5,46,22,.15);}
+.step-line.done{background:#bbf7d0;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
-  .app-header{padding:0;}
-  .header-inner{padding:0 12px;height:54px;}
-  .brand-title{font-size:13px;}
-  .brand-sub{display:none;}
   .main-wrap{padding:12px 10px 100px;}
   .a4-grid{grid-template-columns:repeat(2,1fr);}
-  .hdr-btns .btn-ghost{display:none;}
 }
 @media(max-width:480px){
   .opt-grid{grid-template-columns:repeat(3,1fr);}
   .res-grid{grid-template-columns:repeat(2,1fr);}
-  .mob-frame{width:100%;max-width:412px;}
 }
 
 /* ── iOS Safari 폼 입력 자동 줌 방지 (font-size 16px 이상 강제) ── */
@@ -743,6 +682,8 @@ input[type="number"]{-moz-appearance:textfield;}
     font-size:16px!important;
   }
 }
+
+@media(max-width:540px){ #fab-group{bottom:16px;right:12px;} .help-fab{padding:10px 8px;} }
 </style>
 </head>
 <body>
@@ -773,35 +714,52 @@ input[type="number"]{-moz-appearance:textfield;}
     <div class="ib-btns"><button class="ib-install" id="btnInstall">설치하기</button><button class="ib-close" onclick="dismissInstall()">나중에</button></div>
   </div>
 
-  <!-- HEADER -->
-  <header class="app-header no-print">
+<!-- ══ HEADER ══ -->
+  <!-- v5.0 : 헤더+탭바 그라데이션 1면 통합 래퍼 (§3-2-1) · 3단 hdr-* (§3-1 · §18-1) · 건축행정 토큰 -->
+  <div class="hdr-shell">
+  <header class="app-header">
     <div class="header-inner">
       <div class="brand-logo">
-        <div class="brand-icon" style="background:none;padding:0;overflow:hidden;width:40px;height:40px;border-radius:10px;flex-shrink:0;box-shadow:0 2px 10px rgba(29,78,216,.38);"><img src="./icons/brand-icon.jpg" alt="공기산정 MANMIN" style="width:40px;height:40px;object-fit:cover;border-radius:10px;display:block;"/></div>
         <div class="brand-texts">
-          <div class="brand-title">건축공사 공기산정 시스템 [MANMIN-Ver3.0]</div>
-          <div class="brand-sub">국토교통부고시 제2024-1021호 · 건설기술진흥법 제45조의2</div>
+          <!-- v5.0-HDR — 375px 1줄 유지(≤40자) -->
+          <div class="hdr-eyebrow">Construction Period · 국토부고시 2024-1021</div>
+          <h1 class="hdr-h1">건축공사 공기산정 시스템</h1>
+          <div class="hdr-sub">
+            준비기간 · 작업일수 · 비작업일수 · 정리기간 4단계 적정 공기 자동 산정 · 표준공기 검증
+            <span class="hdr-manmin">MANMIN · Ver-5.0</span>
+          </div>
         </div>
       </div>
-      <div class="hdr-btns">
-        <button id="pwa-hdr-btn" class="no-print" onclick="window.pwaTriggerInstall&&window.pwaTriggerInstall()" title="앱 설치">
-          📲 <span class="pwa-hdr-txt">설치</span>
-        </button>
-        <button class="btn-blue no-print" id="btnPrintA4" onclick="printA4()">🖨 A4 출력</button>
-        <button class="btn-orange no-print" onclick="exportMobileJPG()">📱 JPG 저장</button>
+      <div class="hdr-right-wrap">
+        <!-- v5.0-HDR — 마스터 4줄(13/11/11/10) · 원본 법적근거 탭 문구에서 발췌 -->
+        <div class="hdr-right"><strong>적정 공사기간 산정기준</strong><br/>국토교통부고시 제2024-1021호<br/>건설기술진흥법 제45조의2<br/><em>[시행 2025. 1. 6.]</em></div>
+        <!-- v5.0 : 헤더 버튼 없음. 설치는 PWA 배너가, 인쇄·JPG 는 A4 탭 출력바가, 계산방법 안내는 FAB 이 담당한다(§3-1 · §18-1). -->
       </div>
     </div>
   </header>
 
-  <!-- TAB BAR -->
-  <nav class="tab-bar no-print">
+  <!-- ══ TAB BAR ══ -->
+  <!-- .tab-btn 은 switchTab() 이 data-tab 으로 토글하므로 .tb 와 병기한다(계산 구간 무접촉) -->
+  <nav class="tab-bar">
     <div class="tab-bar-inner">
-      <button class="tab-btn active" data-tab="input" onclick="switchTab('input')">⌨️ 입력·산출</button>
-      <button class="tab-btn" data-tab="a4" onclick="switchTab('a4')">📄 A4 미리보기</button>
-      <button class="tab-btn" data-tab="mobile" onclick="switchTab('mobile')">📱 모바일 미리보기</button>
-      <button class="tab-btn" data-tab="legal" onclick="switchTab('legal')">⚖️ 법적근거</button>
+      <button class="tb tab-btn active" data-tab="input" onclick="switchTab('input')">⌨️ 입력·산출</button>
+      <button class="tb tab-btn" data-tab="a4" onclick="switchTab('a4')">📄 A4 미리보기</button>
+      <button class="tb tab-btn" data-tab="legal" onclick="switchTab('legal')">⚖️ 법적근거</button>
     </div>
   </nav>
+  </div><!-- /.hdr-shell -->
+  <!-- v5.0-HDR : 요약 스트립 (헤더 3층) — 값은 문서 끝 스크립트가 S 에서 읽어 채운다 -->
+  <div class="sum-bar-wrap no-print">
+    <div class="sum-bar">
+      <span class="sum-item">🏗 공사종류: <b id="sb-type">—</b></span>
+      <span class="sum-item">🔧 준비기간: <b id="sb-prep">—</b></span>
+      <span class="sum-item">🔨 작업일수: <b id="sb-work">—</b></span>
+      <span class="sum-item">🌦 비작업일수: <b id="sb-nw">—</b></span>
+      <span class="sum-item">🧹 정리기간: <b id="sb-clean">—</b></span>
+      <span class="sum-item">📅 총공기: <b id="sb-total">—</b></span>
+    </div>
+  </div>
+
 
   <main class="main-wrap">
 
@@ -810,7 +768,7 @@ input[type="number"]{-moz-appearance:textfield;}
       <!-- Step Progress -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
         <div>
-          <div style="font-size:18px;font-weight:900;color:#1e3a8a;" id="stepTitle">프로젝트 기본 정보</div>
+          <div style="font-size:18px;font-weight:900;color:#052e16;" id="stepTitle">프로젝트 기본 정보</div>
           <div style="font-size:11.5px;color:#6b7a99;margin-top:2px;" id="stepDesc">공사기간 산정의 기초 데이터를 입력합니다.</div>
         </div>
         <div class="step-progress" id="stepProg"></div>
@@ -825,41 +783,19 @@ input[type="number"]{-moz-appearance:textfield;}
         <div class="card-head">
           <div class="card-icon">📄</div>
           <div class="card-title">A4 공기산정 근거서 미리보기</div>
-          <div class="card-badge" style="margin-left:auto">210mm × 297mm · 여백 8mm</div>
+          <div class="card-badge" style="margin-left:auto">210mm × 297mm · 여백 14/12/22/14mm</div>
         </div>
-        <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid #eef1f6;flex-wrap:wrap;align-items:center;row-gap:6px;">
-          <button class="btn-blue" onclick="printA4()">🖨 A4 인쇄</button>
-          <button class="btn-ghost" onclick="renderA4();setTimeout(scaleA4Preview,80)">🔄 미리보기 갱신</button>
-          <span style="font-size:11px;color:#6b7a99;align-self:center;flex:1;min-width:120px;">※ 공기산정 근거서 — 입찰 서류 첨부 의무 (고시 제5조) · 용지: A4 세로 · 여백: 상하 8~19mm / 좌우 8mm</span>
+        <div class="a4-export-bar no-print">
+          <span class="bar-lbl">📄 A4 출력 :</span>
+          <button class="mm-btn mm-btn-print" onclick="printA4()">🖨️ 인쇄 / PDF 저장</button>
+          <button class="mm-btn mm-btn-jpg" id="btn-jpg" onclick="exportA4Jpg()">🖼️ JPG 저장</button>
+          <span style="font-size:10px;color:#64748b;margin-left:4px;">※ 공기산정 근거서 — 입찰 서류 첨부 의무(고시 제5조) · 인쇄 대화상자에서 "PDF로 저장" 선택 가능</span>
         </div>
-        <div class="preview-bg" id="a4PreviewBg">
+        <div class="a4-wrap" id="a4Wrap">
           <div class="a4-scale-wrap" id="a4ScaleWrap">
-          <div style="box-shadow:0 8px 40px rgba(0,0,0,.3);display:inline-block;">
           <div id="a4-page">
             <div id="a4-content"></div>
           </div>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ TAB: 모바일 미리보기 ══ -->
-    <div class="tab-panel" id="tab-mobile">
-      <div class="card">
-        <div class="card-head">
-          <div class="card-icon">📱</div>
-          <div class="card-title">모바일 산정결과 미리보기</div>
-          <div class="card-badge" style="margin-left:auto">Galaxy S24 Ultra (412px)</div>
-        </div>
-        <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid #eef1f6;flex-wrap:wrap;align-items:center;row-gap:6px;">
-          <button class="btn-orange" id="btnExportMobJPG" onclick="exportMobileJPG()">📱 JPG 저장</button>
-          <button class="btn-blue" id="btnShareMob" onclick="shareMobileJPG()" style="display:none">📤 공유</button>
-          <span id="mobJpgStatus" style="font-size:11px;color:#6b7a99;align-self:center;flex:1;">현장 공유·보고용 이미지로 저장</span>
-        </div>
-        <div class="mob-preview-wrap" id="mobPreviewBg">
-          <div class="mob-frame" id="mob-frame">
-            <div class="mob-screen" id="mob-content"></div>
           </div>
         </div>
       </div>
@@ -981,30 +917,30 @@ input[type="number"]{-moz-appearance:textfield;}
       <div class="legal-section">
         <div class="legal-sec-title">🔄 공기산정 프로세스 흐름도</div>
         <div style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;padding:16px;background:#fff;border-radius:14px;border:1px solid #e2e8f0;">
-          <div style="text-align:center;padding:12px 16px;background:#eff6ff;border-radius:10px;min-width:100px;">
+          <div style="text-align:center;padding:12px 16px;background:#f0fdf4;border-radius:10px;min-width:100px;">
             <div style="font-size:18px;">📋</div>
-            <div style="font-size:11px;font-weight:800;color:#1e3a8a;margin-top:4px;">기본정보</div>
+            <div style="font-size:11px;font-weight:800;color:#052e16;margin-top:4px;">기본정보</div>
             <div style="font-size:9.5px;color:#6b7a99;margin-top:2px;">공사명·유형·비용</div>
           </div>
-          <div style="font-size:20px;color:#bfdbfe;margin:0 6px;">→</div>
+          <div style="font-size:20px;color:#bbf7d0;margin:0 6px;">→</div>
           <div style="text-align:center;padding:12px 16px;background:#fff7ed;border-radius:10px;min-width:100px;">
             <div style="font-size:18px;">🔧</div>
             <div style="font-size:11px;font-weight:800;color:#c2410c;margin-top:4px;">준비기간</div>
             <div style="font-size:9.5px;color:#6b7a99;margin-top:2px;">유형별 자동산정</div>
           </div>
-          <div style="font-size:20px;color:#bfdbfe;margin:0 6px;">→</div>
+          <div style="font-size:20px;color:#bbf7d0;margin:0 6px;">→</div>
           <div style="text-align:center;padding:12px 16px;background:#fefce8;border-radius:10px;min-width:100px;">
             <div style="font-size:18px;">🔨</div>
             <div style="font-size:11px;font-weight:800;color:#854d0e;margin-top:4px;">작업일수</div>
             <div style="font-size:9.5px;color:#6b7a99;margin-top:2px;">주공정 기준</div>
           </div>
-          <div style="font-size:20px;color:#bfdbfe;margin:0 6px;">→</div>
+          <div style="font-size:20px;color:#bbf7d0;margin:0 6px;">→</div>
           <div style="text-align:center;padding:12px 16px;background:#f8fafc;border-radius:10px;min-width:100px;">
             <div style="font-size:18px;">🌦</div>
             <div style="font-size:11px;font-weight:800;color:#374151;margin-top:4px;">비작업일수</div>
             <div style="font-size:9.5px;color:#6b7a99;margin-top:2px;">A+B−C 공식</div>
           </div>
-          <div style="font-size:20px;color:#bfdbfe;margin:0 6px;">→</div>
+          <div style="font-size:20px;color:#bbf7d0;margin:0 6px;">→</div>
           <div style="text-align:center;padding:12px 16px;background:#f0fdf4;border-radius:10px;min-width:100px;">
             <div style="font-size:18px;">✅</div>
             <div style="font-size:11px;font-weight:800;color:#166534;margin-top:4px;">총 공사기간</div>
@@ -1017,10 +953,14 @@ input[type="number"]{-moz-appearance:textfield;}
   </main>
 
 
-  <!-- ══ FAB ══ -->
-  <div class="guide-fab-tip" id="guideFabTip">📐 계산방법 안내</div>
-  <button class="guide-fab no-print" id="guideFab"
-    onclick="openCalcGuide()" aria-label="계산방법 안내">📐</button>
+  <!-- ══ FAB (v5.0 §18-11 — 72×72 규격 1개 · 계산방법 안내) ══ -->
+  <div id="fab-group" class="no-print">
+    <button class="help-fab" onclick="openCalcGuide()" title="계산방법 안내" aria-label="계산방법 안내 열기">
+      <span class="fab-icon">📐</span>
+      <span class="fab-lbl">계산방법</span>
+      <span class="fab-sub">안내</span>
+    </button>
+  </div>
 
   <!-- ══ Bottom Sheet 오버레이 ══ -->
   <div class="bs-ov" id="bsOv" onclick="closeCalcGuide()"></div>
@@ -1031,7 +971,7 @@ input[type="number"]{-moz-appearance:textfield;}
     <!-- 드래그 핸들 -->
     <div class="bs-drag" id="bsDrag"><div class="bs-drag-bar"></div></div>
 
-    <!-- 헤더 (#dbeafe — 앱 헤더 동일색) -->
+    <!-- 헤더 (#dcfce7 — 앱 헤더 동일색) -->
     <div class="bs-head">
       <div class="bs-head-row">
         <div class="bs-head-left">
@@ -1060,7 +1000,7 @@ input[type="number"]{-moz-appearance:textfield;}
         <div class="bs-panel on" id="m_howto">
 
           <!-- ── 핵심 안내 배너 ── -->
-          <div style="background:linear-gradient(135deg,#081e44,#1d4ed8);border-radius:13px;padding:16px 18px;margin-bottom:16px;">
+          <div style="background:linear-gradient(135deg,#052e16,#15803d);border-radius:13px;padding:16px 18px;margin-bottom:16px;">
             <div style="font-size:13px;font-weight:900;color:#fbbf24;margin-bottom:4px;display:flex;align-items:center;gap:7px;">
               <span style="font-size:20px;">🏗️</span> 공기산정 시스템 이용방법
             </div>
@@ -1069,9 +1009,9 @@ input[type="number"]{-moz-appearance:textfield;}
 
           <!-- ── STEP 1 ── -->
           <div style="display:flex;gap:11px;align-items:flex-start;background:#f8fafc;border:1.5px solid #e4e9f0;border-radius:12px;padding:13px 14px;margin-bottom:9px;">
-            <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#1d4ed8,#0c4da2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(29,78,216,.35);">1</div>
+            <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#15803d,#15803d);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(21,128,61,.35);">1</div>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:12px;font-weight:900;color:#1e3a8a;margin-bottom:5px;display:flex;align-items:center;gap:5px;">📁 프로젝트 기본 정보 입력</div>
+              <div style="font-size:12px;font-weight:900;color:#052e16;margin-bottom:5px;display:flex;align-items:center;gap:5px;">📁 프로젝트 기본 정보 입력</div>
               <div style="font-size:10.5px;color:#374151;line-height:1.8;">
                 ① <strong>공사명</strong>을 입력하세요 — 출력 보고서 상단에 표기됩니다.<br>
                 ② <strong>착공 예정일</strong>을 선택하세요 — 비작업일수 자동 산정의 기준이 됩니다.<br>
@@ -1124,7 +1064,7 @@ input[type="number"]{-moz-appearance:textfield;}
           </div>
 
           <!-- ── STEP 5 ── -->
-          <div style="display:flex;gap:11px;align-items:flex-start;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:13px 14px;margin-bottom:16px;">
+          <div style="display:flex;gap:11px;align-items:flex-start;background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:13px 14px;margin-bottom:16px;">
             <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#0284c7);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(14,165,233,.35);">5</div>
             <div style="flex:1;min-width:0;">
               <div style="font-size:12px;font-weight:900;color:#075985;margin-bottom:5px;display:flex;align-items:center;gap:5px;">📄 최종 결과 확인 및 출력</div>
@@ -1141,8 +1081,8 @@ input[type="number"]{-moz-appearance:textfield;}
           <!-- ── 주요 기능 안내 ── -->
           <div class="msec">💡 주요 기능 안내</div>
           <div class="mg2">
-            <div class="mcard" style="border-left:3px solid #1d4ed8;">
-              <div style="font-size:11px;font-weight:800;color:#1d4ed8;margin-bottom:5px;">📐 계산방법 안내 버튼</div>
+            <div class="mcard" style="border-left:3px solid #15803d;">
+              <div style="font-size:11px;font-weight:800;color:#15803d;margin-bottom:5px;">📐 계산방법 안내 버튼</div>
               <div style="font-size:10.5px;color:#374151;line-height:1.7;">STEP 1 하단 또는 상단 헤더의 「📐 계산방법 안내」 버튼을 클릭하면 이 창이 열립니다. 탭을 전환하여 전체 흐름·준비기간·작업일수·비작업일수·검증 공식·기상기준을 확인하세요.</div>
             </div>
             <div class="mcard" style="border-left:3px solid #f97316;">
@@ -1170,13 +1110,13 @@ input[type="number"]{-moz-appearance:textfield;}
 
         <div class="bs-panel" id="m_overview">
           <div class="msec">공사기간 산정 공식</div>
-          <div style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:12px;padding:14px 18px;text-align:center;margin-bottom:12px;">
+          <div style="background:linear-gradient(135deg,#f0fdf4,#f0fdf4);border:1px solid #bbf7d0;border-radius:12px;padding:14px 18px;text-align:center;margin-bottom:12px;">
             <div style="font-size:11px;color:#6b7a99;margin-bottom:6px;font-weight:600;">국토교통부고시 제2024-1021호 제4조</div>
-            <div style="font-size:15px;font-weight:900;color:#1d4ed8;font-family:'JetBrains Mono',monospace;line-height:1.7;">총 공사기간 = 준비기간 + 작업일수<br/>+ 비작업일수 + 정리기간</div>
+            <div style="font-size:15px;font-weight:900;color:#15803d;font-family:'JetBrains Mono',monospace;line-height:1.7;">총 공사기간 = 준비기간 + 작업일수<br/>+ 비작업일수 + 정리기간</div>
           </div>
           <div class="msec">각 요소 개요</div>
           <div class="mg2">
-            <div class="mcard"><div style="font-size:12px;font-weight:800;color:#1d4ed8;margin-bottom:5px;">① 준비기간</div><div style="font-size:11px;color:#374151;line-height:1.7;">착공 전 준비 소요기간<br/>· 설계도서 검토<br/>· 안전관리계획서 승인<br/>· 하도급 선정<br/>· 가설시설 설치<br/>비작업일수 별도 계상 안 함</div></div>
+            <div class="mcard"><div style="font-size:12px;font-weight:800;color:#15803d;margin-bottom:5px;">① 준비기간</div><div style="font-size:11px;color:#374151;line-height:1.7;">착공 전 준비 소요기간<br/>· 설계도서 검토<br/>· 안전관리계획서 승인<br/>· 하도급 선정<br/>· 가설시설 설치<br/>비작업일수 별도 계상 안 함</div></div>
             <div class="mcard"><div style="font-size:12px;font-weight:800;color:#f97316;margin-bottom:5px;">② 작업일수</div><div style="font-size:11px;color:#374151;line-height:1.7;">주공정 기준 순수 작업일<br/>· Critical Path 공종<br/>· 1일 8시간 기준<br/>· 주 40시간 기준<br/>· 콘크리트 양생 포함</div></div>
             <div class="mcard"><div style="font-size:12px;font-weight:800;color:#6b7a99;margin-bottom:5px;">③ 비작업일수</div><div style="font-size:11px;color:#374151;line-height:1.7;">기상+공휴일 비작업일<br/>· A(기상) + B(공휴일)<br/>· −C(중복) 차감<br/>· 월 최솟값 8일 보장<br/>· ASOS 기상통계 기반</div></div>
             <div class="mcard"><div style="font-size:12px;font-weight:800;color:#22c55e;margin-bottom:5px;">④ 정리기간</div><div style="font-size:11px;color:#374151;line-height:1.7;">준공검사 준비 기간<br/>· 준공검사 신청·완료<br/>· 인수인계<br/>· 현장 정리·철거<br/>최대 30일, 별도 비작업 없음</div></div>
@@ -1194,14 +1134,14 @@ input[type="number"]{-moz-appearance:textfield;}
           <table class="mtbl">
             <thead><tr><th>공사 유형</th><th>기준</th><th>준비기간</th></tr></thead>
             <tbody>
-              <tr><td>일반건물 (10억 미만)</td><td>소규모 건축</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">10일</td></tr>
-              <tr><td>일반건물 (10억 이상)</td><td>일반 건축</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">20일</td></tr>
+              <tr><td>일반건물 (10억 미만)</td><td>소규모 건축</td><td style="text-align:center;font-weight:800;color:#15803d;">10일</td></tr>
+              <tr><td>일반건물 (10억 이상)</td><td>일반 건축</td><td style="text-align:center;font-weight:800;color:#15803d;">20일</td></tr>
               <tr><td>안전관리계획서 대상</td><td>고위험·대규모</td><td style="text-align:center;font-weight:800;color:#f97316;">45일</td></tr>
               <tr><td>공동주택</td><td>—</td><td style="text-align:center;font-weight:800;color:#f97316;">45일</td></tr>
-              <tr><td>상수도</td><td>—</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">60일</td></tr>
-              <tr><td>도로공사</td><td>—</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">60일</td></tr>
-              <tr><td>교량·강교</td><td>—</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">90일</td></tr>
-              <tr><td>철도</td><td>—</td><td style="text-align:center;font-weight:800;color:#1d4ed8;">90일</td></tr>
+              <tr><td>상수도</td><td>—</td><td style="text-align:center;font-weight:800;color:#15803d;">60일</td></tr>
+              <tr><td>도로공사</td><td>—</td><td style="text-align:center;font-weight:800;color:#15803d;">60일</td></tr>
+              <tr><td>교량·강교</td><td>—</td><td style="text-align:center;font-weight:800;color:#15803d;">90일</td></tr>
+              <tr><td>철도</td><td>—</td><td style="text-align:center;font-weight:800;color:#15803d;">90일</td></tr>
               <tr><td>고속도로</td><td>—</td><td style="text-align:center;font-weight:800;color:#ef4444;">180일</td></tr>
             </tbody>
           </table>
@@ -1245,7 +1185,7 @@ input[type="number"]{-moz-appearance:textfield;}
 
         <div class="bs-panel" id="m_nw">
           <div class="msec">비작업일수 산정 공식 (고시 제8~10조)</div>
-          <div style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:12px;padding:14px;text-align:center;margin-bottom:12px;">
+          <div style="background:linear-gradient(135deg,#f0fdf4,#f0fdf4);border:1px solid #bbf7d0;border-radius:12px;padding:14px;text-align:center;margin-bottom:12px;">
             <div class="meq" style="text-align:left;">비작업일수 = A + B − C</div>
             <div class="meq amber" style="text-align:left;">C (중복일수) = (A × B) ÷ 달력일수</div>
             <div style="font-size:11px;color:#374151;line-height:1.9;text-align:left;margin-top:6px;">
@@ -1321,9 +1261,6 @@ input[type="number"]{-moz-appearance:textfield;}
   </div><!-- /bs-sheet -->
 
 </div><!-- root-app -->
-
-<!-- A4 Hidden Print Target -->
-<div id="a4-print-target" style="display:none;"></div>
 
 <script>
 /* ====================================================
@@ -1661,7 +1598,7 @@ function renderStep5(){
       <li style="background:#eff6ff;padding:9px 3px"><span class="k" style="font-weight:800;color:#1e3a8a">✦ 최종 공사기간</span><span class="v" style="color:#1d4ed8;font-size:16px">${tot}일 (약 ${months}개월)</span></li>
     </ul>
     ${p.cost>=100?`<div class="alert alert-warning" style="margin-top:10px"><span class="alert-ico">🏛</span><div><strong>심의 필요 (100억원 이상):</strong> 지방건설기술심의위원회 적정성 심의 후 입찰공고 가능합니다. (건설기술진흥법 시행령 제17~19조)</div></div>`:''}
-    <div style="font-size:10px;color:#6b7a99;margin-top:10px;text-align:right">작성: MANMIN-Ver3.0 · ${new Date().toLocaleDateString('ko-KR')}</div>
+    <div style="font-size:10px;color:#6b7a99;margin-top:10px;text-align:right">작성: MANMIN-Ver5.0 · ${new Date().toLocaleDateString('ko-KR')}</div>
   </div></div>
   <div style="display:flex;justify-content:space-between;gap:8px;margin-top:14px;flex-wrap:wrap">
     <button class="btn-ghost" onclick="prevStep()">← 이전</button>
@@ -1827,7 +1764,7 @@ function renderA4(){
 
   document.getElementById('a4-content').innerHTML=`
   <div class="a4-header" style="break-inside:avoid;page-break-inside:avoid;">
-    <div class="a4-title">공공 건설공사 공기산정 근거서 [MANMIN-Ver3.0]</div>
+    <div class="a4-title">공공 건설공사 공기산정 근거서 [MANMIN-Ver5.0]</div>
     <div class="a4-meta">국토교통부고시 제2024-1021호 · 건설기술진흥법 제45조의2 | ${new Date().toLocaleDateString('ko-KR')} 작성</div>
   </div>
   <div class="a4-section" style="break-inside:avoid;page-break-inside:avoid;">
@@ -1886,7 +1823,7 @@ function renderA4(){
     </tbody></table>
   </div>
   <div class="a4-footer">
-    <span>건축공사 공기산정 시스템 [MANMIN-Ver3.0]</span>
+    <span>건축공사 공기산정 시스템 [MANMIN-Ver5.0]</span>
     <span>국토교통부고시 제2024-1021호 · 건설기술진흥법 제45조의2</span>
     <span>작성일: ${new Date().toLocaleDateString('ko-KR')}</span>
   </div>`;
@@ -1913,7 +1850,7 @@ function renderMobile(){
     <div style="width:32px;height:32px;background:#1d4ed8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">⏱</div>
     <div style="flex:1;min-width:0">
       <div style="font-size:13px;font-weight:900;color:#1e3a8a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">건축공사 공기산정</div>
-      <div style="font-size:9.5px;color:#3b82f6;font-weight:700">MANMIN-Ver3.0</div>
+      <div style="font-size:9.5px;color:#3b82f6;font-weight:700">MANMIN-Ver5.0</div>
     </div>
   </div>
   <div class="mob-content">
@@ -2007,7 +1944,7 @@ function shareMobileJPG(){
     if(navigator.canShare({files:[file]})){
       navigator.share({
         title:'공기산정 결과',
-        text:'건설공사 적정 공기산정 결과 (MANMIN-Ver3.0)',
+        text:'건설공사 적정 공기산정 결과 (MANMIN-Ver5.0)',
         files:[file]
       }).catch(e=>{if(e.name!=='AbortError') alert('공유 중 오류: '+e.message);});
       return;
@@ -2278,6 +2215,269 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderA4();renderMobile();
   setupPWA();
 });
+</script>
+<script>
+/* ═══════════════ v5.0 — A4 페이지 단위 JPG + 저장 시트 (§3-5 · §14-2 · §17-7) ═══════════════
+   22 냉온배관 v5.0 엔진 이식. 통짜 1장 캡처 → A4 비율(794×1123) 쪽 분할 + 미리보기 시트. */
+function mmSafeCuts(page){
+  var pr=page.getBoundingClientRect(), out=[];
+  page.querySelectorAll('.a4-head2,table.a4-tbl tbody tr,table.a4-meta-table tr')
+    .forEach(function(el){ out.push(el.getBoundingClientRect().bottom-pr.top); });
+  page.querySelectorAll('.a4-sub')
+    .forEach(function(el){ out.push(el.getBoundingClientRect().top-pr.top); });
+  out.push(page.scrollHeight);
+  out.sort(function(a,b){return a-b;});
+  return out.filter(function(v,i,a){return i===0 || v-a[i-1]>0.5;});
+}
+function mmPickCut(cuts,y,limit){
+  var best=0;
+  for(var i=0;i<cuts.length;i++){
+    if(cuts[i]>y+1 && cuts[i]<=limit) best=cuts[i];
+    else if(cuts[i]>limit) break;
+  }
+  return best;
+}
+/* ⛔ .a4-page 에 min-height:1122px 이 걸려 있어 scrollHeight 를 그대로 쓰면 유령 여백이 문서 높이로 잡힌다(§14-2). */
+function mmContentHeight(page){
+  var pr=page.getBoundingClientRect(), max=0;
+  page.querySelectorAll('*').forEach(function(el){
+    var cs=getComputedStyle(el);
+    if(cs.display==='none' || cs.visibility==='hidden') return;
+    var b=el.getBoundingClientRect().bottom-pr.top;
+    if(b>max) max=b;
+  });
+  var pad=parseFloat(getComputedStyle(page).paddingBottom)||0;
+  var h=Math.ceil(max+pad);
+  return (h>0 && h<page.scrollHeight) ? h : page.scrollHeight;
+}
+/* 쪽 나눔은 @page 여백과 같은 값을 쓴다(§3-5-1). 세로 유효 높이 297-14-22 = 261mm. */
+var MM_PAGE = { W:794, H:1123, MT:14, MR:12, MB:22, ML:14 };
+/* 한 장에 못 들어가는 표에는 .long 을 붙여 분할을 허용한다(§16-13). */
+function markLongTables(page){
+  var mmPerPx=210/794, usable=(297-14-22)/mmPerPx;   /* 261mm ≈ 987px */
+  page.querySelectorAll('table.a4-tbl,table.a4-meta-table').forEach(function(t){
+    t.classList.toggle('long', t.getBoundingClientRect().height > usable);
+  });
+}
+/* 블록 원자 방식(§17-7) — #a4Page 직계 자식. 소제목(.a4-sub)은 바로 뒤 형제와 한 덩어리. */
+function mmBlocks(page){
+  var pr=page.getBoundingClientRect(), out=[], pend=null;
+  Array.prototype.forEach.call(page.children, function(el){
+    var b=el.getBoundingClientRect();
+    if(b.height<=0) return;
+    var mb=parseFloat(getComputedStyle(el).marginBottom)||0;
+    var top=b.top-pr.top, bot=b.bottom-pr.top+mb;
+    if(el.classList.contains('a4-sub')){
+      if(pend) out.push(pend);
+      pend={top:top, bot:bot};
+      return;
+    }
+    if(pend){ out.push({top:pend.top, bot:bot}); pend=null; return; }
+    out.push({top:top, bot:bot});
+  });
+  if(pend) out.push(pend);
+  out.sort(function(a,b){ return a.top-b.top; });
+  return out;
+}
+function mmSegments(page){
+  var mmPerPx=210/MM_PAGE.W;
+  var cs=getComputedStyle(page);
+  var padTop=parseFloat(cs.paddingTop)||0, padBot=parseFloat(cs.paddingBottom)||0;
+  var usable=(297-MM_PAGE.MT-MM_PAGE.MB)/mmPerPx;
+  var docH=mmContentHeight(page);
+  var stop=Math.max(padTop, docH-padBot);
+  var blocks=mmBlocks(page);
+  if(!blocks.length) return [[padTop,stop]];
+  var cuts=mmSafeCuts(page);
+  var segs=[], y=padTop, i=0, guard=0;
+  while(i<blocks.length && guard++<120){
+    var limit=y+usable, j=i, end=y;
+    while(j<blocks.length && blocks[j].bot<=limit+0.5){ end=blocks[j].bot; j++; }
+    if(j===i){
+      var cut=mmPickCut(cuts, y, limit);
+      if(!cut || cut<=y+1) cut=limit;
+      segs.push([y,cut]);
+      if(cut>=blocks[i].bot-0.5) i++;
+      y=cut; continue;
+    }
+    segs.push([y,end]); y=end; i=j;
+  }
+  if(stop-y>5) segs.push([y,stop]);
+  return segs.length ? segs : [[padTop,stop]];
+}
+function mmDownload(url,name){
+  var a=document.createElement('a');
+  a.download=name; a.href=url;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function mmCloseSheet(){
+  var ov=document.getElementById('mm-save-ov');
+  if(ov) ov.classList.remove('show');
+}
+function mmOpenSheet(shots, base){
+  var prev=document.getElementById('mm-save-ov');
+  if(prev) prev.remove();
+  var ov=document.createElement('div');
+  ov.id='mm-save-ov';
+  var body='';
+  shots.forEach(function(url,i){
+    body+='<div class="mm-shot"><img src="'+url+'" alt="'+(i+1)+'쪽 미리보기"/>'
+        + '<button class="mm-shot-btn" data-i="'+i+'">🖼 '+(i+1)+'쪽 저장</button></div>';
+  });
+  ov.innerHTML =
+    '<div class="mm-sheet" role="dialog" aria-modal="true" aria-label="산정서 저장">'
+    + '<div class="mm-sheet-head"><div>'
+    +   '<div class="mm-sheet-title">산정서 저장 · 총 '+shots.length+'매</div>'
+    +   '<div class="mm-sheet-note">'+(shots.length>1?'브라우저가 연속 다운로드를 차단하므로 쪽별로 저장합니다.':'미리보기를 확인하고 저장하세요.')+'</div>'
+    + '</div><button class="btn-export mm-btn-close" id="mm-sheet-x">✕ 닫기</button></div>'
+    + '<div class="mm-sheet-body'+(shots.length>1?' multi':'')+'">'+body+'</div>'
+    + '<div class="mm-sheet-foot">'
+    +   '<button class="btn-export mm-btn-jpg" id="mm-save-all">🖼 전체 저장 ('+shots.length+'매)</button>'
+    + '</div></div>';
+  document.body.appendChild(ov);
+  ov.classList.add('show');
+  ov.querySelectorAll('.mm-shot-btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      mmDownload(shots[+b.getAttribute('data-i')], base+'_'+(+b.getAttribute('data-i')+1)+'of'+shots.length+'.jpg');
+    });
+  });
+  document.getElementById('mm-sheet-x').addEventListener('click',mmCloseSheet);
+  ov.addEventListener('click',function(e){ if(e.target===ov) mmCloseSheet(); });
+  document.getElementById('mm-save-all').addEventListener('click',function(){
+    shots.forEach(function(url,i){
+      setTimeout(function(){ mmDownload(url, base+'_'+(i+1)+'of'+shots.length+'.jpg'); }, i*400);
+    });
+  });
+}
+
+window.exportA4Jpg = function(){
+  var el = document.getElementById('a4-page');
+  if(!el){ mmToast('A4 미리보기 탭으로 이동 후 시도하세요'); return; }
+  renderA4();
+  mmToast('📸 JPG 생성 중...');
+  /* ⛔ 미리보기 축소 배율을 반드시 먼저 푼다(§16-17). 해제 → 리플로우 → 측정·캡처 → 복원 */
+  var scaleWrap = document.getElementById('a4ScaleWrap');
+  var prevTransform = scaleWrap ? scaleWrap.style.transform : '';
+  if(scaleWrap) scaleWrap.style.transform = 'none';
+  void el.offsetHeight;
+  var restoreScale = function(){ if(scaleWrap) scaleWrap.style.transform = prevTransform; };
+  markLongTables(el);
+  var segs = mmSegments(el);
+  var fullH = Math.max(mmContentHeight(el),1);
+  html2canvas(el, {
+    scale: 2, useCORS: true, allowTaint: false,
+    backgroundColor: '#ffffff', logging: false,
+    width: el.scrollWidth, height: fullH,
+    windowWidth: el.scrollWidth, windowHeight: fullH,
+    scrollX: 0, scrollY: 0
+  }).then(function(canvas){
+    restoreScale();
+    var now = new Date();
+    var ts = now.getFullYear()+''+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0')
+      +'_'+String(now.getHours()).padStart(2,'0')+String(now.getMinutes()).padStart(2,'0');
+    var base = '공기산정_근거서_MANMIN-Ver5.0_'+ts;
+    if(!segs || !segs.length){
+      mmDownload(canvas.toDataURL('image/jpeg',0.95), base+'.jpg');
+      mmToast('✅ JPG 저장 완료!'); return;
+    }
+    /* 각 쪽을 A4 용지 비율(794×1123 · 1:1.414) 캔버스에 얹는다(§3-5-2). 윗여백 14mm 전 쪽 동일(§3-5-1). */
+    var S = canvas.width/el.scrollWidth;
+    var PAGE_W=MM_PAGE.W, PAGE_H=MM_PAGE.H, mmPerPx=210/PAGE_W;
+    var topPx = MM_PAGE.MT/mmPerPx;
+    var shots = segs.map(function(sg, idx){
+      var h=Math.max(1,Math.round((sg[1]-sg[0])*S));
+      var tmp=document.createElement('canvas');
+      tmp.width=Math.round(PAGE_W*S); tmp.height=Math.round(PAGE_H*S);
+      var ctx=tmp.getContext('2d');
+      ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,tmp.width,tmp.height);
+      ctx.drawImage(canvas,0,Math.round(sg[0]*S),canvas.width,h, 0,Math.round(topPx*S),canvas.width,h);
+      /* 쪽 번호 각인 — JPG 전용 규격(§3-5-5 · §18-12). 2쪽 이상일 때만. */
+      if(segs.length>1){
+        var fs=Math.round(9*S);
+        ctx.fillStyle='#9CA3AF';
+        ctx.font='700 '+fs+'px Orbitron, "JetBrains Mono", monospace';
+        ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+        ctx.fillText((idx+1)+' / '+segs.length,
+                     Math.round(MM_PAGE.ML/mmPerPx*S),
+                     Math.round((MM_PAGE.H - MM_PAGE.MB/mmPerPx + fs/S*0.4)*S));
+      }
+      return tmp.toDataURL('image/jpeg',0.95);
+    });
+    mmOpenSheet(shots, base);
+    mmToast(shots.length>1 ? '📄 '+shots.length+'매로 나눴습니다' : '📄 미리보기에서 저장하세요');
+  }).catch(function(err){
+    restoreScale();
+    mmToast('❌ JPG 저장 실패: '+err.message);
+  });
+};
+</script>
+<script>
+/* ══════════════════════════════════════════
+   v5.0 — 출력·배율·스트립 (계산 스크립트 무접촉 · window.* 재할당으로 교체)
+   ══════════════════════════════════════════ */
+function mmToast(msg){
+  var t=document.getElementById('mm-toast');
+  if(!t){ t=document.createElement('div'); t.id='mm-toast'; t.className='toast'; document.body.appendChild(t); }
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._tm); t._tm=setTimeout(function(){ t.classList.remove('show'); },2200);
+}
+
+/* ⛔ 종전 printA4 는 #a4-page 를 #a4-print-target 에 복제해 인쇄했다(§2② 위반).
+   v5.0 은 같은 DOM 을 인쇄한다 — @media print 가 A4 탭만 남기고 전부 숨긴다. */
+window.printA4 = function(){
+  renderA4();
+  setTimeout(function(){ window.print(); }, 120);
+};
+
+/* A4 동적 배율 — §17-2 · §17-4 : #a4-page 794px 고정, 래퍼에 transform:scale() 만.
+   래퍼에 width 를 인라인으로 걸지 않는다(§17-3) · 음수/과대 배율 방지 */
+window.scaleA4Preview = function(){
+  var wrap = document.getElementById('a4ScaleWrap');
+  var outer = document.getElementById('a4Wrap');
+  var page = document.getElementById('a4-page');
+  if(!wrap || !outer || !page) return;
+  if(window.matchMedia('print').matches){ wrap.style.transform='none'; wrap.style.height=''; return; }
+  var panel = document.getElementById('tab-a4');
+  if(panel && !panel.classList.contains('active')) return;
+  var cs = getComputedStyle(outer);
+  var availW = outer.clientWidth - (parseFloat(cs.paddingLeft)||0) - (parseFloat(cs.paddingRight)||0);
+  if(availW <= 0){ wrap.style.transform='none'; wrap.style.height=''; return; }
+  var scale = Math.max(0.05, Math.min(1, availW / 794));
+  wrap.style.transformOrigin = 'top center';
+  wrap.style.transform = 'scale(' + scale.toFixed(5) + ')';
+  wrap.style.height = (page.offsetHeight * scale) + 'px';
+};
+
+/* 결과 화면·헤더 JPG 버튼이 부르던 모바일 JPG(dom-to-image)는 A4 JPG 엔진으로 일원화한다 */
+window.exportMobileJPG = function(){ if(typeof exportA4Jpg==='function') exportA4Jpg(); };
+window.shareMobileJPG = function(){ if(typeof exportA4Jpg==='function') exportA4Jpg(); };
+
+(function(){
+  function setSum(){
+    var f=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+    if(typeof S==='undefined'){['sb-type','sb-prep','sb-work','sb-nw','sb-clean','sb-total'].forEach(function(id){f(id,'—');});return;}
+    var t=(typeof TYPES!=='undefined')?TYPES.find(function(x){return x.id===S.proj.type;}):null;
+    var tot=(typeof totalDays==='function')?totalDays():0;
+    f('sb-type', t?t.name:'—');
+    f('sb-prep', S.prep.days+'일');
+    f('sb-work', S.work.total+'일');
+    f('sb-nw', S.nw.total+'일');
+    f('sb-clean', S.cleanup.days+'일');
+    f('sb-total', tot+'일 ('+(tot/30.4).toFixed(1)+'개월)');
+  }
+  function afterA4(){
+    var p=document.getElementById('a4-page');
+    if(p&&typeof markLongTables==='function') markLongTables(p);
+    if(typeof scaleA4Preview==='function') setTimeout(scaleA4Preview,0);
+  }
+  var _rf=window.refresh, _ra=window.renderA4, _rs=window.resetApp;
+  if(typeof _rf==='function'){window.refresh=function(){var r=_rf.apply(this,arguments);setSum();return r;};}
+  if(typeof _ra==='function'){window.renderA4=function(){var r=_ra.apply(this,arguments);afterA4();return r;};}
+  if(typeof _rs==='function'){window.resetApp=function(){var r=_rs.apply(this,arguments);setSum();return r;};}
+  setSum();
+  window.addEventListener('resize', function(){ if(typeof scaleA4Preview==='function') scaleA4Preview(); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if(typeof scaleA4Preview==='function') scaleA4Preview(); });
+})();
 </script>
 </body>
 </html>
