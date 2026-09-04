@@ -2479,5 +2479,7 @@ window.shareMobileJPG = function(){ if(typeof exportA4Jpg==='function') exportA4
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if(typeof scaleA4Preview==='function') scaleA4Preview(); });
 })();
 </script>
+<script>/* R26 (2026-09-04 · 지시서 §20-15 ③ · S10 소급) — 인쇄 중 문서 제목을 비워 PDF 머리글의 페이지 제목을 지운다. 쪽번호·URL 은 브라우저 옵션 */
+(function(){var t=null;window.addEventListener('beforeprint',function(){if(t===null){t=document.title;}document.title=' ';});window.addEventListener('afterprint',function(){if(t!==null){document.title=t;t=null;}});})();</script>
 </body>
 </html>
