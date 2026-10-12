@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>건축공사 공기산정 시스템 사용자 매뉴얼 Ver-5.1 · MANMIN</title>
+<meta name="description" content="건축공사 공기산정 시스템 MANMIN Ver-5.1 사용자 매뉴얼 — 화면 기능, 기술기준(국토교통부고시 제2024-1021호 · 2026년 적정 공사기간 확보를 위한 가이드라인 부록 1·3·5), 실무 작업 방법">
+<meta name="author" content="김만민 건축사 · ㈜대성건축사사무소">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;900&display=swap">
+<link rel="stylesheet" href="./assets/fonts/manmin-fonts.css">
+<style>
+:root{
+  --navy:#2D3A8C;--navy-d:#1F2A6B;--navy-l:#E9ECF8;--accent:#F4A261;--accent-d:#C97A3A;--accent-l:#FDF1E7;
+  --bg:#F8F9FA;--card:#FFFFFF;--text:#1A1A2E;--text2:#4A4F66;--line:#DDE1EA;--ok:#0F766E;--ng:#B42318;
+  --r:12px;--pad:24px;--shadow:0 4px 20px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:16px;line-height:1.75;word-break:keep-all;overflow-wrap:anywhere}
+a{color:var(--navy)}a:hover{color:var(--accent-d)}
+code,kbd,.mono{font-family:var(--font-mono);font-size:.9em}
+code{background:var(--navy-l);color:var(--navy-d);padding:1px 6px;border-radius:5px}
+kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 6px;background:#fff}
+/* 상단 */
+.top{background:linear-gradient(135deg,var(--navy-d),var(--navy));color:#fff}
+.top-in{max-width:1240px;margin:0 auto;padding:44px 24px 36px}
+.eyebrow{font-family:var(--font-brand);font-weight:700;font-size:12px;letter-spacing:.18em;opacity:.85}
+.top h1{font-size:28px;font-weight:900;margin:8px 0 6px;line-height:1.35}
+.top .sub{opacity:.9;margin:0}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:4px 12px;font-size:13px}
+a.badge{color:#fff;text-decoration:none}a.badge:hover{background:rgba(255,255,255,.24);color:#fff}
+.badge.acc{background:var(--accent);border-color:var(--accent);color:#1A1A2E;font-weight:700}
+/* 레이아웃 */
+.wrap{max-width:1240px;margin:0 auto;padding:28px 24px 80px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:32px}
+nav.toc{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px 16px;font-size:14px}
+nav.toc h2{font-size:13px;letter-spacing:.12em;color:var(--text2);margin:0 0 8px}
+nav.toc ol{list-style:none;margin:0;padding:0}
+nav.toc li a{display:block;padding:5px 8px;border-radius:8px;text-decoration:none;color:var(--text)}
+nav.toc li a:hover,nav.toc li a.on{background:var(--navy-l);color:var(--navy)}
+nav.toc li.sub a{padding-left:20px;font-size:13px;color:var(--text2)}
+main{min-width:0}
+section.ch{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:var(--pad) calc(var(--pad) + 8px);margin-bottom:28px}
+section.ch>h2{font-size:24px;font-weight:700;color:var(--navy);margin:0 0 4px;display:flex;align-items:baseline;gap:10px}
+section.ch>h2 .n{font-family:var(--font-brand);font-weight:700;font-size:14px;color:#fff;background:var(--navy);border-radius:8px;padding:2px 9px}
+section.ch>.lead{color:var(--text2);margin:0 0 18px}
+h3{font-size:19px;color:var(--navy-d);margin:34px 0 10px;padding-top:6px;border-top:1px solid var(--line)}
+h3:first-of-type{border-top:0}
+h4{font-size:16px;margin:22px 0 8px}
+p{margin:8px 0}
+ul,ol{padding-left:22px}
+.note,.tip,.warn{border-radius:10px;padding:12px 16px;margin:14px 0;font-size:15px}
+.note{background:var(--navy-l);border-left:4px solid var(--navy)}
+.tip{background:var(--accent-l);border-left:4px solid var(--accent)}
+.warn{background:#FEF3F2;border-left:4px solid var(--ng)}
+.note b:first-child,.tip b:first-child,.warn b:first-child{margin-right:6px}
+/* 표 */
+.tbl{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14px;background:#fff}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--navy-l);color:var(--navy-d);font-weight:700;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-family:var(--font-mono);white-space:nowrap}
+.ok{color:var(--ok);font-weight:700}.ng{color:var(--ng);font-weight:700}
+/* 그림 */
+figure.shot{margin:18px 0 26px}
+figure.shot .frame{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;cursor:zoom-in}
+figure.shot img{display:block;width:100%;height:auto}
+figure.narrow{max-width:420px}
+.pin{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;background:var(--accent);color:#1A1A2E;font:700 13px/26px var(--font-mono);text-align:center;box-shadow:0 0 0 3px #fff,0 2px 8px rgba(0,0,0,.35);pointer-events:none}
+figcaption{font-size:14px;color:var(--text2);margin-top:8px}
+.fno{font-family:var(--font-mono);font-size:11px;background:var(--navy);color:#fff;border-radius:6px;padding:1px 7px;margin-right:8px}
+ol.legend{list-style:none;padding:0;margin:10px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px 16px;font-size:14px}
+ol.legend li{display:flex;gap:8px;align-items:flex-start}
+ol.legend b{flex:0 0 22px;height:22px;border-radius:50%;background:var(--accent);font:700 12px/22px var(--font-mono);text-align:center}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+/* 단계 */
+.steps{counter-reset:st;list-style:none;padding:0;margin:16px 0}
+.steps>li{counter-increment:st;position:relative;padding:4px 0 18px 54px;border-left:2px solid var(--line);margin-left:18px}
+.steps>li:last-child{border-left-color:transparent}
+.steps>li::before{content:counter(st);position:absolute;left:-19px;top:0;width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;font:700 15px/36px var(--font-mono);text-align:center;box-shadow:0 0 0 4px var(--bg)}
+.steps>li>b.t{display:block;font-size:17px;color:var(--navy-d);margin-bottom:2px}
+/* 수식 */
+.eq{font-family:var(--font-mono);background:#0F1630;color:#E8ECFF;border-radius:10px;padding:14px 18px;margin:12px 0;overflow-x:auto;font-size:14px;line-height:1.9;white-space:pre}
+.eq .c{color:#9AA6D6}
+.svgbox{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;margin:14px 0;overflow-x:auto}
+.svgbox svg{display:block;width:100%;min-width:640px;height:auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:14px 0}
+.card{border:1px solid var(--line);border-radius:var(--r);padding:16px;background:#fff}
+.card h5{margin:0 0 4px;font-size:15px;color:var(--navy)}
+.card p{margin:0;font-size:14px;color:var(--text2)}
+footer.foot{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--text2);font-size:13px}
+/* 라이트박스 */
+#lb{position:fixed;inset:0;background:rgba(10,14,30,.88);display:none;align-items:center;justify-content:center;z-index:99;cursor:zoom-out;padding:16px}
+#lb.open{display:flex}#lb img{max-width:100%;max-height:100%;border-radius:8px;background:#fff}
+.totop{position:fixed;right:18px;bottom:18px;width:44px;height:44px;border-radius:50%;background:var(--navy);color:#fff;border:0;font-size:18px;box-shadow:var(--shadow);cursor:pointer}
+/* 반응형 5단계 */
+@media (max-width:1240px){.wrap{grid-template-columns:230px minmax(0,1fr);gap:24px}}
+@media (max-width:1024px){.wrap{grid-template-columns:1fr}nav.toc{position:static;max-height:none}nav.toc ol{columns:2}}
+@media (max-width:760px){.pair{grid-template-columns:1fr}section.ch{padding:20px 18px}.top h1{font-size:24px}}
+@media (max-width:640px){nav.toc ol{columns:1}body{font-size:15px}}
+@media (max-width:480px){.wrap,.top-in{padding-left:16px;padding-right:16px}.pin{width:22px;height:22px;font-size:11px;line-height:22px}}
+@media (max-width:400px){section.ch>h2{font-size:20px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* A4 인쇄 */
+@page{size:A4;margin:14mm 12mm 14mm}
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff;font-size:10.5pt}
+  nav.toc,.totop,#lb{display:none!important}
+  .wrap{display:block;padding:0}
+  section.ch{box-shadow:none;padding:0 0 8mm;margin:0;break-before:page}
+  main{padding-bottom:8mm}
+  section.ch:first-of-type{break-before:auto}
+  figure.shot,.tbl,.eq,.svgbox,.note,.tip,.warn,.steps>li{break-inside:avoid}
+  h3,h4{break-after:avoid}
+  .top{border-radius:0}
+  .pfoot{position:fixed;bottom:0;left:0;right:0;height:6mm;background:#fff;font-size:8pt;color:#666;border-top:1px solid #ccc;padding-top:1.5mm;display:flex;justify-content:space-between}
+}
+.pfoot{display:none}
+@media print{.pfoot{display:flex}}
+/* ── 좁은 화면 대응(r1 · 2026-10-12) : 화면 전용 — 인쇄·PDF에는 영향 없음 ── */
+@media screen and (max-width:640px){
+  .k1 td:first-child,.k1 th:first-child{white-space:normal}
+  /* 글 표(숫자 칸 없는 표) → 행마다 카드로 쌓기 */
+  .tbl.stack{border:0;border-radius:0;overflow:visible}
+  .tbl.stack table,.tbl.stack tbody,.tbl.stack tr,.tbl.stack td{display:block;width:auto}
+  .tbl.stack thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .tbl.stack table{background:transparent}
+  .tbl.stack tr{border:1px solid var(--line);border-radius:10px;background:#fff;margin:0 0 10px;overflow:hidden}
+  .tbl.stack td{border-bottom:1px solid var(--line);padding:8px 12px}
+  .tbl.stack tr td:last-child{border-bottom:0}
+  .tbl.stack td:first-child{background:var(--navy-l);color:var(--navy-d);font-weight:700}
+  .tbl.stack td[data-th]:not(:first-child)::before{content:attr(data-th);display:block;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:2px}
+  .tbl.stack.c2 td[data-th]:not(:first-child)::before{display:none}
+  .tbl.stack td:empty{display:none}
+  /* 숫자 표 → 표 모양 유지, 글자·여백 축소, 넘치면 좌우로 밀기(오른쪽 그림자로 표시) */
+  .tbl:not(.stack){background:linear-gradient(to right,#fff 30%,rgba(255,255,255,0)) left/40px 100% no-repeat local,linear-gradient(to left,#fff 30%,rgba(255,255,255,0)) right/40px 100% no-repeat local,radial-gradient(farthest-side at 100% 50%,rgba(26,26,46,.22),transparent) right/12px 100% no-repeat scroll,#fff}
+  .tbl:not(.stack) table{font-size:13px;background:transparent}
+  .tbl:not(.stack) th,.tbl:not(.stack) td{padding:7px 8px}
+  /* 수식 → 줄바꿈 허용 */
+  .eq{white-space:pre-wrap;word-break:keep-all;font-size:13px;line-height:1.75;padding:12px 14px}
+  .eq .c{display:block;padding-left:1em}
+  .svgbox{position:relative}
+  .svgbox::after{content:"← 좌우로 밀어서 보기 →";display:block;text-align:center;font-size:12px;color:var(--text2);margin-top:6px;position:sticky;left:0}
+  ol.legend{grid-template-columns:1fr}
+  .steps>li{padding-left:34px;margin-left:14px}
+}
+.rev{white-space:nowrap}
+@media print{.rev{display:none}}
+</style>
+</head><body>
+<header class="top"><div class="top-in">
+<div class="eyebrow">MANMIN ENGINEERING · USER MANUAL</div>
+<h1>건축공사 공기산정 시스템 사용자 매뉴얼</h1>
+<p class="sub">착공일·지점·공사 유형 입력 → 준비·작업·비작업·정리기간 산정 → A4 공기산정 근거서</p>
+<div class="badges"><span class="badge acc">매뉴얼 <span style="font-family:var(--font-brand)">Ver-5.1</span></span><a class="badge" href="../index.html">▶ 공기산정 시스템 열기</a><a class="badge" href="AIR_사용자매뉴얼_Ver-5.1.pdf" download>⤓ PDF</a><span class="badge">2026-10-12</span><span class="badge">김만민 건축사 · ㈜대성건축사사무소</span></div>
+</div></header>
+<div class="wrap"><nav class="toc" aria-label="목차"><h2>목차</h2><ol><li><a href="#ch0">0. 이 매뉴얼에 대하여</a></li><li><a href="#ch1">1. 한눈에 보기</a></li><li class="sub"><a href="#s1-1">화면 구성</a></li><li class="sub"><a href="#s1-2">작업 탭·근거 표시</a></li><li class="sub"><a href="#s1-3">설치·보관·매뉴얼</a></li><li><a href="#ch2">2. 3분 따라하기</a></li><li><a href="#ch3">3. 화면별 기능 상세</a></li><li class="sub"><a href="#s3-1">공사 기본 정보</a></li><li class="sub"><a href="#s3-2">기상 관측 지점</a></li><li class="sub"><a href="#s3-3">공사 유형</a></li><li class="sub"><a href="#s3-4">건물 규모</a></li><li class="sub"><a href="#s3-5">준비기간·정리기간</a></li><li class="sub"><a href="#s3-6">공종별 작업일수</a></li><li class="sub"><a href="#s3-7">비작업일수 — 기상조건</a></li><li class="sub"><a href="#s3-8">비작업일수 — 월별 산정표</a></li><li class="sub"><a href="#s3-9">산정 결과</a></li><li class="sub"><a href="#s3-10">산정공식과 비교</a></li><li class="sub"><a href="#s3-11">산정근거 명세서</a></li><li class="sub"><a href="#s3-12">A4 근거서·출력</a></li><li class="sub"><a href="#s3-13">법적근거 탭</a></li><li class="sub"><a href="#s3-14">계산방법 안내 창</a></li><li class="sub"><a href="#s3-15">모바일</a></li><li><a href="#ch4">4. 기술기준 해설</a></li><li class="sub"><a href="#s4-1">근거 체계</a></li><li class="sub"><a href="#s4-2">공사기간의 구성</a></li><li class="sub"><a href="#s4-3">준비기간</a></li><li class="sub"><a href="#s4-4">비작업일수</a></li><li class="sub"><a href="#s4-5">법정공휴일(부록 1)</a></li><li class="sub"><a href="#s4-6">기상조건별 비작업일수(부록 3)</a></li><li class="sub"><a href="#s4-7">작업일수</a></li><li class="sub"><a href="#s4-8">정리기간</a></li><li class="sub"><a href="#s4-9">산정공식(부록 5)</a></li><li class="sub"><a href="#s4-10">결정 절차·심의·명시</a></li><li class="sub"><a href="#s4-11">프로그램의 계산 순서</a></li><li class="sub"><a href="#s4-12">프로그램이 다루지 않는 것</a></li><li class="sub"><a href="#s4-13">적용 시점</a></li><li><a href="#ch5">5. 실무 작업 방법</a></li><li class="sub"><a href="#s5-1">단계별 절차</a></li><li class="sub"><a href="#s5-2">제출 전 확인</a></li><li class="sub"><a href="#s5-3">예제 B — 공동주택</a></li><li><a href="#ch6">6. 문제 해결·FAQ</a></li><li><a href="#ch7">부록</a></li><li class="sub"><a href="#a1">예제 입력값</a></li><li class="sub"><a href="#a2">버전 변경 내역</a></li><li class="sub"><a href="#a3">용어</a></li></ol></nav><main><style>
+#fig-s15_a4page,#fig-s25_var_a4page{max-width:560px}
+#fig-s08_work{max-width:760px}
+#fig-s17_help_howto,#fig-s18_help_prep,#fig-s19_help_nw,#fig-s20_help_verify,#fig-s21_help_weather{max-width:560px}
+.k1 td:first-child,.k1 th:first-child{white-space:nowrap}
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+@media (max-width:760px){.tri{grid-template-columns:1fr}}
+@media print{
+  figure.shot{max-width:none!important}
+  figure.shot .frame{width:fit-content;max-width:100%}
+  figure.shot img{width:auto;height:auto;max-width:100%;max-height:118mm}
+  #fig-s15_a4page img,#fig-s25_var_a4page img,#fig-s08_work img,#fig-s23_var_nw img{max-height:200mm}
+  #fig-s17_help_howto img,#fig-s18_help_prep img,#fig-s19_help_nw img,#fig-s20_help_verify img,#fig-s21_help_weather img{max-height:125mm}
+  figure.narrow img{max-height:105mm}
+  .pair{grid-template-columns:1fr 1fr}.tri{grid-template-columns:repeat(3,1fr)}
+  .brk .tbl{break-inside:auto}.brk tr{break-inside:avoid}.brk thead{display:table-header-group}
+}
+</style><section class="ch" id="ch0"><h2><span class="n">00</span>이 매뉴얼에 대하여</h2>
+<p class="lead">건축공사 공기산정 시스템은 준비기간·작업일수·비작업일수·정리기간을 더해 공공 건설공사의 공사기간을 산정하고, A4 공기산정 근거서로 출력하는 웹 계산도구입니다. 비작업일수는 가이드라인 부록의 96개 기상 관측 지점 통계와 법정공휴일로 월별 계산합니다. 발주청 담당자와 설계자가 화면 순서대로 따라 하며 공사기간 산정근거를 만들 수 있도록 작성했습니다.</p>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">항목</th><th class="">내용</th></tr></thead><tbody><tr><td class="">대상 프로그램</td><td class="">건축공사 공기산정 시스템 <b>MANMIN Ver-5.1</b> — 탭 막대 「📘 매뉴얼」 버튼으로 이 문서가 열립니다</td></tr><tr><td class="">접속 주소</td><td class=""><a href="https://manminkim-eng.github.io/construction-air/" target="_blank" rel="noopener">manminkim-eng.github.io/construction-air</a></td></tr><tr><td class="">매뉴얼 판</td><td class=""><b>Ver-5.1</b> (화면 표기와 같은 판 번호, 초판) · 2026-10-12 · 작성 김만민 건축사(㈜대성건축사사무소)</td></tr><tr><td class="">내려받기</td><td class=""><a href="AIR_사용자매뉴얼_Ver-5.1.pdf" download>PDF(A4)</a> · <a href="../index.html">공기산정 시스템 열기</a></td></tr><tr><td class="">예제</td><td class="">본문 그림은 예제 A(만민 건축사 전주 신사옥 건립공사 · 전주(146) · 일반건물 · 공사비 50억원 · 지상 5층/지하 1층 · 착공 2027. 3. 2.)로 캡처 — 공사명·공사비·층수는 프로그램 초기값, 착공일만 고정했습니다. 공사기간 <b>450일</b>. 입력값은 <a href="#a1">부록 A1</a></td></tr><tr><td class="">근거 기준</td><td class="">건설기술 진흥법(2025.10.1. 시행) 제45조의2 · 「공공 건설공사의 공사기간 산정기준」 국토교통부고시 제2024-1021호(2025.1.6. 시행) · 「2026년 적정 공사기간 확보를 위한 가이드라인」(국토교통부공고 제2025-1603호, 2025.12.31.) — 4장의 조문은 원문(LawMCP · 가이드라인 원문, 2026-10-12 확인)으로 대조</td></tr><tr><td class="">읽는 순서</td><td class="">처음이면 1장 → 2장(따라하기) → 필요할 때 3장(화면별 상세). 산정근거를 입찰 서류에 붙이기 전에는 4장(기술기준)·5장(작업 방법)</td></tr></tbody></table></div></div>
+<div class="note"><b>표기</b>그림 위 주황색 번호(①②…)는 그림 아래 범례 번호와 같습니다. 그림을 누르면 크게 볼 수 있습니다. 「고시」는 국토교통부고시 제2024-1021호, 「가이드라인」은 국토교통부공고 제2025-1603호를 뜻합니다.</div>
+<div class="warn"><b>책임 한계</b>본 도구는 공사기간 산정을 돕는 보조 프로그램입니다. 일반건물의 준비기간과 공종별 작업일수는 가이드라인에 없는 <b>MANMIN 참고값</b>이므로 설계 수량과 1일 작업량·실적치로 다시 산출해야 합니다(<a href="#s4-7">4-7</a>). 기상조건의 설정, 공사여건 보정, 시공조건 반영은 발주청과 설계자가 정합니다. 최종 공사기간은 고시·가이드라인 원문과 현장 조건으로 확정하십시오.</div>
+</section>
+<section class="ch" id="ch1"><h2><span class="n">01</span>한눈에 보기</h2>
+<p class="lead">설치 없이 브라우저에서 바로 실행되는 단일 페이지 앱(PWA)입니다. 입력은 내 PC 브라우저 안에서만 처리되며 서버로 전송되지 않습니다.</p>
+<div class="cards">
+<div class="card"><h5>무엇을 계산하나</h5><p>준비기간 · 작업일수 · 월별 비작업일수 · 정리기간 · 총 공사기간 · 준공 예정일</p></div>
+<div class="card"><h5>내장 자료</h5><p>가이드라인 부록 1 법정공휴일(2026~2035) · 부록 3 96개 지점 × 13개 기상조건 · 준비기간 예시 · 부록 5 산정공식</p></div>
+<div class="card"><h5>근거</h5><p>고시 제6조~제14조 · 가이드라인(국토교통부공고 제2025-1603호)</p></div>
+<div class="card"><h5>출력</h5><p>A4 공기산정 근거서 — 개요·요약·간트·공종·월별 비작업일수·산정공식 비교·법적 근거(인쇄·PDF·JPG)</p></div>
+</div>
+<div class="svgbox"><svg viewBox="0 0 900 200" role="img" aria-label="공사기간 산정 흐름: 준비기간과 정리기간은 공사 유형 예시로, 작업일수는 공종별로 정하고, 비작업일수는 관측 지점의 기상 비작업일수와 법정공휴일에서 중복을 빼 월별로 계상한 뒤 모두 더한다">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2D3A8C"/></marker></defs>
+<style>.b{fill:#E9ECF8;stroke:#2D3A8C;stroke-width:1.5}.o{fill:#FDF1E7;stroke:#C97A3A;stroke-width:1.5}.t{font:600 14px 'Noto Sans KR','Noto Sans KR Local',sans-serif;fill:#1A1A2E}.s{font:12px 'Noto Sans KR','Noto Sans KR Local',sans-serif;fill:#4A4F66}.l{stroke:#2D3A8C;stroke-width:1.6;fill:none;marker-end:url(#ar)}</style>
+<rect class="b" x="10" y="45" width="190" height="100" rx="10"/><text class="t" x="26" y="78">① 준비기간</text><text class="s" x="26" y="102">공사 유형별 예시</text><text class="s" x="26" y="122">비작업일수 없음</text>
+<rect class="b" x="240" y="45" width="190" height="100" rx="10"/><text class="t" x="256" y="78">② 작업일수</text><text class="s" x="256" y="102">주공정 공종별 일수</text><text class="s" x="256" y="122">1일 8시간·주 40시간</text>
+<rect class="b" x="470" y="45" width="190" height="100" rx="10"/><text class="t" x="486" y="78">③ 비작업일수</text><text class="s" x="486" y="102">A + B − C (월별)</text><text class="s" x="486" y="122">8일 미만이면 8일</text>
+<rect class="o" x="700" y="45" width="190" height="100" rx="10"/><text class="t" x="716" y="78">④ 정리기간 → 합계</text><text class="s" x="716" y="102">준공 전 1개월 범위</text><text class="s" x="716" y="122">산정공식과 비교</text>
+<path class="l" d="M200,95 L238,95"/><path class="l" d="M430,95 L468,95"/><path class="l" d="M660,95 L698,95"/>
+<text class="s" x="16" y="176">공사기간 = 준비기간 + 비작업일수 + 작업일수 + 정리기간 (고시 제6조)</text>
+</svg></div>
+<h3 id="s1-1">1-1. 화면 구성</h3>
+<figure class="shot" id="fig-s01_overview"><div class="frame"><img src="images/s01_overview.webp" width="1440" height="900" loading="lazy" alt="전체 화면 — 입력·산출 탭(1단계)"><span class="pin" style="left:5.26%;top:13.49%">1</span><span class="pin" style="left:1.50%;top:18.82%">2</span><span class="pin" style="left:79.29%;top:25.32%">3</span><span class="pin" style="left:6.23%;top:32.69%">4</span><span class="pin" style="left:6.23%;top:57.80%">5</span><span class="pin" style="left:94.15%;top:90.72%">6</span></div><figcaption><span class="fno">S01</span>전체 화면 — 입력·산출 탭(1단계)</figcaption><ol class="legend"><li><b>1</b><span>작업 탭: 입력·산출 · A4 미리보기 · 법적근거 · 매뉴얼</span></li><li><b>2</b><span>요약 스트립: 공사종류·준비·작업·비작업·정리·총공기가 입력할 때마다 갱신</span></li><li><b>3</b><span>단계 표시: 5단계 — 지난 단계는 눌러서 돌아감</span></li><li><b>4</b><span>공사 기본 정보: 공사명·착공 예정일·총 공사비</span></li><li><b>5</b><span>기상 관측 지점: 비작업일수에 쓸 지점(96개)</span></li><li><b>6</b><span>오른쪽 버튼: 「계산방법 안내」 창 열기</span></li></ol></figure>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">탭</th><th class="">하는 일</th><th class="">본문</th></tr></thead><tbody><tr><td class="">⌨️ 입력·산출</td><td class="">5단계 입력 — ① 기본 정보 ② 준비기간·정리기간 ③ 작업일수 ④ 비작업일수 ⑤ 결과</td><td class="">3-1~3-11</td></tr><tr><td class="">📄 A4 미리보기</td><td class="">A4 공기산정 근거서 · 인쇄/PDF · JPG 저장</td><td class="">3-12</td></tr><tr><td class="">⚖️ 법적근거</td><td class="">근거 체계 · 적정성 심의 · 프로그램이 쓰는 값의 출처</td><td class="">3-13</td></tr><tr><td class="">📘 매뉴얼</td><td class="">이 매뉴얼을 새 창으로 엽니다(인터넷 연결 필요)</td><td class="">1-3</td></tr></tbody></table></div></div>
+<h3 id="s1-2">1-2. 작업 탭·근거 표시</h3>
+<figure class="shot" id="fig-s02_tabs"><div class="frame"><img src="images/s02_tabs.webp" width="1440" height="186" loading="lazy" alt="헤더 — 작업 탭과 근거 표시"><span class="pin" style="left:6.82%;top:66.48%">1</span><span class="pin" style="left:13.76%;top:66.48%">2</span><span class="pin" style="left:21.92%;top:66.48%">3</span><span class="pin" style="left:86.45%;top:66.48%">4</span><span class="pin" style="left:77.02%;top:13.74%">5</span></div><figcaption><span class="fno">S02</span>헤더 — 작업 탭과 근거 표시</figcaption><ol class="legend"><li><b>1</b><span>입력·산출</span></li><li><b>2</b><span>A4 미리보기</span></li><li><b>3</b><span>법적근거</span></li><li><b>4</b><span>📘 매뉴얼 — 이 매뉴얼을 새 창으로(탭 막대 오른쪽 끝)</span></li><li><b>5</b><span>근거 고시·가이드라인 표시</span></li></ol></figure>
+<p>헤더 오른쪽에 고시와 가이드라인 번호가 적혀 있습니다. 가이드라인은 해마다 새로 공고되므로, 새 판이 나오면 이 표시와 4장 내용을 함께 확인하십시오.</p>
+<h3 id="s1-3">1-3. 설치·보관·매뉴얼</h3>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">항목</th><th class="">내용</th></tr></thead><tbody><tr><td class="">설치(선택)</td><td class="">크롬·엣지 주소창의 설치 아이콘 또는 화면 아래 설치 안내를 누르면 앱으로 설치됩니다. 아이폰은 사파리 공유 버튼 → 「홈 화면에 추가」</td></tr><tr><td class="">오프라인</td><td class="">한 번 연 뒤에는 인터넷이 끊겨도 계산·출력이 됩니다. 매뉴얼은 인터넷에 연결되어 있을 때만 열립니다</td></tr><tr><td class="">입력값 보관</td><td class="">입력값은 저장되지 않습니다. 결과는 근거서(PDF·JPG)로 남기십시오</td></tr><tr><td class="">업데이트</td><td class="">새 버전이 올라오면 다음 접속 때 자동으로 바뀝니다. 화면이 예전 그대로면 새로 고침(Ctrl+F5)</td></tr></tbody></table></div></div>
+</section>
+<section class="ch" id="ch2"><h2><span class="n">02</span>3분 따라하기</h2>
+<p class="lead">예제 A로 6단계를 따라 하면 공사기간 450일이 나옵니다. 계산 버튼은 없습니다. 값을 바꾸는 즉시 결과가 바뀝니다.</p>
+<ol class="steps">
+<li><b class="t">공사 정보·관측 지점</b>공사명, 착공 예정일(예제 2027. 3. 2.), 총 공사비(50억원)를 넣고 「기상 관측 지점」에서 공사구역에 가장 가까운 지점(전주(146))을 고릅니다(<a href="#s3-1">3-1</a>·<a href="#s3-2">3-2</a>).</li>
+<li><b class="t">공사 유형·건물 규모</b>공사 유형(일반건물)을 고르고 지상 5층 · 지하 1층 · 연면적 4,000㎡ · 건축물 유형(기타 건축물)을 넣습니다(<a href="#s3-3">3-3</a>·<a href="#s3-4">3-4</a>).</li>
+<li><b class="t">준비기간·정리기간</b>「다음」을 누르면 준비기간 20일(일반건물 참고값)과 정리기간 30일이 들어갑니다. 현장 조건에 맞게 조정합니다(<a href="#s3-5">3-5</a>).</li>
+<li><b class="t">작업일수 → 비작업일수 → 공사기간</b>공종별 작업일수(합계 235일)를 확인·수정하고, 비작업일수 단계에서 기상조건(철근콘크리트공사 예시)을 확인합니다. 월별로 계산한 비작업일수 165일이 더해져 <b>공사기간 450일</b>이 됩니다(<a href="#s3-6">3-6</a>~<a href="#s3-9">3-9</a>).</li>
+<li><b class="t">산정공식과 비교</b>결과 화면에서 부록 5 산정공식(기타 건축물)으로 구한 696일과의 차이(-35.3%)를 봅니다. 차이가 크면 작업일수와 기상조건 설정을 다시 검토합니다(<a href="#s3-10">3-10</a>).</li>
+<li><b class="t">근거서 인쇄·저장</b>「📄 A4 미리보기」에서 「인쇄 / PDF 저장」 또는 「JPG 저장」으로 공기산정 근거서를 남깁니다(<a href="#s3-12">3-12</a>).</li>
+</ol>
+<div class="tbl"><table><thead><tr><th class="">구분</th><th class="">예제 A</th><th class="num">값</th></tr></thead><tbody><tr><td class="">① 준비기간</td><td class="">일반건물 · 공사비 10억원 이상 (MANMIN 참고값)</td><td class="num">20일</td></tr><tr><td class="">② 작업일수</td><td class="">공종별 합계 (MANMIN 참고값)</td><td class="num">235일</td></tr><tr><td class="">③ 비작업일수</td><td class="">전주(146) · 철근콘크리트공사 기상조건 · 14개월 계상</td><td class="num">165일</td></tr><tr><td class="">④ 정리기간</td><td class="">준공 전 1개월 범위</td><td class="num">30일</td></tr><tr><td class="">공사기간</td><td class="">① + ② + ③ + ④</td><td class="num"><b>450일</b></td></tr><tr><td class="">준공 예정일</td><td class="">착공 2027. 3. 2. + 공사기간</td><td class="num">2028. 5. 25.</td></tr></tbody></table></div>
+<div class="tip"><b>확인</b>따라 한 결과가 위 표와 같으면 준비가 끝난 것입니다. 숫자가 다르면 착공 예정일·관측 지점·기상조건 체크가 예제와 같은지 보십시오. 착공일이 바뀌면 지나가는 달이 달라져 비작업일수가 바뀝니다.</div>
+</section>
+<section class="ch" id="ch3"><h2><span class="n">03</span>화면별 기능 상세</h2>
+<p class="lead">입력·산출 탭의 5단계 순서와 나머지 탭 순서로 설명합니다.</p>
+<h3 id="s3-1">3-1. 공사 기본 정보 (1단계)</h3>
+<figure class="shot" id="fig-s03_basic"><div class="frame"><img src="images/s03_basic.webp" width="1296" height="236" loading="lazy" alt="공사 기본 정보 카드"><span class="pin" style="left:2.56%;top:43.60%">1</span><span class="pin" style="left:2.56%;top:70.72%">2</span><span class="pin" style="left:50.79%;top:70.72%">3</span></div><figcaption><span class="fno">S03</span>공사 기본 정보 카드</figcaption><ol class="legend"><li><b>1</b><span>공사명 — 근거서 표제</span></li><li><b>2</b><span>착공 예정일 — 비작업일수를 셀 달이 여기서 정해짐</span></li><li><b>3</b><span>총 공사비(억원) — 일반건물 준비기간 · 심의 대상 표시 · 산정공식에 사용</span></li></ol></figure>
+<ul><li>총 공사비 100억원 이상(시·군·구 발주는 50억원 이상)이면 결과 화면에 공사기간 적정성 심의 대상이 표시됩니다(<a href="#s4-10">4-10</a>).</li>
+<li>착공 예정일은 과거 날짜도 넣을 수 있습니다. 법정공휴일 자료가 없는 해(2026년 이전 · 2035년 이후)는 가장 가까운 해의 값을 씁니다.</li></ul>
+<h3 id="s3-2">3-2. 기상 관측 지점</h3>
+<figure class="shot" id="fig-s04_station"><div class="frame"><img src="images/s04_station.webp" width="1296" height="181" loading="lazy" alt="기상 관측 지점 카드"><span class="pin" style="left:2.56%;top:56.65%">1</span></div><figcaption><span class="fno">S04</span>기상 관측 지점 카드</figcaption><ol class="legend"><li><b>1</b><span>관측 지점 — 행정구역별로 묶은 96개 종관기상관측(ASOS) 지점</span></li></ol></figure>
+<p>공사구역에서 가장 인접한 행정지역의 지점을 고릅니다. 여러 행정지역에 걸치면 가장 많은 면적이 포함된 지역, 관측 위치와 차이가 현저하면 주변 유사 지점을 씁니다(가이드라인). 같은 목록이 4단계에도 있어 거기서 바꿔도 됩니다.</p>
+<h3 id="s3-3">3-3. 공사 유형</h3>
+<figure class="shot" id="fig-s05_type"><div class="frame"><img src="images/s05_type.webp" width="1296" height="278" loading="lazy" alt="공사 유형 카드"><span class="pin" style="left:2.56%;top:31.78%">1</span><span class="pin" style="left:13.26%;top:31.78%">2</span><span class="pin" style="left:23.96%;top:31.78%">3</span></div><figcaption><span class="fno">S05</span>공사 유형 카드</figcaption><ol class="legend"><li><b>1</b><span>일반건물 — 가이드라인 예시 없음, MANMIN 참고값</span></li><li><b>2</b><span>공동주택 — 준비 45일</span></li><li><b>3</b><span>고속도로공사 — 준비 180일</span></li></ol></figure>
+<p>카드 아래 작은 글씨가 준비기간입니다. 가이드라인 「건설공사 유형별 준비기간(예시)」 12종과 일반건물이 있습니다(<a href="#s4-3">4-3</a>). 유형을 바꾸면 준비기간 조정값은 초기화됩니다.</p>
+<h3 id="s3-4">3-4. 건물 규모</h3>
+<figure class="shot" id="fig-s06_bldg"><div class="frame"><img src="images/s06_bldg.webp" width="1296" height="241" loading="lazy" alt="건물 규모 카드(일반건물·공동주택)"><span class="pin" style="left:5.11%;top:43.12%">1</span><span class="pin" style="left:37.26%;top:43.12%">2</span><span class="pin" style="left:66.86%;top:45.41%">3</span><span class="pin" style="left:2.56%;top:71.34%">4</span><span class="pin" style="left:50.79%;top:71.34%">5</span></div><figcaption><span class="fno">S06</span>건물 규모 카드(일반건물·공동주택)</figcaption><ol class="legend"><li><b>1</b><span>지상 층수</span></li><li><b>2</b><span>지하 층수</span></li><li><b>3</b><span>안전관리계획서 — 해당이면 일반건물 준비기간 45일(참고값)</span></li><li><b>4</b><span>연면적(㎡) — 산정공식 「기타 건축물」에 사용</span></li><li><b>5</b><span>건축물 유형 — 산정공식 비교에 쓸 식(일반건물만)</span></li></ol></figure>
+<p>층수는 공종별 작업일수(참고값)와 산정공식에 씁니다. 공동주택은 건축물 유형 선택이 없고 공동주택 식을 씁니다.</p>
+<h3 id="s3-5">3-5. 준비기간·정리기간 (2단계)</h3>
+<figure class="shot" id="fig-s07_prep"><div class="frame"><img src="images/s07_prep.webp" width="1296" height="473" loading="lazy" alt="준비기간 산정 · 정리기간 카드"><span class="pin" style="left:5.11%;top:34.63%">1</span><span class="pin" style="left:2.56%;top:44.56%">2</span><span class="pin" style="left:5.11%;top:80.08%">3</span><span class="pin" style="left:2.56%;top:90.02%">4</span></div><figcaption><span class="fno">S07</span>준비기간 산정 · 정리기간 카드</figcaption><ol class="legend"><li><b>1</b><span>준비기간 수동 조정</span></li><li><b>2</b><span>근거 — 예시 출처 또는 「MANMIN 참고값」 표시</span></li><li><b>3</b><span>정리기간 조정</span></li><li><b>4</b><span>근거 — 준공 전 1개월 범위</span></li></ol></figure>
+<ul><li>조정한 값은 다른 입력을 바꿔도 유지되고 「조정됨」 표시가 붙습니다. 공사 유형이나 안전관리계획서 선택을 바꾸면 예시값으로 돌아갑니다.</li>
+<li>준비기간·정리기간에는 비작업일수를 계상하지 않습니다(가이드라인). 아래 노란 칸은 용지보상·지장물 이설·문화재 시굴 같은 시공조건의 소요기간 예시입니다.</li></ul>
+<h3 id="s3-6">3-6. 공종별 작업일수 (3단계)</h3>
+<figure class="shot" id="fig-s08_work"><div class="frame"><img src="images/s08_work.webp" width="1296" height="928" loading="lazy" alt="공종별 작업일수 카드"><span class="pin" style="left:2.56%;top:9.42%">1</span><span class="pin" style="left:2.56%;top:19.97%">2</span><span class="pin" style="left:87.63%;top:23.42%">3</span><span class="pin" style="left:2.56%;top:83.58%">4</span></div><figcaption><span class="fno">S08</span>공종별 작업일수 카드</figcaption><ol class="legend"><li><b>1</b><span>MANMIN 참고값 안내</span></li><li><b>2</b><span>공종 묶음과 소계</span></li><li><b>3</b><span>일수 조정(− / +)</span></li><li><b>4</b><span>총 작업일수</span></li></ol></figure>
+<div class="tbl"><table><thead><tr><th class="">공종(예제 A)</th><th class="num">작업일수</th></tr></thead><tbody><tr><td class="">흙막이·터파기 (지하1층)</td><td class="num">10일</td></tr><tr><td class="">지하층 골조</td><td class="num">44일</td></tr><tr><td class="">지상 5층 골조</td><td class="num">46일</td></tr><tr><td class="">조적공사</td><td class="num">25일</td></tr><tr><td class="">미장공사</td><td class="num">40일</td></tr><tr><td class="">창호공사</td><td class="num">30일</td></tr><tr><td class="">방수공사</td><td class="num">15일</td></tr><tr><td class="">타일공사</td><td class="num">10일</td></tr><tr><td class="">토목공사</td><td class="num">15일</td></tr><tr><td class=""><b>합계</b></td><td class="num"><b>235일</b></td></tr></tbody></table></div>
+<ul><li>층수로 채워지는 일수는 <b>MANMIN 참고값</b>이며 가이드라인에 없는 값입니다. 가이드라인 부록 4의 공종별 1일 작업량이나 실적·경험치로 산출한 값으로 고치십시오(<a href="#s4-7">4-7</a>).</li>
+<li>「＋ 공종 추가 입력」으로 주공정에 드는 공종을 더할 수 있습니다. 공동주택·일반건물 외 유형은 「주요 공종 90일」 한 줄로 시작합니다.</li></ul>
+<h3 id="s3-7">3-7. 비작업일수 — 기상조건 (4단계)</h3>
+<figure class="shot" id="fig-s09_nwset"><div class="frame"><img src="images/s09_nwset.webp" width="1264" height="341" loading="lazy" alt="비작업일수 산정 — 공식과 기상조건"><span class="pin" style="left:1.50%;top:6.52%">1</span><span class="pin" style="left:1.50%;top:53.93%">2</span><span class="pin" style="left:50.80%;top:53.93%">3</span><span class="pin" style="left:1.50%;top:68.16%">4</span></div><figcaption><span class="fno">S09</span>비작업일수 산정 — 공식과 기상조건</figcaption><ol class="legend"><li><b>1</b><span>산정식 A + B − C · 8일 하한</span></li><li><b>2</b><span>기상조건 묶음 — 철근콘크리트공사(가이드라인 예시) 또는 직접 선택</span></li><li><b>3</b><span>관측 지점</span></li><li><b>4</b><span>기상조건 13종 체크</span></li></ol></figure>
+<p>공종별로 작업을 제한하는 기상조건을 체크합니다. 체크한 조건의 월평균 일수를 더해 A로 씁니다 — 가이드라인 예시와 같은 방식이며, 조건끼리 겹치는 날은 따로 빼지 않습니다. 기본 묶음은 가이드라인의 철근콘크리트공사 예시(동절기 최고기온 0℃ 이하 · 일강수량 3mm 이상 · 최대순간풍속 15m/s 이상 · 신적설 5cm 이상 · 체감온도 33℃ 이상)입니다.</p>
+<h3 id="s3-8">3-8. 비작업일수 — 월별 산정표</h3>
+<figure class="shot" id="fig-s10_nwtable"><div class="frame"><img src="images/s10_nwtable.webp" width="1264" height="440" loading="lazy" alt="월별 산정표 — 예제 A(전주(146))"><span class="pin" style="left:1.50%;top:8.98%">1</span><span class="pin" style="left:1.50%;top:32.50%">2</span><span class="pin" style="left:1.50%;top:56.14%">3</span><span class="pin" style="left:1.50%;top:91.60%">4</span></div><figcaption><span class="fno">S10</span>월별 산정표 — 예제 A(전주(146))</figcaption><ol class="legend"><li><b>1</b><span>첫 달 — 작업 착수일(착공 + 준비기간) 이후 날짜만 사용</span></li><li><b>2</b><span>7월 — 체감온도 33℃ 이상 일수가 커서 비작업일수가 큼</span></li><li><b>3</b><span>11월 — A+B−C가 8일보다 작아 8일 적용</span></li><li><b>4</b><span>합계 — 사용 일수 = 작업일수, 계상 합계 = 비작업일수</span></li></ol></figure>
+<div class="brk"><div class="tbl"><table><thead><tr><th class="">연도·월</th><th class="num">기상 A</th><th class="num">공휴 B</th><th class="num">중복 C</th><th class="num">A+B−C</th><th class="num">적용</th><th class="num">작업가능</th><th class="num">사용</th><th class="num">계상</th></tr></thead><tbody><tr><td class="">2027.03</td><td class="num">4.7</td><td class="num">5</td><td class="num">1</td><td class="num">8.7</td><td class="num">8.7</td><td class="num">22.3</td><td class="num">7.2</td><td class="num">2.8</td></tr><tr><td class="">2027.04</td><td class="num">5.8</td><td class="num">4</td><td class="num">1</td><td class="num">8.8</td><td class="num">8.8</td><td class="num">21.2</td><td class="num">21.2</td><td class="num">8.8</td></tr><tr><td class="">2027.05</td><td class="num">5.8</td><td class="num">7</td><td class="num">1</td><td class="num">11.8</td><td class="num">11.8</td><td class="num">19.2</td><td class="num">19.2</td><td class="num">11.8</td></tr><tr><td class="">2027.06</td><td class="num">6.2</td><td class="num">4</td><td class="num">1</td><td class="num">9.2</td><td class="num">9.2</td><td class="num">20.8</td><td class="num">20.8</td><td class="num">9.2</td></tr><tr><td class="">2027.07</td><td class="num">23.7</td><td class="num">4</td><td class="num">3</td><td class="num">24.7</td><td class="num">24.7</td><td class="num">6.3</td><td class="num">6.3</td><td class="num">24.7</td></tr><tr><td class="">2027.08</td><td class="num">25.0</td><td class="num">6</td><td class="num">5</td><td class="num">26.0</td><td class="num">26.0</td><td class="num">5.0</td><td class="num">5</td><td class="num">26</td></tr><tr><td class="">2027.09</td><td class="num">7.2</td><td class="num">7</td><td class="num">2</td><td class="num">12.2</td><td class="num">12.2</td><td class="num">17.8</td><td class="num">17.8</td><td class="num">12.2</td></tr><tr><td class="">2027.10</td><td class="num">4.4</td><td class="num">8</td><td class="num">1</td><td class="num">11.4</td><td class="num">11.4</td><td class="num">19.6</td><td class="num">19.6</td><td class="num">11.4</td></tr><tr><td class="">2027.11</td><td class="num">4.7</td><td class="num">4</td><td class="num">1</td><td class="num">7.7</td><td class="num">8.0</td><td class="num">22.0</td><td class="num">22</td><td class="num">8</td></tr><tr><td class="">2027.12</td><td class="num">6.0</td><td class="num">6</td><td class="num">1</td><td class="num">11.0</td><td class="num">11.0</td><td class="num">20.0</td><td class="num">20</td><td class="num">11</td></tr><tr><td class="">2028.01</td><td class="num">7.6</td><td class="num">9</td><td class="num">2</td><td class="num">14.6</td><td class="num">14.6</td><td class="num">16.4</td><td class="num">16.4</td><td class="num">14.6</td></tr><tr><td class="">2028.02</td><td class="num">3.7</td><td class="num">4</td><td class="num">1</td><td class="num">6.7</td><td class="num">8.0</td><td class="num">21.0</td><td class="num">21</td><td class="num">8</td></tr><tr><td class="">2028.03</td><td class="num">4.7</td><td class="num">5</td><td class="num">1</td><td class="num">8.7</td><td class="num">8.7</td><td class="num">22.3</td><td class="num">22.3</td><td class="num">8.7</td></tr><tr><td class="">2028.04</td><td class="num">5.8</td><td class="num">5</td><td class="num">1</td><td class="num">9.8</td><td class="num">9.8</td><td class="num">20.2</td><td class="num">16.2</td><td class="num">7.9</td></tr><tr><td class=""><b>합계</b></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"><b>235</b></td><td class="num"><b>165</b></td></tr></tbody></table></div></div>
+<ul><li><b>적용</b>은 A+B−C와 8일 중 큰 값, <b>작업가능</b>은 달력일수 − 적용, <b>사용</b>은 그 달에 채운 작업일수, <b>계상</b>은 적용 × 사용 ÷ 작업가능입니다. 작업일수를 다 채울 때까지 다음 달로 넘어갑니다.</li>
+<li>계상 합계는 소수 한 자리로 더한 뒤 정수로 반올림합니다.</li></ul>
+<h3 id="s3-9">3-9. 산정 결과 (5단계)</h3>
+<figure class="shot" id="fig-s11_result"><div class="frame"><img src="images/s11_result.webp" width="1296" height="345" loading="lazy" alt="산정 결과 — 총 공사기간과 구성"><span class="pin" style="left:2.87%;top:17.20%">1</span><span class="pin" style="left:2.87%;top:42.54%">2</span><span class="pin" style="left:1.50%;top:69.09%">3</span><span class="pin" style="left:26.06%;top:69.09%">4</span><span class="pin" style="left:50.79%;top:69.09%">5</span><span class="pin" style="left:75.52%;top:69.09%">6</span></div><figcaption><span class="fno">S11</span>산정 결과 — 총 공사기간과 구성</figcaption><ol class="legend"><li><b>1</b><span>총 공사기간</span></li><li><b>2</b><span>착공 → 준공 예정일</span></li><li><b>3</b><span>① 준비기간</span></li><li><b>4</b><span>② 작업일수</span></li><li><b>5</b><span>③ 비작업일수</span></li><li><b>6</b><span>④ 정리기간</span></li></ol></figure>
+<h3 id="s3-10">3-10. 산정공식과 비교</h3>
+<figure class="shot" id="fig-s12_compare"><div class="frame"><img src="images/s12_compare.webp" width="1296" height="255" loading="lazy" alt="산정공식과 비교 — 예제 A"><span class="pin" style="left:2.56%;top:32.20%">1</span><span class="pin" style="left:2.56%;top:44.17%">2</span><span class="pin" style="left:2.56%;top:56.33%">3</span><span class="pin" style="left:2.56%;top:68.50%">4</span></div><figcaption><span class="fno">S12</span>산정공식과 비교 — 예제 A</figcaption><ol class="legend"><li><b>1</b><span>산정공식(기타 건축물)과 Y</span></li><li><b>2</b><span>Y + 준비 + 정리</span></li><li><b>3</b><span>산정한 공사기간</span></li><li><b>4</b><span>차이(%)</span></li></ol></figure>
+<p>부록 5의 시설물별 공사기간 산정공식으로 구한 값(Y)에 준비기간과 정리기간을 더해 비교합니다. 가이드라인에 적정·부적정 판정 기준은 없으므로 차이만 표시합니다. 적용범위 밖이면 비교하지 않습니다. 예제 A는 -35.3%로 산정 공사기간이 짧습니다 — 작업일수가 참고값이기 때문이며, 실제 산정에서는 공종 일수를 다시 산출해야 합니다(<a href="#s4-9">4-9</a>).</p>
+<h3 id="s3-11">3-11. 산정근거 명세서</h3>
+<figure class="shot" id="fig-s13_spec"><div class="frame"><img src="images/s13_spec.webp" width="1296" height="525" loading="lazy" alt="공사기간 산정근거 명세서"><span class="pin" style="left:2.56%;top:16.04%">1</span><span class="pin" style="left:2.56%;top:44.61%">2</span><span class="pin" style="left:2.56%;top:84.61%">3</span><span class="pin" style="left:77.98%;top:96.00%">4</span></div><figcaption><span class="fno">S13</span>공사기간 산정근거 명세서</figcaption><ol class="legend"><li><b>1</b><span>근거 — 법 · 고시 · 가이드라인</span></li><li><b>2</b><span>기상 관측 지점과 조건 수</span></li><li><b>3</b><span>최종 공사기간</span></li><li><b>4</b><span>「A4 미리보기」로 이동</span></li></ol></figure>
+<h3 id="s3-12">3-12. A4 근거서·출력</h3>
+<figure class="shot" id="fig-s14_a4"><div class="frame"><img src="images/s14_a4.webp" width="1440" height="900" loading="lazy" alt="A4 미리보기 탭"><span class="pin" style="left:11.97%;top:32.15%">1</span><span class="pin" style="left:21.32%;top:32.15%">2</span><span class="pin" style="left:22.83%;top:43.35%">3</span></div><figcaption><span class="fno">S14</span>A4 미리보기 탭</figcaption><ol class="legend"><li><b>1</b><span>「인쇄 / PDF 저장」 — 인쇄 창 대상을 「PDF로 저장」으로</span></li><li><b>2</b><span>「JPG 저장」 — A4 쪽 단위 그림</span></li><li><b>3</b><span>A4 공기산정 근거서</span></li></ol></figure>
+<div class="pair"><div>
+<figure class="shot" id="fig-s15_a4page"><div class="frame"><img src="images/s15_a4page.webp" width="818" height="1893" loading="lazy" alt="예제 A 근거서"><span class="pin" style="left:8.35%;top:7.51%">1</span><span class="pin" style="left:8.35%;top:16.38%">2</span><span class="pin" style="left:8.35%;top:23.72%">3</span><span class="pin" style="left:8.35%;top:32.05%">4</span><span class="pin" style="left:8.35%;top:57.73%">5</span><span class="pin" style="left:8.35%;top:77.50%">6</span><span class="pin" style="left:8.35%;top:85.16%">7</span></div><figcaption><span class="fno">S15</span>예제 A 근거서</figcaption><ol class="legend"><li><b>1</b><span>01 공사 개요 — 지점·기상조건 포함</span></li><li><b>2</b><span>02 산정 결과 요약</span></li><li><b>3</b><span>03 전체 공정 구성(간트)</span></li><li><b>4</b><span>04 공종별 작업일수 명세</span></li><li><b>5</b><span>05 비작업일수 산정 내역(A+B−C)</span></li><li><b>6</b><span>06 산정공식과 비교(부록 5)</span></li><li><b>7</b><span>07 법적 근거</span></li></ol></figure>
+</div><div>
+<p>근거서는 고시 제5조의 「공사기간 산정근거」를 입찰에 관한 서류에 붙일 때 쓰도록 만든 양식입니다. 월별 비작업일수 표가 길면 여러 쪽으로 이어집니다.</p>
+<p>미리보기는 화면 폭에 맞춰 줄어들 뿐 인쇄 결과는 같습니다. 인쇄 창에서 「배경 그래픽」을 켜면 색이 함께 인쇄됩니다.</p>
+</div></div>
+<h3 id="s3-13">3-13. 법적근거 탭</h3>
+<figure class="shot" id="fig-s16_legal"><div class="frame"><img src="images/s16_legal.webp" width="1296" height="726" loading="lazy" alt="법적근거 탭"><span class="pin" style="left:1.50%;top:15.08%">1</span><span class="pin" style="left:1.50%;top:36.93%">2</span><span class="pin" style="left:1.50%;top:59.94%">3</span><span class="pin" style="left:50.94%;top:15.08%">4</span><span class="pin" style="left:50.94%;top:37.26%">5</span></div><figcaption><span class="fno">S16</span>법적근거 탭</figcaption><ol class="legend"><li><b>1</b><span>건설기술 진흥법 제45조의2</span></li><li><b>2</b><span>고시 제2024-1021호 — 조문 배지</span></li><li><b>3</b><span>2026년 가이드라인</span></li><li><b>4</b><span>공사기간 적정성 심의(고시 제4조③)</span></li><li><b>5</b><span>프로그램이 쓰는 값의 출처</span></li></ol></figure>
+<h3 id="s3-14">3-14. 계산방법 안내 창</h3>
+<p>오른쪽 「계산방법 안내」 버튼을 누르면 아래에서 창이 올라옵니다. 탭 7개로 이용방법, 전체 흐름, 준비기간, 작업일수, 비작업일수, 산정공식 비교, 기상조건을 볼 수 있습니다.</p>
+<figure class="shot" id="fig-s17_help_howto"><div class="frame"><img src="images/s17_help_howto.webp" width="704" height="726" loading="lazy" alt="계산방법 안내 — 이용방법"><span class="pin" style="left:6.65%;top:12.09%">1</span><span class="pin" style="left:18.04%;top:12.09%">2</span><span class="pin" style="left:29.81%;top:12.09%">3</span><span class="pin" style="left:41.22%;top:12.09%">4</span><span class="pin" style="left:52.62%;top:12.09%">5</span><span class="pin" style="left:64.99%;top:12.09%">6</span><span class="pin" style="left:79.46%;top:12.09%">7</span></div><figcaption><span class="fno">S17</span>계산방법 안내 — 이용방법</figcaption><ol class="legend"><li><b>1</b><span>이용방법</span></li><li><b>2</b><span>전체 흐름</span></li><li><b>3</b><span>준비기간</span></li><li><b>4</b><span>작업일수</span></li><li><b>5</b><span>비작업일수</span></li><li><b>6</b><span>산정공식 비교</span></li><li><b>7</b><span>기상조건</span></li></ol></figure>
+<div class="pair"><div><figure class="shot" id="fig-s18_help_prep"><div class="frame"><img src="images/s18_help_prep.webp" width="704" height="726" loading="lazy" alt="준비기간"></div><figcaption><span class="fno">S18</span>준비기간</figcaption></figure></div><div><figure class="shot" id="fig-s19_help_nw"><div class="frame"><img src="images/s19_help_nw.webp" width="704" height="444" loading="lazy" alt="비작업일수"></div><figcaption><span class="fno">S19</span>비작업일수</figcaption></figure></div></div>
+<div class="pair"><div><figure class="shot" id="fig-s20_help_verify"><div class="frame"><img src="images/s20_help_verify.webp" width="704" height="684" loading="lazy" alt="산정공식 비교"></div><figcaption><span class="fno">S20</span>산정공식 비교</figcaption></figure></div><div><figure class="shot" id="fig-s21_help_weather"><div class="frame"><img src="images/s21_help_weather.webp" width="704" height="726" loading="lazy" alt="기상조건"></div><figcaption><span class="fno">S21</span>기상조건</figcaption></figure></div></div>
+<h3 id="s3-15">3-15. 모바일</h3>
+<div class="tri"><div><figure class="shot narrow" id="fig-s26_mobile_main"><div class="frame"><img src="images/s26_mobile_main.webp" width="390" height="844" loading="lazy" alt="첫 화면"></div><figcaption><span class="fno">S26</span>첫 화면</figcaption></figure></div><div><figure class="shot narrow" id="fig-s27_mobile_nw"><div class="frame"><img src="images/s27_mobile_nw.webp" width="390" height="844" loading="lazy" alt="월별 비작업일수"></div><figcaption><span class="fno">S27</span>월별 비작업일수</figcaption></figure></div><div><figure class="shot narrow" id="fig-s28_mobile_a4"><div class="frame"><img src="images/s28_mobile_a4.webp" width="390" height="844" loading="lazy" alt="A4 미리보기"></div><figcaption><span class="fno">S28</span>A4 미리보기</figcaption></figure></div></div>
+<ul><li>휴대폰에서는 카드가 한 줄로 쌓입니다. 탭 막대는 좌우로 밀 수 있으며, 「📘 매뉴얼」은 오른쪽 끝에 있습니다.</li><li>월별 산정표는 좌우로 밀어서 봅니다. 근거서는 화면 폭에 맞춰 축소되어 보이고, 저장한 PDF·JPG는 A4 크기 그대로입니다.</li></ul>
+</section>
+<section class="ch" id="ch4"><h2><span class="n">04</span>기술기준 해설</h2>
+<p class="lead">법률·고시 조문은 LawMCP 원문, 가이드라인은 국토교통부 공고 원문(2026-10-12 확인)을 옮긴 것입니다.</p>
+<h3 id="s4-1">4-1. 근거 체계</h3>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">근거</th><th class="">내용</th><th class="">시행·공고</th></tr></thead><tbody><tr><td class="">건설기술 진흥법 제45조의2①</td><td class="">발주자는 건설공사의 품질 및 안전성·경제성을 확보할 수 있도록 해당 건설공사의 규모 및 특성, 현장여건 등을 고려하여 적정 공사기간을 산정하여야 한다. 다만, 불가항력 등 정당한 사유가 발생한 경우에는 이를 고려하여 적정 공사기간 조정을 검토하여야 한다</td><td class="">2021.9.17. 신설 시행(법률 제17939호)</td></tr><tr><td class="">같은 조 ②</td><td class="">국토교통부장관은 공사기간 산정기준을 정하여 고시할 수 있다</td><td class="">—</td></tr><tr><td class="">고시 제2024-1021호</td><td class="">「공공 건설공사의 공사기간 산정기준」 — 산정 원칙과 절차. 준비기간·정리기간 일수는 정하지 않음</td><td class="">2025.1.6. 시행</td></tr><tr><td class="">고시 제3조③</td><td class="">발주청은 공사기간 산정 시에 가이드라인을 참고하여 공사기간을 부당하게 삭감하거나 과잉 계상하지 않도록 한다</td><td class="">—</td></tr><tr><td class="">가이드라인</td><td class="">「2026년 적정 공사기간 확보를 위한 가이드라인」 — 준비기간 예시, 부록 1 법정공휴일수(2026-2035), 부록 2 작업제한 기상조건, 부록 3 기상조건별·지역별 비작업일수(2015-2024), 부록 4 1일 작업량, 부록 5 산정공식</td><td class="">국토교통부공고 제2025-1603호(2025.12.31.)</td></tr></tbody></table></div></div>
+<h3 id="s4-2">4-2. 공사기간의 구성</h3>
+<div class="eq">공사기간 = ① 준비기간 + ② 비작업일수 + ③ 작업일수 + ④ 정리기간      <span class="c">고시 제6조</span></div>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">용어</th><th class="">정의</th><th class="">근거</th></tr></thead><tbody><tr><td class="">준비기간</td><td class="">설계도서 검토, 하도급업체의 선정, 측량, 현장사무소·세륜시설·가설건물의 설치, 주요 건설자재·장비 및 공장제작 조달 등 공사의 착공 준비에 필요한 기간</td><td class="">고시 제2조제6호</td></tr><tr><td class="">정리기간</td><td class="">준공검사 준비, 시설물 인수 등을 위한 행정절차 및 청소 등 현장 정리에 소요되는 기간</td><td class="">고시 제2조제8호</td></tr><tr><td class="">법정공휴일</td><td class="">「관공서의 공휴일에 관한 규정」 제2조 및 제3조에 따른 공휴일 및 대체공휴일</td><td class="">고시 제2조제7호</td></tr><tr><td class="">보정</td><td class="">공사의 규모·성격, 지역여건 등에 따라 공사일수를 가감할 수 있음</td><td class="">고시 제13조</td></tr></tbody></table></div></div>
+<h3 id="s4-3">4-3. 준비기간</h3>
+<p>고시 제7조 — 발주청은 해당 공사의 내용에 적합한 준비기간을 산정하여야 한다. 가이드라인은 공사 유형별 준비기간 예시를 참고하여 시설물별 특성을 고려한 적정 준비기간을 반영하도록 하고, 안전관리계획·품질관리계획 승인 등에 필요한 기간을 반영하여 계상할 수 있다고 합니다.</p>
+<div class="tbl"><table><thead><tr><th class="">공종 (가이드라인 예시)</th><th class="num">준비기간</th></tr></thead><tbody><tr><td class="">공동주택</td><td class="num">45일</td></tr><tr><td class="">고속도로공사</td><td class="num">180일</td></tr><tr><td class="">철도공사</td><td class="num">90일</td></tr><tr><td class="">포장공사(신설)</td><td class="num">50일</td></tr><tr><td class="">포장공사(수선)</td><td class="num">60일</td></tr><tr><td class="">공동구공사</td><td class="num">80일</td></tr><tr><td class="">상수도공사</td><td class="num">60일</td></tr><tr><td class="">하천공사</td><td class="num">40일</td></tr><tr><td class="">항만공사</td><td class="num">40일</td></tr><tr><td class="">강교가설공사</td><td class="num">90일</td></tr><tr><td class="">PC교량 공사</td><td class="num">70일</td></tr><tr><td class="">교량보수공사</td><td class="num">60일</td></tr></tbody></table></div>
+<div class="note"><b>일반건물</b>가이드라인 예시에 일반건물(공동주택 외 건축물)은 없습니다. 프로그램은 MANMIN 참고값 — 공사비 10억원 미만 10일, 10억원 이상 20일, 안전관리계획 대상 45일 — 을 넣으므로 현장 조건으로 조정하십시오.</div>
+<h3 id="s4-4">4-4. 비작업일수</h3>
+<div class="eq">비작업일수 = A + B − C                         <span class="c">월별</span>
+A = 해당 월에 기후여건으로 작업이 불가능한 일수        <span class="c">고시 제10조 · 부록 3</span>
+B = 해당 월의 법정공휴일수                          <span class="c">고시 제9조 · 부록 1</span>
+C = A × B ÷ 달력일수                               <span class="c">소수점 첫째자리에서 반올림(고시 제8조①)</span>
+월 비작업일수 &lt; 8일 → 8일 적용                    <span class="c">주 40시간 근무제(고시 제8조② · 가이드라인)</span></div>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">근거</th><th class="">내용</th></tr></thead><tbody><tr><td class="">고시 제8조①</td><td class="">비작업일수는 법정공휴일수와 기상조건으로 인한 비작업일수의 합계에서 중복일수를 제외하여 산출한다. 이 경우 중복일수 산정은 소수점 첫째자리에서 반올림한다</td></tr><tr><td class="">고시 제8조②</td><td class="">주공정 및 주공정에 영향을 미치는 공종에 대하여 검토하며, 월별 비작업일수가 주 40시간 근무제에 따른 비작업일수보다 작을 경우에는 주 40시간 근무제에 따른 비작업일수를 적용한다</td></tr><tr><td class="">가이드라인</td><td class="">주 40시간 근무제에 따른 비작업일수는 월 8일로 계산</td></tr><tr><td class="">고시 제9조</td><td class="">법정공휴일 수는 해당 공사의 착수 예정일 기준으로 산출하고 계약의 착수일 기준으로 재산출할 수 있다</td></tr><tr><td class="">고시 제10조</td><td class="">주공정에 영향을 미치는 기상조건을 반영하여 산출한다. 기상정보는 최근 5년 또는 10년 동안의 통계를 활용할 수 있다(①). 관계법령과 기준에서 공종별로 작업을 제한하고 있는 기상조건을 반영한다(②)</td></tr></tbody></table></div></div>
+<p>가이드라인의 월별 예시 표는 중복일수를 소수 한 자리로 보여 주지만, 프로그램은 고시 제8조①대로 정수로 반올림합니다. 그래서 같은 달이라도 예시 표와 0.1~0.5일 다를 수 있습니다.</p>
+<h3 id="s4-5">4-5. 법정공휴일 (부록 1)</h3>
+<div class="brk"><div class="tbl"><table><thead><tr><th class="">연도</th><th class="num">1월</th><th class="num">2월</th><th class="num">3월</th><th class="num">4월</th><th class="num">5월</th><th class="num">6월</th><th class="num">7월</th><th class="num">8월</th><th class="num">9월</th><th class="num">10월</th><th class="num">11월</th><th class="num">12월</th><th class="num">소계</th></tr></thead><tbody><tr><td class="">2026</td><td class="num">5</td><td class="num">7</td><td class="num">6</td><td class="num">4</td><td class="num">7</td><td class="num">5</td><td class="num">4</td><td class="num">7</td><td class="num">7</td><td class="num">7</td><td class="num">5</td><td class="num">5</td><td class="num">69</td></tr><tr><td class="">2027</td><td class="num">6</td><td class="num">7</td><td class="num">5</td><td class="num">4</td><td class="num">7</td><td class="num">4</td><td class="num">4</td><td class="num">6</td><td class="num">7</td><td class="num">8</td><td class="num">4</td><td class="num">6</td><td class="num">68</td></tr><tr><td class="">2028</td><td class="num">9</td><td class="num">4</td><td class="num">5</td><td class="num">5</td><td class="num">6</td><td class="num">5</td><td class="num">5</td><td class="num">5</td><td class="num">4</td><td class="num">10</td><td class="num">4</td><td class="num">6</td><td class="num">68</td></tr><tr><td class="">2029</td><td class="num">5</td><td class="num">7</td><td class="num">5</td><td class="num">5</td><td class="num">7</td><td class="num">5</td><td class="num">5</td><td class="num">5</td><td class="num">8</td><td class="num">6</td><td class="num">4</td><td class="num">6</td><td class="num">68</td></tr><tr><td class="">2030</td><td class="num">5</td><td class="num">7</td><td class="num">6</td><td class="num">4</td><td class="num">6</td><td class="num">6</td><td class="num">4</td><td class="num">5</td><td class="num">8</td><td class="num">6</td><td class="num">4</td><td class="num">6</td><td class="num">67</td></tr><tr><td class="">2031</td><td class="num">8</td><td class="num">4</td><td class="num">7</td><td class="num">4</td><td class="num">6</td><td class="num">6</td><td class="num">4</td><td class="num">6</td><td class="num">5</td><td class="num">8</td><td class="num">5</td><td class="num">5</td><td class="num">68</td></tr><tr><td class="">2032</td><td class="num">5</td><td class="num">8</td><td class="num">5</td><td class="num">4</td><td class="num">7</td><td class="num">4</td><td class="num">4</td><td class="num">6</td><td class="num">7</td><td class="num">8</td><td class="num">4</td><td class="num">6</td><td class="num">68</td></tr><tr><td class="">2033</td><td class="num">7</td><td class="num">6</td><td class="num">5</td><td class="num">4</td><td class="num">7</td><td class="num">5</td><td class="num">5</td><td class="num">5</td><td class="num">7</td><td class="num">7</td><td class="num">4</td><td class="num">5</td><td class="num">67</td></tr><tr><td class="">2034</td><td class="num">5</td><td class="num">7</td><td class="num">5</td><td class="num">5</td><td class="num">6</td><td class="num">5</td><td class="num">5</td><td class="num">5</td><td class="num">7</td><td class="num">7</td><td class="num">4</td><td class="num">6</td><td class="num">67</td></tr><tr><td class="">2035</td><td class="num">5</td><td class="num">7</td><td class="num">5</td><td class="num">5</td><td class="num">7</td><td class="num">5</td><td class="num">5</td><td class="num">5</td><td class="num">8</td><td class="num">6</td><td class="num">4</td><td class="num">6</td><td class="num">68</td></tr></tbody></table></div></div>
+<p>관공서의 공휴일과 대체공휴일을 적용한 값입니다. 임기만료 선거일과 정부가 수시 지정하는 날은 불규칙하므로 제외되어 있습니다(가이드라인).</p>
+<h3 id="s4-6">4-6. 기상조건별 비작업일수 (부록 3)</h3>
+<p>최근 10년(2015~2024) 기상관측 데이터로 분석한 지점별 월평균 비작업일수입니다. 96개 종관기상관측 지점 × 13개 기상조건이 프로그램에 들어 있습니다.</p>
+<div class="tbl"><table><thead><tr><th class="">#</th><th class="">기상조건</th></tr></thead><tbody><tr><td class="">1</td><td class="">혹서기: 체감온도 33°C 이상</td></tr><tr><td class="">2</td><td class="">혹서기: 체감온도 35°C 이상</td></tr><tr><td class="">3</td><td class="">혹서기: 일최고온도 33°C 이상</td></tr><tr><td class="">4</td><td class="">혹서기: 일최고온도 35°C 이상</td></tr><tr><td class="">5</td><td class="">동절기: 일최고기온 0°C 이하</td></tr><tr><td class="">6</td><td class="">동절기: 일최심신적설 5㎝ 이상</td></tr><tr><td class="">7</td><td class="">동절기: 일최고기온 0°C 이하 이거나 일최심신적설 5㎝ 이상</td></tr><tr><td class="">8</td><td class="">동절기: 일최저기온 -12°C 이하</td></tr><tr><td class="">9</td><td class="">일강수량: 3㎜ 이상</td></tr><tr><td class="">10</td><td class="">일강수량: 5㎜ 이상</td></tr><tr><td class="">11</td><td class="">일강수량: 10㎜ 이상</td></tr><tr><td class="">12</td><td class="">일강수량: 20㎜ 이상</td></tr><tr><td class="">13</td><td class="">일최대순간풍속: 15m/s 이상</td></tr></tbody></table></div>
+<h4>가이드라인 예시 재현 — 서울(108), 철근콘크리트공사</h4>
+<div class="brk"><div class="tbl"><table><thead><tr><th class="">조건</th><th class="num">1월</th><th class="num">2월</th><th class="num">3월</th><th class="num">4월</th><th class="num">5월</th><th class="num">6월</th><th class="num">7월</th><th class="num">8월</th><th class="num">9월</th><th class="num">10월</th><th class="num">11월</th><th class="num">12월</th></tr></thead><tbody><tr><td class="">동절기: 일최고기온 0°C 이하</td><td class="num">7.1</td><td class="num">3.1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0.2</td><td class="num">6</td></tr><tr><td class="">일강수량: 3㎜ 이상</td><td class="num">1.5</td><td class="num">2.4</td><td class="num">2.5</td><td class="num">4.8</td><td class="num">5.1</td><td class="num">6.2</td><td class="num">9.2</td><td class="num">8.9</td><td class="num">4.8</td><td class="num">3.7</td><td class="num">4.5</td><td class="num">2.2</td></tr><tr><td class="">일최대순간풍속: 15m/s 이상</td><td class="num">0.4</td><td class="num">0.2</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">0.3</td><td class="num">0.6</td><td class="num">0.7</td><td class="num">0.6</td><td class="num">0.2</td><td class="num">0.5</td><td class="num">0.5</td></tr><tr><td class="">동절기: 일최심신적설 5㎝ 이상</td><td class="num">0.4</td><td class="num">0.3</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0.3</td><td class="num">0.3</td></tr><tr><td class="">혹서기: 체감온도 33°C 이상</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0.1</td><td class="num">8</td><td class="num">10.9</td><td class="num">0.8</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class=""><b>계(A)</b></td><td class="num"><b>9.4</b></td><td class="num"><b>6</b></td><td class="num"><b>3.5</b></td><td class="num"><b>5.8</b></td><td class="num"><b>6.1</b></td><td class="num"><b>6.6</b></td><td class="num"><b>17.8</b></td><td class="num"><b>20.5</b></td><td class="num"><b>6.2</b></td><td class="num"><b>3.9</b></td><td class="num"><b>5.5</b></td><td class="num"><b>9</b></td></tr></tbody></table></div></div>
+<p>계(A) 행은 가이드라인 「기상조건에 따른 월간 비작업일수 예시(철근콘크리트공사)」의 서울 기준 값(연 100.3일)과 같습니다.</p>
+<h4>예제 A — 전주(146), 철근콘크리트공사</h4>
+<div class="brk"><div class="tbl"><table><thead><tr><th class="">조건</th><th class="num">1월</th><th class="num">2월</th><th class="num">3월</th><th class="num">4월</th><th class="num">5월</th><th class="num">6월</th><th class="num">7월</th><th class="num">8월</th><th class="num">9월</th><th class="num">10월</th><th class="num">11월</th><th class="num">12월</th></tr></thead><tbody><tr><td class="">동절기: 일최고기온 0°C 이하</td><td class="num">3.1</td><td class="num">0.7</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">2.3</td></tr><tr><td class="">일강수량: 3㎜ 이상</td><td class="num">3.2</td><td class="num">2.9</td><td class="num">4.1</td><td class="num">5.2</td><td class="num">5.3</td><td class="num">5.6</td><td class="num">10.9</td><td class="num">8.2</td><td class="num">5.1</td><td class="num">4.3</td><td class="num">4.3</td><td class="num">3.2</td></tr><tr><td class="">일최대순간풍속: 15m/s 이상</td><td class="num">0.6</td><td class="num">0</td><td class="num">0.6</td><td class="num">0.6</td><td class="num">0.5</td><td class="num">0</td><td class="num">0.4</td><td class="num">0.2</td><td class="num">0.5</td><td class="num">0.1</td><td class="num">0.3</td><td class="num">0.1</td></tr><tr><td class="">동절기: 일최심신적설 5㎝ 이상</td><td class="num">0.7</td><td class="num">0.1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0.1</td><td class="num">0.4</td></tr><tr><td class="">혹서기: 체감온도 33°C 이상</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0.6</td><td class="num">12.4</td><td class="num">16.6</td><td class="num">1.6</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td class=""><b>계(A)</b></td><td class="num"><b>7.6</b></td><td class="num"><b>3.7</b></td><td class="num"><b>4.7</b></td><td class="num"><b>5.8</b></td><td class="num"><b>5.8</b></td><td class="num"><b>6.2</b></td><td class="num"><b>23.7</b></td><td class="num"><b>25</b></td><td class="num"><b>7.2</b></td><td class="num"><b>4.4</b></td><td class="num"><b>4.7</b></td><td class="num"><b>6</b></td></tr></tbody></table></div></div>
+<div class="note"><b>원문 소계</b>부록 3 원문 가운데 진도(첨찰산) 「일최고온도 35℃ 이상」과 북춘천 「일강수량 5mm·10mm 이상」은 월값의 합과 소계가 0.3~0.4일 다릅니다. 프로그램은 월값을 원문 그대로 씁니다.</div>
+<h3 id="s4-7">4-7. 작업일수</h3>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">근거</th><th class="">내용</th></tr></thead><tbody><tr><td class="">고시 제11조①</td><td class="">작업일수는 해당 공사의 공종별 수량을 시공하는데 필요한 총 작업일수를 말한다</td></tr><tr><td class="">고시 제11조②</td><td class="">주공정을 구성하는 작업량 기준으로 산출하거나 과거의 실적자료·경험치, 동종시설 사례 등을 활용하여 산출(실적자료는 근로기준법에 따른 근로시간을 기준으로 보정)하며, 현장여건 및 공사규모, 지질조건, 기상·기후조건 등에 따라 조정하여 적용한다</td></tr><tr><td class="">고시 제11조③</td><td class="">건설현장 근로자의 작업조건이 법정 근로시간(1일 8시간, 주 40시간)을 준수하는 것을 원칙으로 한다</td></tr><tr><td class="">가이드라인</td><td class="">부록 4의 공종별 1일 작업량을 활용하거나 발주청이 보유한 과거의 경험치를 활용할 수 있다. 부록 4는 대표적이고 일반화된 공종 및 공법 기준</td></tr></tbody></table></div></div>
+<div class="warn"><b>참고값</b>프로그램의 일반건물·공동주택 공종표(층당 일수)는 MANMIN 참고값으로, 가이드라인에 없습니다. 설계 수량 ÷ (1일 작업량 × 투입 작업조 수)로 순작업일수를 구하고 검측·양생 등 간접작업일수를 더해 고치십시오.</div>
+<h3 id="s4-8">4-8. 정리기간</h3>
+<p>고시 제12조 — 정리기간은 공사 규모 및 시설물 특성 등을 고려하여 산출한다. 가이드라인 — 정리기간은 공정상 여유기간(buffer)과는 다르며, 일반적으로 주요공종이 마무리된 이후 준공 전 1개월의 범위에서 계상할 수 있다. 정리기간에는 비작업일수를 계상하지 않는다. 프로그램 기본값은 30일입니다.</p>
+<h3 id="s4-9">4-9. 산정공식 (부록 5)</h3>
+<p>고시 제14조 — 발주청은 산정한 공사기간을 실적 공기와 비교하여 타당성을 검토할 수 있다. 가이드라인은 회귀분석 모델인 시설물별 공사기간 산정공식(부록 5)을 활용할 수 있게 하며, <b>산정된 값(Y)에 준비기간 및 정리기간을 합산</b>하고 <b>적용범위 내에서만</b> 활용하도록 합니다.</p>
+<div class="brk"><div class="k1"><div class="tbl"><table><thead><tr><th class="">건축물 유형</th><th class="">산정공식</th><th class="">적용범위</th></tr></thead><tbody><tr><td class="">학교</td><td class="">Y = 129.06x<sup>0.2557</sup></td><td class="">200억원 이하</td></tr><tr><td class="">청사</td><td class="">Y = 155.94ln(x) − 82.355</td><td class="">500억원 이하</td></tr><tr><td class="">의료시설</td><td class="">Y = −0.0385x² + 8.9084x + 140.87</td><td class="">200억원 이하</td></tr><tr><td class="">경찰서</td><td class="">Y = −0.0154x² + 7.9986x + 145.51</td><td class="">300억원 이하</td></tr><tr><td class="">대학·연구시설</td><td class="">Y = 201.62ln(x) − 175.51</td><td class="">5억원 이상, 300억원 이하</td></tr><tr><td class="">공연·전시시설</td><td class="">Y = −205.7ln(x) + 1375.4</td><td class="">5억원 이상, 300억원 이하</td></tr><tr><td class="">기숙사</td><td class="">Y = −0.0204x² + 6.6742x + 166.51</td><td class="">200억원 이하</td></tr><tr><td class="">공장, 창고</td><td class="">Y = −0.0271x² + 6.9664x + 146.97</td><td class="">200억원 이하</td></tr><tr><td class="">체육시설</td><td class="">Y = 112.19x<sup>0.3719</sup></td><td class="">300억원 이하</td></tr><tr><td class="">소방시설</td><td class="">Y = −0.0497x² + 10.744x + 114.94</td><td class="">200억원 이하</td></tr><tr><td class="">공동주택</td><td class="">Y = −21.674 + 7.953×G + 116.835×ln(C)</td><td class="">10억원 이상</td></tr><tr><td class="">체육시설</td><td class="">Y = −278.109 + 189.438×ln(C)</td><td class="">10억원 이상</td></tr><tr><td class="">기타 건축물</td><td class="">Y = −68.550 + 18.192×B + 12.079×G − 5.25×ln(A) + 167.632×ln(C)</td><td class="">10억원 이상</td></tr></tbody></table></div></div></div>
+<p>Y 공사기간(일) · x, C 총공사비(억원) · G 지상층수 · B 지하층수 · A 연면적(100㎡). 프로그램은 차이(%)만 보여 주며, 가이드라인에 판정 기준(±%)은 없습니다.</p>
+<h3 id="s4-10">4-10. 결정 절차·심의·명시</h3>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">근거</th><th class="">내용</th></tr></thead><tbody><tr><td class="">고시 제4조①</td><td class="">발주청은 설계자로 하여금 이 고시에 따라 공사기간을 산정하고 그 산정근거를 명시하도록 하여야 하며, 설계 성과품의 일부로 제출하도록 하여야 한다</td></tr><tr><td class="">고시 제4조②</td><td class="">발주청은 입찰공고를 하기 전에 공사기간의 적정성(준비기간 · 비작업일수 · 작업일수 · 정리기간)을 검토하여야 한다</td></tr><tr><td class="">고시 제4조③</td><td class="">총 공사비 100억원 이상(시·군·구는 50억원 이상) 건설공사는 건설기술 진흥법 시행령 제17조부터 제19조까지에 따른 지방심의위원회, 특별심의위원회 또는 기술자문위원회의 공사기간 적정성 심의를 받아야 한다. 위원회가 설치되어 있지 아니한 발주청은 전문가 자문으로 대체할 수 있다</td></tr><tr><td class="">건설기술 진흥법 시행령 제17조②3호 · 제19조⑤3호</td><td class="">지방심의위원회와 기술자문위원회의 심의 사항 — 총공사비 100억원(시·군·자치구의 경우에는 50억원) 이상인 건설공사의 공사기간 산정의 적정성에 관한 사항(2026.6.9. 시행)</td></tr><tr><td class="">고시 제5조①</td><td class="">발주청은 공공 공사를 입찰할 때에는 공사기간 산정근거를 입찰에 관한 서류에 명시하여야 한다</td></tr><tr><td class="">고시 제15조</td><td class="">행정절차, 인·허가, 용지 보상, 문화재 시발굴 등 착공 및 진행에 차질이 예상되는 경우 그 진행현황 정보를 입찰참가자에게 제공하여야 한다</td></tr></tbody></table></div></div>
+<h3 id="s4-11">4-11. 프로그램의 계산 순서</h3>
+<div class="eq">1. 준비기간  = 공사 유형 예시(일반건물은 참고값) 또는 조정값
+2. 작업일수  = Σ 공종별 작업일수 (참고값 + 수정 + 추가 공종)
+3. 작업 착수일 = 착공 예정일 + 준비기간
+4. 월별: A = Σ 체크한 기상조건의 월평균, B = 부록 1, C = round(A × B ÷ 달력일수)
+        적용 = max(A + B − C, 8), 작업가능 = 달력일수 − 적용   <span class="c">첫 달은 착수일 이후 비율만</span>
+        사용 = min(남은 작업일수, 작업가능), 계상 = 적용 × 사용 ÷ 작업가능
+5. 비작업일수 = round(Σ 계상)
+6. 정리기간  = 30일 또는 조정값
+공사기간 = 1 + 2 + 5 + 6 · 준공 예정일 = 착공 예정일 + 공사기간</div>
+<div class="note"><b>계산 정확도</b>비작업일수 계산은 같은 식을 파이썬으로 따로 짠 독립 구현과 무작위 400건을 대조해 모두 일치함을 확인했습니다(v5.1.0). 부록 3 추출값은 지점별 소계와 대조했습니다.</div>
+<h3 id="s4-12">4-12. 프로그램이 다루지 않는 것</h3>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">항목</th><th class="">내용</th><th class="">프로그램</th></tr></thead><tbody><tr><td class="">1일 작업량 기반 산출</td><td class="">부록 4 공종별 1일 작업량 × 수량 계산</td><td class="">참고값을 직접 수정</td></tr><tr><td class="">미세먼지 보정</td><td class="">가이드라인 기상조건 예시의 미세먼지(PM2.5) 나쁨등급 보정</td><td class="">필요하면 비작업일수에 반영해 작업일수·준비기간 조정</td></tr><tr><td class="">공사여건 보정</td><td class="">도심지·소규모 등 고시 제13조의 가감</td><td class="">공종 추가 또는 일수 조정</td></tr><tr><td class="">시공조건 기간</td><td class="">용지보상·지장물 이설·문화재 조사 기간</td><td class="">준비기간 조정</td></tr><tr><td class="">토목 시설물 산정공식</td><td class="">부록 5-2(도로·철도 등)</td><td class="">비교하지 않음</td></tr><tr><td class="">일 단위 비작업일수</td><td class="">가이드라인은 월 또는 일 단위 산정을 허용</td><td class="">월 단위만</td></tr></tbody></table></div></div>
+<h3 id="s4-13">4-13. 적용 시점</h3>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">기준</th><th class="">확인한 판</th></tr></thead><tbody><tr><td class="">건설기술 진흥법</td><td class="">2025.10.1. 시행 — 제45조의2(2021.9.17. 신설)</td></tr><tr><td class="">공공 건설공사의 공사기간 산정기준</td><td class="">국토교통부고시 제2024-1021호 — 2025.1.6. 시행(현행, 2021.9.17. 제정 후 1차 개정). 재검토기한: 2025.1.1. 기준 매 3년(고시 제20조)</td></tr><tr><td class="">건설기술 진흥법 시행령</td><td class="">2026.6.9. 시행 — 제17조·제19조</td></tr><tr><td class="">적정 공사기간 확보를 위한 가이드라인</td><td class="">2026년판 — 국토교통부공고 제2025-1603호(2025.12.31.)</td></tr><tr><td class="">부록 3 기상 통계</td><td class="">2015~2024년(최근 10년) 월평균</td></tr><tr><td class="">부록 1 법정공휴일</td><td class="">2026~2035년</td></tr></tbody></table></div></div>
+<div class="warn"><b>확인</b>가이드라인은 해마다 새로 공고됩니다. 산정 전에 국가법령정보센터에서 고시의 현행 여부를, 국토교통부 공고에서 최신 가이드라인을 확인하십시오.</div>
+</section>
+<section class="ch" id="ch5"><h2><span class="n">05</span>실무 작업 방법</h2>
+<p class="lead">설계 단계에서 공사기간을 산정하고 입찰 서류에 산정근거를 붙일 때의 순서입니다.</p>
+<h3 id="s5-1">5-1. 단계별 절차</h3>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">단계</th><th class="">할 일</th><th class="">본문</th></tr></thead><tbody><tr><td class="">1. 기본 자료</td><td class="">총 공사비, 층수·연면적, 착공 예정일, 공사구역의 관측 지점</td><td class="">3-1~3-4</td></tr><tr><td class="">2. 준비·정리기간</td><td class="">유형별 예시에 안전·품질관리계획 승인 기간과 시공조건(용지보상·지장물·문화재) 반영</td><td class="">3-5 · 4-3</td></tr><tr><td class="">3. 작업일수</td><td class="">주공정 공종의 수량 ÷ 1일 작업량(부록 4) + 간접작업일수, 법정 근로시간 준수</td><td class="">3-6 · 4-7</td></tr><tr><td class="">4. 기상조건</td><td class="">관계법령·기준에서 공종별로 작업을 제한하는 조건을 정해 체크</td><td class="">3-7 · 4-6</td></tr><tr><td class="">5. 비교·검토</td><td class="">산정공식(부록 5) 또는 최근 5년 동종공사 실적 공기와 비교</td><td class="">3-10 · 4-9</td></tr><tr><td class="">6. 출력·제출</td><td class="">근거서 PDF를 설계 성과품과 입찰 서류에 첨부, 100억원 이상이면 적정성 심의</td><td class="">3-12 · 4-10</td></tr></tbody></table></div></div>
+<h3 id="s5-2">5-2. 제출 전 확인</h3>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">항목</th><th class="">확인 내용</th></tr></thead><tbody><tr><td class="">관측 지점</td><td class="">공사구역에서 가장 가까운 지점인지, 관측 위치와 차이가 크지 않은지</td></tr><tr><td class="">기상조건</td><td class="">주공정 공종의 작업제한 조건과 체크가 맞는지</td></tr><tr><td class="">착공 예정일</td><td class="">입찰 일정과 맞는지 — 바뀌면 비작업일수가 달라짐</td></tr><tr><td class="">작업일수</td><td class="">참고값을 설계 수량 기반 값으로 바꿨는지</td></tr><tr><td class="">준비·정리기간</td><td class="">예시값의 근거와 조정 사유를 적었는지</td></tr><tr><td class="">산정공식 비교</td><td class="">적용범위 안인지, 차이가 크면 그 이유를 설명할 수 있는지</td></tr><tr><td class="">심의</td><td class="">총 공사비 100억원(시·군·구 50억원) 이상이면 적정성 심의를 받는지</td></tr></tbody></table></div></div>
+<h3 id="s5-3">5-3. 예제 B — 공동주택</h3>
+<p>만민 공동주택 신축공사 · 서울(108) · 공사비 300억원 · 지상 15층/지하 2층 · 연면적 25,000㎡ · 착공 2027. 4. 1.</p>
+<figure class="shot" id="fig-s22_var_input"><div class="frame"><img src="images/s22_var_input.webp" width="1296" height="507" loading="lazy" alt="예제 B 입력 — 공동주택"><span class="pin" style="left:13.26%;top:18.78%">1</span><span class="pin" style="left:5.11%;top:73.78%">2</span><span class="pin" style="left:37.26%;top:73.78%">3</span><span class="pin" style="left:2.56%;top:87.19%">4</span></div><figcaption><span class="fno">S22</span>예제 B 입력 — 공동주택</figcaption><ol class="legend"><li><b>1</b><span>공동주택 — 준비 45일(가이드라인 예시)</span></li><li><b>2</b><span>지상 15층</span></li><li><b>3</b><span>지하 2층</span></li><li><b>4</b><span>연면적</span></li></ol></figure>
+<div class="pair"><div><figure class="shot" id="fig-s23_var_nw"><div class="frame"><img src="images/s23_var_nw.webp" width="1264" height="960" loading="lazy" alt="예제 B 월별 비작업일수 — 서울"><span class="pin" style="left:1.50%;top:12.62%">1</span><span class="pin" style="left:1.50%;top:96.00%">2</span></div><figcaption><span class="fno">S23</span>예제 B 월별 비작업일수 — 서울</figcaption><ol class="legend"><li><b>1</b><span>7월 — 혹서기</span></li><li><b>2</b><span>합계</span></li></ol></figure></div>
+<div><figure class="shot" id="fig-s24_var_result"><div class="frame"><img src="images/s24_var_result.webp" width="1296" height="846" loading="lazy" alt="예제 B 결과와 산정공식 비교"><span class="pin" style="left:2.87%;top:6.59%">1</span><span class="pin" style="left:2.56%;top:80.13%">2</span><span class="pin" style="left:2.56%;top:91.07%">3</span></div><figcaption><span class="fno">S24</span>예제 B 결과와 산정공식 비교</figcaption><ol class="legend"><li><b>1</b><span>총 공사기간</span></li><li><b>2</b><span>공동주택 산정공식</span></li><li><b>3</b><span>차이</span></li></ol></figure></div></div>
+<div class="tbl"><table><thead><tr><th class="">구분</th><th class="">예제 B</th><th class="num">값</th></tr></thead><tbody><tr><td class="">① 준비기간</td><td class="">공동주택 (가이드라인 예시)</td><td class="num">45일</td></tr><tr><td class="">② 작업일수</td><td class="">공종별 합계 (MANMIN 참고값)</td><td class="num">582일</td></tr><tr><td class="">③ 비작업일수</td><td class="">서울(108) · 철근콘크리트공사 기상조건 · 34개월</td><td class="num">416일</td></tr><tr><td class="">④ 정리기간</td><td class="">준공 전 1개월 범위</td><td class="num">30일</td></tr><tr><td class="">공사기간</td><td class="">① + ② + ③ + ④</td><td class="num"><b>1073일</b></td></tr><tr><td class="">산정공식(공동주택)</td><td class="">Y = −21.674 + 7.953×15 + 116.835×ln(300) ≈ 764일 → + 준비 + 정리 = 839일</td><td class="num">차이 +27.9%</td></tr><tr><td class="">준공 예정일</td><td class="">착공 2027. 4. 1. + 공사기간</td><td class="num">2030. 3. 9.</td></tr></tbody></table></div>
+<figure class="shot" id="fig-s25_var_a4page"><div class="frame"><img src="images/s25_var_a4page.webp" width="818" height="2353" loading="lazy" alt="예제 B 근거서 — 공사기간 1073일"></div><figcaption><span class="fno">S25</span>예제 B 근거서 — 공사기간 1073일</figcaption></figure>
+<p>예제 B는 산정 공사기간이 산정공식보다 27.9% 깁니다. 층당 마감 공종 일수(참고값)가 고층에서 크게 늘어나기 때문입니다. 두 예제 모두 참고값 공종표의 한계를 보여 주며, 실무에서는 공종별 수량과 1일 작업량으로 다시 산출해야 합니다.</p>
+</section>
+<section class="ch" id="ch6"><h2><span class="n">06</span>문제 해결·FAQ</h2>
+<div class="brk"><div class="k1"><div class="tbl"><table><thead><tr><th class="">증상·질문</th><th class="">답</th></tr></thead><tbody><tr><td class="">비작업일수가 작업일수보다 큽니다</td><td class="">체감온도 33℃ 이상 같은 혹서기 조건이 있는 지점(전주·대구 등)은 7·8월에 작업가능일이 5~6일밖에 안 되어 그 달을 지나는 동안 비작업일수가 크게 늘어납니다. 공종에 맞지 않는 조건이 체크되어 있지 않은지 보십시오.</td></tr><tr><td class="">착공일만 바꿨는데 공사기간이 바뀝니다</td><td class="">지나가는 달이 달라지면 기상·공휴일 비작업일수가 달라집니다. 정상입니다.</td></tr><tr><td class="">예전 버전과 비작업일수가 다릅니다</td><td class="">v5.1.0부터 가이드라인 부록 3(96개 지점·2015~2024)과 부록 1(2026~2035)로 바꿨습니다. 예전 내장값에는 2026·2027년 겨울 작업가능일이 1~2일로 잘못 들어 있었습니다.</td></tr><tr><td class="">기상조건을 모두 끄면 어떻게 됩니까</td><td class="">A가 0이 되어 공휴일만 계산되고, 대부분의 달은 하한 8일이 적용됩니다.</td></tr><tr><td class="">조건이 겹치는 날을 빼야 하지 않습니까</td><td class="">가이드라인 예시는 조건별 월평균 일수를 더해 A로 씁니다. 프로그램도 같은 방식입니다. 같은 날 여러 조건이 겹치는 경우가 많다고 판단되면 조건 수를 줄이거나 결합 조건(예: 「일최고기온 0℃ 이하 이거나 신적설 5cm 이상」)을 쓰십시오.</td></tr><tr><td class="">준비기간을 바꿨는데 원래대로 돌아갑니다</td><td class="">공사 유형이나 안전관리계획서 선택을 바꾸면 예시값으로 돌아갑니다. 유형을 먼저 정한 뒤 조정하십시오.</td></tr><tr><td class="">산정공식 비교가 나오지 않습니다</td><td class="">건축물(일반건물·공동주택)만 비교하며, 총 공사비가 적용범위 밖이면 비교하지 않습니다. 「기타 건축물」은 연면적을 넣어야 합니다.</td></tr><tr><td class="">차이가 −30%가 넘습니다. 부적정입니까</td><td class="">가이드라인에 판정 기준은 없습니다. 작업일수가 참고값 그대로인지, 기상조건이 맞는지 먼저 확인하십시오.</td></tr><tr><td class="">2036년 이후 착공은 어떻게 됩니까</td><td class="">법정공휴일은 2035년 값을 씁니다(산정표에 ※ 표시).</td></tr><tr><td class="">도로·교량 공사도 됩니까</td><td class="">준비기간 예시와 비작업일수는 계산되지만, 작업일수는 「주요 공종 90일」 한 줄로 시작하므로 직접 입력해야 합니다.</td></tr><tr><td class="">JPG 저장이 되지 않습니다</td><td class="">「A4 미리보기」 탭에서 눌러야 합니다. 그림 저장 라이브러리는 인터넷에서 내려받으므로, 오프라인에서 실패하면 인터넷에 연결해 한 번 연 뒤 다시 시도합니다.</td></tr><tr><td class="">매뉴얼 버튼을 눌러도 열리지 않습니다</td><td class="">매뉴얼은 인터넷에 연결되어 있을 때만 열립니다.</td></tr></tbody></table></div></div></div>
+</section>
+<section class="ch" id="ch7"><h2><span class="n">A</span>부록</h2>
+<h3 id="a1">A1. 예제 입력값</h3>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">항목</th><th class="">예제 A</th><th class="">예제 B</th></tr></thead><tbody><tr><td class="">공사명</td><td class="">만민 건축사 전주 신사옥 건립공사</td><td class="">만민 공동주택 신축공사</td></tr><tr><td class="">관측 지점</td><td class="">전주(146)</td><td class="">서울(108)</td></tr><tr><td class="">공사 유형</td><td class="">일반건물</td><td class="">공동주택</td></tr><tr><td class="">총 공사비</td><td class="">50억원</td><td class="">300억원</td></tr><tr><td class="">지상 / 지하 / 연면적</td><td class="">5층 / 1층 / 4,000㎡</td><td class="">15층 / 2층 / 25,000㎡</td></tr><tr><td class="">착공 예정일</td><td class="">2027. 3. 2.</td><td class="">2027. 4. 1.</td></tr><tr><td class="">기상조건</td><td class="">철근콘크리트공사 예시(5개 조건)</td><td class="">같음</td></tr><tr><td class="">산정공식</td><td class="">기타 건축물</td><td class="">공동주택</td></tr><tr><td class="">준비 / 작업 / 비작업 / 정리</td><td class="">20 / 235 / 165 / 30일</td><td class="">45 / 582 / 416 / 30일</td></tr><tr><td class="">공사기간</td><td class=""><b>450일</b> (준공 2028. 5. 25.)</td><td class=""><b>1073일</b> (준공 2030. 3. 9.)</td></tr></tbody></table></div></div>
+<h3 id="a2">A2. 버전 변경 내역</h3>
+<div class="k1"><div class="tbl"><table><thead><tr><th class="">버전</th><th class="">내용</th></tr></thead><tbody><tr><td class="">Ver-5.1 · v5.1.1 (2026-10-12)</td><td class="">사용자 매뉴얼 연결 — 탭 막대 「📘 매뉴얼」, 매뉴얼 웹·PDF 공개</td></tr><tr><td class="">Ver-5.1 · v5.1.0 (2026-10-12)</td><td class="">2026년 가이드라인 기준 전면 정정 — 비작업일수를 부록 3(96개 지점 · 13개 기상조건)·부록 1(2026~2035)로 교체, 지점·기상조건 선택 · 첫 달은 착수일 이후만 계상 · 준비기간 예시 12종 · 정리기간 기본 30일 · 부록 5 건축물 산정공식 13식 비교(판정 삭제) · 일반건물 준비기간과 공종표는 「MANMIN 참고값」으로 표기 · 조문 표기 정정(제6조 · 제4조③ · 제5조) · 준비기간 조정값 유지 · 시작 시 스크립트 오류 정정</td></tr><tr><td class="">Ver-5.0 · v5.0.0~v5.0.5 (2026-09)</td><td class="">디자인 통일(헤더·탭 막대·요약 스트립), A4 근거서, JPG 저장, 오프라인 캐시 개선</td></tr></tbody></table></div></div>
+<h3 id="a3">A3. 용어</h3>
+<div class="brk"><div class="k1"><div class="tbl"><table><thead><tr><th class="">용어</th><th class="">뜻</th></tr></thead><tbody><tr><td class="">공사기간</td><td class="">계약의 착수일부터 완료일까지 기간(고시 제2조제5호)</td></tr><tr><td class="">준비기간</td><td class="">공사의 착공 준비에 필요한 기간(고시 제2조제6호)</td></tr><tr><td class="">비작업일수</td><td class="">건설현장의 공사 진행이 불가능한 날짜 — 법정공휴일수 + 기상 비작업일수 − 중복일수(고시 제8조)</td></tr><tr><td class="">작업일수</td><td class="">공종별 수량을 시공하는데 필요한 총 작업일수(고시 제11조)</td></tr><tr><td class="">정리기간</td><td class="">준공검사 준비, 시설물 인수 등 행정절차와 현장 정리 기간(고시 제2조제8호)</td></tr><tr><td class="">주공정(critical path)</td><td class="">공사 전체 기간을 결정하는 공종의 연속 경로</td></tr><tr><td class="">종관기상관측(ASOS)</td><td class="">기상청 지상 관측 지점 — 부록 3의 지점 단위</td></tr><tr><td class="">산정공식</td><td class="">시설물별 실적 공사기간의 회귀식(부록 5)</td></tr><tr><td class="">MANMIN 참고값</td><td class="">가이드라인에 없어 프로그램이 임시로 넣는 값 — 일반건물 준비기간, 공종별 작업일수</td></tr></tbody></table></div></div></div>
+</section></main></div>
+<footer class="foot">© 2026 김만민 건축사 · ㈜대성건축사사무소 · 건축공사 공기산정 시스템 사용자 매뉴얼 Ver-5.1 · 국토교통부고시 제2024-1021호 · 국토교통부공고 제2025-1603호 <span class="rev">· 화면 대응 개정 2026-10-12</span></footer>
+<div class="pfoot"><span>건축공사 공기산정 시스템 사용자 매뉴얼 Ver-5.1</span><span>2026-10-12</span></div>
+<div id="lb" role="dialog" aria-label="그림 확대"><img alt=""></div>
+<button class="totop" aria-label="맨 위로">↑</button>
+<script>
+(function(){
+  var lb=document.getElementById('lb'),li=lb.querySelector('img');
+  document.querySelectorAll('figure.shot .frame').forEach(function(f){f.addEventListener('click',function(){li.src=f.querySelector('img').src;li.alt=f.querySelector('img').alt;lb.classList.add('open');});});
+  lb.addEventListener('click',function(){lb.classList.remove('open');li.removeAttribute('src');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('open');});
+  document.querySelector('.totop').addEventListener('click',function(){window.scrollTo(0,0);});
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id);});}});},{rootMargin:'0px 0px -70% 0px'});
+    document.querySelectorAll('section.ch,h3[id]').forEach(function(s){io.observe(s);});
+  }
+})();
+/* 좁은 화면 표 쌓기 준비: 숫자 칸이 없는 표에 stack 표시, 각 칸에 머리글(data-th) 복사 */
+(function(){document.querySelectorAll('.tbl').forEach(function(t){var tb=t.querySelector('table');if(!tb||!tb.tHead)return;
+ if(tb.querySelector('td.num,th.num'))return;var hs=[].map.call(tb.tHead.rows[0].cells,function(c){return c.textContent.trim()});
+ [].forEach.call(tb.tBodies[0].rows,function(r){[].forEach.call(r.cells,function(c,i){if(hs[i])c.setAttribute('data-th',hs[i])})});t.classList.add('stack');if(hs.length===2)t.classList.add('c2')})})();
+</script>
+</body></html>

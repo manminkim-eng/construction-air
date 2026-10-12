@@ -685,6 +685,7 @@ input[type="number"]{-moz-appearance:textfield;}
 
 @media(max-width:540px){ #fab-group{bottom:16px;right:12px;} .help-fab{padding:10px 8px;} }
 
+.tb.tb-manual{margin-left:auto;text-decoration:none;white-space:nowrap;}   /* v5.1.1 — 사용자 매뉴얼(탭 막대 오른쪽 끝) */
 /* v5.1.0 — 기상조건 선택 */
 .formula{white-space:pre-wrap;word-break:keep-all}
 .cond-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px}
@@ -755,6 +756,7 @@ select.finput{appearance:auto;cursor:pointer}
       <button class="tb tab-btn active" data-tab="input" onclick="switchTab('input')">⌨️ 입력·산출</button>
       <button class="tb tab-btn" data-tab="a4" onclick="switchTab('a4')">📄 A4 미리보기</button>
       <button class="tb tab-btn" data-tab="legal" onclick="switchTab('legal')">⚖️ 법적근거</button>
+      <a class="tb tb-manual" href="https://manminkim-eng.github.io/construction-air/manual/" target="_blank" rel="noopener" title="사용자 매뉴얼 (새 창)" onclick="if(navigator.onLine===false){event.preventDefault();showToast('매뉴얼은 인터넷 연결 시 열립니다','');}">📘 매뉴얼</a>
     </div>
   </nav>
   </div><!-- /.hdr-shell -->
@@ -829,7 +831,7 @@ select.finput{appearance:auto;cursor:pointer}
             <div class="legal-card">
               <div class="legal-law-title">📜 공공 건설공사의 공사기간 산정기준</div>
               <div class="legal-row"><span class="lk">고시</span><span class="lv">국토교통부고시 제2024-1021호 (2024.12.31.)</span></div>
-              <div class="legal-row"><span class="lk">시행일</span><span class="lv">2025년 1월 6일</span></div>
+              <div class="legal-row"><span class="lk">시행일</span><span class="lv">2025년 1월 6일 (현행 — 2021.9.17. 제정 후 1차 개정)</span></div>
               <div style="margin-top:8px;">
                 <span class="law-badge">제4조: 결정 절차 · 심의</span>
                 <span class="law-badge">제5조: 산정근거 명시</span>
@@ -854,7 +856,7 @@ select.finput{appearance:auto;cursor:pointer}
             <div class="legal-sec-title">🏛 공사기간 적정성 심의 (고시 제4조③)</div>
             <div class="legal-card">
               <div class="legal-row"><span class="lk">대상</span><span class="lv">총 공사비 100억원 이상 (시·군·구는 50억원 이상)</span></div>
-              <div class="legal-row"><span class="lk">기관</span><span class="lv">건설기술 진흥법 시행령 제17조~제19조에 따른 지방심의위원회 · 특별심의위원회 · 기술자문위원회</span></div>
+              <div class="legal-row"><span class="lk">기관</span><span class="lv">건설기술 진흥법 시행령 제17조~제19조에 따른 지방심의위원회 · 특별심의위원회 · 기술자문위원회 (공사기간 산정의 적정성: 시행령 제17조②3호 · 제19조⑤3호, 2026.6.9. 시행)</span></div>
               <div class="legal-row"><span class="lk">대체</span><span class="lv">위원회가 없는 발주청은 전문가 자문으로 대체 가능</span></div>
             </div>
           </div>
@@ -1016,9 +1018,9 @@ select.finput{appearance:auto;cursor:pointer}
               <div style="font-size:10.5px;color:#374151;line-height:1.8;">
                 ① <strong>총 공사기간</strong>과 구성 요소(준비·작업·비작업·정리)가 표시됩니다.<br>
                 ② 건축물은 <strong>부록 5 산정공식</strong>으로 구한 공사기간과의 차이가 함께 표시됩니다(적용범위 안에서만).<br>
-                ③ <strong>🖨️ A4 출력</strong> 버튼으로 공식 산정 근거 보고서를 출력할 수 있습니다.<br>
-                ④ <strong>📱 공유하기</strong> 버튼으로 결과를 캡처·공유(JPG)할 수 있습니다.<br>
-                ⑤ <strong>🔄 초기화</strong> 버튼을 누르면 모든 입력값이 초기화됩니다.
+                ③ <strong>📄 A4 미리보기</strong> 버튼 → 「인쇄 / PDF 저장」으로 공기산정 근거서를 출력합니다.<br>
+                ④ <strong>📱 JPG 저장</strong> 버튼으로 근거서를 A4 쪽 단위 그림으로 저장합니다.<br>
+                ⑤ <strong>🔄 새 공사</strong> 버튼을 누르면 모든 입력값이 초기값으로 돌아갑니다.
               </div>
             </div>
           </div>
@@ -1028,19 +1030,19 @@ select.finput{appearance:auto;cursor:pointer}
           <div class="mg2">
             <div class="mcard" style="border-left:3px solid #15803d;">
               <div style="font-size:11px;font-weight:800;color:#15803d;margin-bottom:5px;">📐 계산방법 안내 버튼</div>
-              <div style="font-size:10.5px;color:#374151;line-height:1.7;">STEP 1 하단 또는 상단 헤더의 「📐 계산방법 안내」 버튼을 클릭하면 이 창이 열립니다. 탭을 전환하여 전체 흐름·준비기간·작업일수·비작업일수·검증 공식·기상기준을 확인하세요.</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.7;">화면 오른쪽의 「📐 계산방법 안내」 버튼을 누르면 이 창이 열립니다. 탭을 바꿔 전체 흐름·준비기간·작업일수·비작업일수·산정공식 비교·기상조건을 확인하세요.</div>
             </div>
             <div class="mcard" style="border-left:3px solid #f97316;">
               <div style="font-size:11px;font-weight:800;color:#f97316;margin-bottom:5px;">🖨️ A4 인쇄 출력</div>
-              <div style="font-size:10.5px;color:#374151;line-height:1.7;">STEP 5 결과 화면에서 「🖨️ A4 출력」을 클릭하면 공사기간 산정 근거 보고서가 ISO A4 형식으로 출력됩니다. 입찰공고·계약 서류 첨부용으로 바로 활용 가능합니다.</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.7;">「📄 A4 미리보기」 탭에서 「인쇄 / PDF 저장」을 누르면 공기산정 근거서가 A4로 출력됩니다. 공공 공사는 공사기간 산정근거를 입찰에 관한 서류에 명시합니다(고시 제5조①).</div>
             </div>
             <div class="mcard" style="border-left:3px solid #22c55e;">
               <div style="font-size:11px;font-weight:800;color:#16a34a;margin-bottom:5px;">📲 PWA 앱 설치</div>
-              <div style="font-size:10.5px;color:#374151;line-height:1.7;">상단 「📲 설치」 버튼 또는 브라우저 주소창 아이콘을 통해 앱으로 설치하면 오프라인 환경에서도 사용 가능합니다. iOS Safari: 공유 버튼 → 홈 화면에 추가.</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.7;">화면 아래 설치 안내 또는 브라우저 주소창의 설치 아이콘으로 앱으로 설치하면 오프라인에서도 쓸 수 있습니다. iOS Safari: 공유 버튼 → 홈 화면에 추가.</div>
             </div>
             <div class="mcard" style="border-left:3px solid #7c3aed;">
               <div style="font-size:11px;font-weight:800;color:#7c3aed;margin-bottom:5px;">⚠️ 심의 대상 자동 알림</div>
-              <div style="font-size:10.5px;color:#374151;line-height:1.7;">총공사비 100억원 이상(시·군·구 50억 이상) 입력 시 지방건설기술심의위원회 심의 필요 경고가 자동으로 표시됩니다. 심의 결과에 따라 공기를 조정하세요.</div>
+              <div style="font-size:10.5px;color:#374151;line-height:1.7;">총 공사비 100억원 이상(시·군·구는 50억원 이상)이면 결과 화면에 공사기간 적정성 심의 대상이 표시됩니다 — 지방심의위원회·특별심의위원회 또는 기술자문위원회(고시 제4조③ · 건설기술 진흥법 시행령 제17조②3호·제19조⑤3호).</div>
             </div>
           </div>
 
