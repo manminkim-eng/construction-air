@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════
+   v6.1.2 (2026-11-12) — 건물개요 공통 원본 MM-PROJECT v1.2 → v1.3(불러오기 창 표 칸 모양 고정 — 도구 CSS 가 새지 않음 · 저장값 같음, 정밀검토 C10) · 작업지시서 §25-6-80 · 판 6.1 · 캐시명 v6.1.2 (종전 v6.1.1)
    v6.1.1 (2026-11-12) — 화면 확대 허용(viewport 의 maximum-scale=1.0 · user-scalable=no 삭제 — 휴대폰에서 두 손가락 확대 가능) (정밀검토 B17 · 작업지시서 §25-6-78) · 판 6.1 · 캐시명 v6.1.1 (종전 air-v6.1.0)
    v6.1.0 (2026-11-12) — 건물개요 공통 원본 MM-PROJECT v1.2 새로 넣음(사업명 · 연면적 · 지상층 · 지하층 · 정밀검토 B6 · 작업지시서 §25-6-77) · 판 6.1 · 캐시명 v6.1.0 (종전 air-v5.1.11)
    S6 회차 2026-09-05 — R24①② 표 선 separate·mono 한글 폴백 소급 동반 캐시명 v5.0.5
@@ -38,7 +39,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE  = 'air-v6.1.1';   /* 2026-09-03 v5.0 디자인 통일 */
+const CACHE  = 'air-v6.1.2';   /* 2026-09-03 v5.0 디자인 통일 */
 const ORPHAN = ['air-v3.0'];
 const ASSETS = [
   './',
