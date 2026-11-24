@@ -2,20 +2,24 @@
 // 규격: 1440×900 · DSF 1.25 · _marks.json(번호 배지 % 좌표) · _example.json(예제 검증값)
 const {chromium}=require(process.env.MM_PW||'playwright');const fs=require('fs');const path=require('path');const {setup,server}=require('./serve');
 const repo=path.resolve(process.argv[2]),out=path.resolve(process.argv[3]);fs.mkdirSync(out,{recursive:true});
-const VW=1440,VH=900,DSF=1.25,PORT=8897;
+const VW=1440,VH=900,DSF=1.25,PORT=+(process.env.MM_PORT||8897);
 /* 예제 A = 앱 초기값 + 착공 2027-03-02: 전주(146) · 일반건물 · 공사비 50억원 · 지상 5층/지하 1층 · 연면적 4,000㎡ · 철근콘크리트공사 기상조건 · 기타 건축물 산정공식
-   예제 B = 공동주택: 서울(108) · 공사비 300억원 · 지상 15층/지하 2층 · 연면적 25,000㎡ · 착공 2027-04-01 */
-const FREEZE=`(()=>{const T=new Date(2026,9,12,10,0,0).getTime();const D=Date;class F extends D{constructor(...a){if(a.length)super(...a);else super(T);}static now(){return T;}}window.Date=F;window.alert=()=>{};window.confirm=()=>true;try{localStorage.clear();sessionStorage.setItem('ib-dismissed','1')}catch(e){}})()`;
+   예제 B = 공동주택: 서울(108) · 공사비 300억원 · 지상 15층/지하 2층 · 연면적 25,000㎡ · 착공 2027-04-01 · 택지지구
+   Ver-6.1(웹 v6.1.5) 추가 장면: s29 총 공사비 0 경고 · s30 공종 「조정됨」 · s31 기상조건 겹침 경고 · s32 작업 불가 달 · s33 A4 「입력 확인」 줄
+   (s30~s33 = 예제 A + 방수공사(7번째 공종) 15 → 20일 / 기상조건에 「일최고온도 33°C 이상」(2) 추가 — 끝나면 __A()로 되돌림) */
+const FREEZE=`(()=>{const T=new Date(2026,10,24,10,0,0).getTime();const D=Date;class F extends D{constructor(...a){if(a.length)super(...a);else super(T);}static now(){return T;}}window.Date=F;window.alert=()=>{};window.confirm=()=>true;try{localStorage.clear();sessionStorage.setItem('ib-dismissed','1')}catch(e){}})()`;
 const HELP=`window.__vis=e=>e&&e.getClientRects().length>0;
 window.__card=(t)=>{const h=[...document.querySelectorAll('.card-title')].find(e=>__vis(e)&&e.textContent.trim()===t);return h?h.closest('.card'):null;};
 window.__find=(sel)=>{
  if(sel.startsWith('card:'))return __card(sel.slice(5));
  if(sel.startsWith('lc:'))return [...document.querySelectorAll('#tab-legal .legal-card')].filter(__vis)[+sel.slice(3)]||null;
  if(sel.startsWith('bst:'))return document.querySelectorAll('.bs-tab')[+sel.slice(4)]||null;
+ if(sel.startsWith('txt:'))return [...document.querySelectorAll('#stepContent div,#a4-content div,#stepContent span,#a4-content span')].filter(e=>__vis(e)&&e.textContent.trim().startsWith(sel.slice(4))).pop()||null;
+ if(sel.startsWith('row:'))return [...document.querySelectorAll('#stepContent tr,#a4-content tr')].filter(e=>__vis(e)&&e.textContent.includes(sel.slice(4)))[0]||null;
  for(const s of sel.split(',')){const e=[...document.querySelectorAll(s)].find(__vis);if(e)return e;}return null;};
 window.__go=n=>{S.step=n;renderProg();renderStep();window.scrollTo(0,0);};
-window.__A=()=>{S.proj={name:'만민 건축사 전주 신사옥 건립공사',type:'general',cost:50,fa:5,fb:1,area:4000,startDate:'2027-03-02',safetyPlan:false,stn:'146',preset:'rc',conds:[4,8,12,5,0],use:'etc'};S.prep.manual=false;S.cleanup.manual=false;S.work.custom=[];refresh();switchTab('input');__go(1);};
-window.__B=()=>{S.proj={name:'만민 공동주택 신축공사',type:'apartment',cost:300,fa:15,fb:2,area:25000,startDate:'2027-04-01',safetyPlan:false,stn:'108',preset:'rc',conds:[4,8,12,5,0],use:'etc'};S.prep.manual=false;S.cleanup.manual=false;S.work.custom=[];refresh();switchTab('input');__go(1);};
+window.__A=()=>{S.proj={name:'만민 건축사 전주 신사옥 건립공사',type:'general',cost:50,fa:5,fb:1,area:4000,startDate:'2027-03-02',safetyPlan:false,stn:'146',preset:'rc',conds:[4,8,12,5,0],use:'etc',land:'taek'};S.prep.manual=false;S.cleanup.manual=false;S.work.custom=[];S.work.key=null;S.adj={};refresh();switchTab('input');__go(1);};
+window.__B=()=>{S.proj={name:'만민 공동주택 신축공사',type:'apartment',cost:300,fa:15,fb:2,area:25000,startDate:'2027-04-01',safetyPlan:false,stn:'108',preset:'rc',conds:[4,8,12,5,0],use:'etc',land:'taek'};S.prep.manual=false;S.cleanup.manual=false;S.work.custom=[];S.work.key=null;S.adj={};refresh();switchTab('input');__go(1);};
 window.__ex=()=>{const v=standardFormula(S.proj);return {proj:JSON.parse(JSON.stringify(S.proj)),prep:S.prep.days,work:S.work.total,nw:S.nw.total,clean:S.cleanup.days,tot:totalDays(),
   items:S.work.items.map(i=>[i.name,i.days]),months:S.nw.months.map(m=>[m.label,m.A,m.B,m.C,m.raw,m.nw,m.wk,m.used,m.appNW]),
   val:v?{name:v.F.name,f:v.F.f,out:v.out,Y:v.Y,std:v.std,calc:v.calc,dev:v.dev}:null,end:fmtDate(addDays(S.proj.startDate,totalDays()))};};`;
@@ -25,7 +29,7 @@ const SHOTS=[
  {id:'s02_tabs',clip:'.app-header',union:'.tab-bar',m:[['.tb:nth-of-type(1)','입력·산출'],['.tb:nth-of-type(2)','A4 미리보기'],['.tb:nth-of-type(3)','법적근거'],['.tb-manual','매뉴얼'],['.hdr-right','근거 고시·가이드라인']]},
  {id:'s03_basic',clip:'card:공사 기본 정보',m:[['#iName','공사명'],['#iDate','착공 예정일'],['#iCost','총 공사비']]},
  {id:'s04_station',clip:'card:기상 관측 지점',m:[['#iStn','관측 지점']]},
- {id:'s05_type',clip:'card:공사 유형',m:[['.opt-card.sel','일반건물'],['.opt-grid .opt-card:nth-child(2)','공동주택 45일'],['.opt-grid .opt-card:nth-child(3)','고속도로공사 180일']]},
+ {id:'s05_type',clip:'card:공사 유형',m:[['.opt-card.sel','일반건물'],['.opt-grid .opt-card:nth-child(2)','공동주택 — 준비 45/60일'],['.opt-grid .opt-card:nth-child(3)','고속도로공사 180일']]},
  {id:'s06_bldg',clip:'card:건물 규모',m:[['#iFA','지상 층수'],['#iFB','지하 층수'],['input[name=sp]','안전관리계획서'],['#iArea','연면적'],['#iUse','건축물 유형']]},
  {id:'s07_prep',pre:"__go(2)",clip:'card:준비기간 산정',union:'card:정리기간',m:[['#iPrep','준비기간 조정'],['#stepContent .legal-ref','근거 — 일반건물 참고값'],['#iClean','정리기간'],['#stepContent .card:nth-child(2) .legal-ref','근거 — 준공 전 1개월']]},
  {id:'s08_work',pre:"__go(3)",clip:'card:공종별 작업일수',m:[['#stepContent .alert-info','MANMIN 참고값 안내'],['#stepContent .tbl .cat-row','공종 묶음'],['#stepContent .tbl .stepper','일수 조정'],['#stepContent .tbl .sum-row','총 작업일수']]},
@@ -42,10 +46,15 @@ const SHOTS=[
  {id:'s19_help_nw',pre:"switchMTab('m_nw',document.querySelectorAll('.bs-tab')[4]);document.getElementById('bsBody').scrollTop=0",wait:1200,fixed:true,clip:'#calcModal',m:[]},
  {id:'s20_help_verify',pre:"switchMTab('m_verify',document.querySelectorAll('.bs-tab')[5]);document.getElementById('bsBody').scrollTop=0",wait:1200,fixed:true,clip:'#calcModal',m:[]},
  {id:'s21_help_weather',pre:"switchMTab('m_weather',document.querySelectorAll('.bs-tab')[6]);document.getElementById('bsBody').scrollTop=0",wait:1200,fixed:true,post:"closeCalcGuide()",clip:'#calcModal',m:[]},
- {id:'s22_var_input',pre:"__B()",clip:'card:공사 유형',union:'card:건물 규모',m:[['.opt-card.sel','공동주택 — 준비 45일'],['#iFA','지상 15층'],['#iFB','지하 2층'],['#iArea','연면적']]},
+ {id:'s22_var_input',pre:"__B()",clip:'card:공사 유형',union:'card:건물 규모',m:[['.opt-card.sel','공동주택 — 준비 45/60일'],['#iFA','지상 15층'],['#iFB','지하 2층'],['#iArea','연면적'],['#iLand','택지 유형']]},
  {id:'s23_var_nw',pre:"__go(4)",clip:'#stepContent .nw-tbl',m:[['#stepContent .nw-tbl tbody tr:nth-child(4)','7월 — 서울 혹서기'],['#stepContent .nw-tbl tr.sum-row','합계']]},
  {id:'s24_var_result',pre:"__go(5)",clip:'#stepContent .result-hero',union:'card:산정공식과 비교',m:[['#stepContent .rh-num','총 공사기간'],['#stepContent .tbl tr:nth-child(1)','공동주택 산정공식'],['#stepContent .tbl tr:nth-child(4)','차이']]},
  {id:'s25_var_a4page',pre:"switchTab('a4');scrollTo(0,0)",wait:1200,clip:'#a4-page',post:"__A()",m:[]},
+ {id:'s29_cost_warn',pre:"__A();S.proj.cost=0;refresh();__go(1)",clip:'card:공사 기본 정보',post:"__A()",m:[['#iCost','빈 칸 · 0 — 빨간 테두리'],['#costWarn','진행 막음 안내']]},
+ {id:'s30_work_adj',pre:"__go(3);chWork(6,5)",clip:'#stepContent .alert-info',union:'row:조정됨',m:[['#stepContent .alert-info','조정값 유지 안내'],['row:조정됨','「조정됨」 표시']]},
+ {id:'s31_overlap',pre:"__A();S.proj.conds=[4,8,12,5,0,2];S.proj.preset='none';refresh();__go(4)",clip:'#stepContent .cond-grid',union:'#stepContent .alert-warning',m:[['#stepContent .cond-grid','체감온도 33 + 일최고온도 33'],['#stepContent .alert-warning','겹침 경고']]},
+ {id:'s32_blocked',clip:'#stepContent .nw-tbl',m:[['row:작업 불가 달','작업 불가 달 — 달력일수 전체 계상'],['#stepContent .nw-tbl tr.sum-row','합계']]},
+ {id:'s33_a4_check',pre:"switchTab('a4');scrollTo(0,0)",wait:1200,clip:'#a4-content .a4-section:nth-child(6)',union:'txt:⚠ 입력 확인',post:"__A()",m:[['row:작업 불가','작업 불가 달'],['txt:⚠ 입력 확인','⚠ 입력 확인 줄']]},
 ];
 (async()=>{
  const s=await server(repo,PORT);const b=await chromium.launch();
@@ -60,7 +69,11 @@ const SHOTS=[
   if(S.pre){try{await pg.evaluate(S.pre);}catch(e){errs.push(S.id+' pre '+e.message);}}
   await pg.waitForTimeout(S.wait||700);
   if(S.id==='s01_overview')ex.A=await pg.evaluate('__ex()');
-  if(S.id==='s22_var_input')ex.B=await pg.evaluate('__ex()');
+  if(S.id==='s22_var_input'){ex.B=await pg.evaluate('__ex()');ex.B_non=await pg.evaluate("(()=>{setLand('non');const r={prep:S.prep.days,tot:totalDays(),end:fmtDate(addDays(S.proj.startDate,totalDays()))};setLand('taek');renderStep();return r})()");}
+  if(S.id==='s29_cost_warn')ex.cost0=await pg.evaluate(()=>({warn:document.getElementById('costWarn').textContent,a4:(renderA4(),document.getElementById('a4-content').innerText.replace(/\s+/g,' '))}));
+  if(S.id==='s30_work_adj')ex.adj=await pg.evaluate("(()=>{const it=S.work.items[6];const w0=S.work.total;setStn('108');const keep=S.work.items[6].days;setStn('146');return {name:it.name,std:it.std,days:it.days,work:w0,keep,tot:totalDays()}})()");
+  if(S.id==='s32_blocked')ex.blk=await pg.evaluate("({nw:S.nw.total,tot:totalDays(),end:fmtDate(addDays(S.proj.startDate,totalDays())),blocked:S.nw.months.filter(m=>m.blocked).map(m=>[m.label,m.appNW]),ov:condOverlap(S.proj.conds),dev:(standardFormula(S.proj)||{}).dev})");
+  if(S.id==='s33_a4_check')ex.blk_a4=await pg.evaluate(()=>document.getElementById('a4-content').innerText.split('\n').filter(l=>l.includes('입력 확인')));
   if(S.id==='s15_a4page')ex.A_a4=await pg.evaluate(()=>document.getElementById('a4-content').innerText.replace(/\s+/g,' '));
   const info=await pg.evaluate(({S,VW,VH})=>{
    const abs=e=>{const r=e.getBoundingClientRect();return {x:r.left+scrollX,y:r.top+scrollY,w:r.width,h:r.height};};

@@ -1,4 +1,4 @@
-# 공기산정 v5.1.0 계산 검증 — 앱(브라우저 실행) vs 파이썬 독립 구현 · 가이드라인 예시 재현
+# 공기산정 v5.1.0 계산 검증(v6.1.5 작업 불가 달 규칙 반영) — 앱(브라우저 실행) vs 파이썬 독립 구현 · 가이드라인 예시 재현
 # usage: python3 verify_air_calc.py <repo>   (playwright 필요)
 import sys, json, random, calendar, asyncio, os
 from playwright.async_api import async_playwright
@@ -16,6 +16,10 @@ def nwd(start, prep, work, stn, conds):
         dim = calendar.monthrange(yr, mo + 1)[1]
         A = r1(sum(ST[stn]['d'][k][mo] for k in conds)); hy = yr if yr in HOL else (2026 if yr < 2026 else 2035); B = HOL[hy][mo]
         C = jsround(A * B / dim); raw = r1(A + B - C); nw = max(raw, 8); wk = r1(dim - nw)
+        if wk <= 0:  # v6.1.5 작업 불가 달 — 그 달(첫 달은 남은) 달력일수 전체 계상(고시 제8조①)
+            left = dim - first + 1; out.append(left); tot += left; mo += 1; first = 1
+            if mo == 12: mo = 0; yr += 1
+            continue
         cap = max(0, r1(wk * (dim - first + 1) / dim))
         if cap > 0:
             used = min(rem, cap); app = r1(nw * used / wk); out.append(app); tot += app; rem = r1(rem - used)
