@@ -382,6 +382,9 @@ input[type="number"]{-moz-appearance:textfield;}
 .a4-section{margin-bottom:13px;}
 .a4-sec-title{font-size:11px;font-weight:800;color:#14110b;border-left:3px solid #f97316;padding-left:7px;margin-bottom:6px;letter-spacing:.04em;}
 .a4-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:9px;}
+/* v6.1.5 — A4 02절 ① ~ ④ + 총 공사기간 5칸(교차검증 F9) */
+.a4-grid.five{grid-template-columns:repeat(5,1fr);}
+@media print{.a4-grid.five{grid-template-columns:repeat(5,1fr)!important;}}
 .a4-item{border:1.5px solid #e2e8f0;border-radius:7px;padding:7px;text-align:center;}
 .a4-item-label{font-size:8.5px;color:#6b7a99;font-weight:700;margin-bottom:2px;}
 .a4-item-val{font-size:16px;font-weight:900;color:#785a28;}
@@ -599,6 +602,7 @@ input[type="number"]{-moz-appearance:textfield;}
 .offline-toast{position:fixed;top:68px;left:50%;transform:translateX(-50%) translateY(-12px);z-index:8888;background:#0f172a;color:#fff;padding:8px 16px;border-radius:24px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(0,0,0,.3);opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;}
 .offline-toast.online{background:#5c4420;}
 .offline-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.offline-toast.warn{background:#b91c1c;white-space:normal;max-width:92vw;text-align:center;line-height:1.5;}
 
 /* ── UPDATE BANNER ── */
 .update-banner{position:fixed;top:0;left:0;right:0;z-index:9990;background:#f97316;color:#fff;padding:9px 14px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:12.5px;font-weight:700;transform:translateY(-100%);transition:transform .3s;box-shadow:0 2px 10px rgba(0,0,0,.15);}
@@ -855,6 +859,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
               <div class="legal-row"><span class="lk">신설 시행</span><span class="lv">2021. 9. 17. (법률 제17939호)</span></div>
               <div class="legal-row"><span class="lk">현행</span><span class="lv">2025. 10. 1. 시행</span></div>
               <div style="margin-top:8px;font-size:11px;color:#374151;line-height:1.8;">① 발주자는 건설공사의 품질 및 안전성·경제성을 확보할 수 있도록 해당 건설공사의 규모 및 특성, 현장여건 등을 고려하여 적정 공사기간을 산정하여야 한다. ② 국토교통부장관은 공사기간 산정기준을 정하여 고시할 수 있다.</div>
+              <div style="margin-top:6px;font-size:11px;color:#6b7a99;line-height:1.7;">① 단서: 불가항력 등 정당한 사유가 발생한 경우에는 이를 고려하여 적정 공사기간 조정을 검토하여야 한다.</div>
             </div>
             <div class="legal-card">
               <div class="legal-law-title">📜 공공 건설공사의 공사기간 산정기준</div>
@@ -870,6 +875,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
                 <span class="law-badge">제12조: 정리기간</span>
                 <span class="law-badge red">제14조: 실적 공기 비교</span>
               </div>
+              <div style="margin-top:8px;font-size:11px;color:#6b7a99;line-height:1.7;">제5조① 단서: 설계·시공일괄입찰 · 대안입찰 · 기술제안입찰은 입찰참가자가 공사기간 산정근거를 실시설계서에 포함하여 제출한다.</div>
             </div>
             <div class="legal-card">
               <div class="legal-law-title">📘 2026년 적정 공사기간 확보를 위한 가이드라인</div>
@@ -885,7 +891,9 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
             <div class="legal-card">
               <div class="legal-row"><span class="lk">대상</span><span class="lv">총 공사비 100억원 이상 (시·군·구는 50억원 이상)</span></div>
               <div class="legal-row"><span class="lk">기관</span><span class="lv">건설기술 진흥법 시행령 제17조~제19조에 따른 지방심의위원회 · 특별심의위원회 · 기술자문위원회 (공사기간 산정의 적정성: 시행령 제17조②3호 · 제19조⑤3호, 2026.6.9. 시행)</span></div>
-              <div class="legal-row"><span class="lk">대체</span><span class="lv">위원회가 없는 발주청은 전문가 자문으로 대체 가능</span></div>
+              <div class="legal-row"><span class="lk">대체</span><span class="lv">지방심의위원회 또는 기술자문위원회가 설치되어 있지 아니한 발주청은 전문가 자문으로 대체 가능(고시 제4조③ 단서)</span></div>
+              <div class="legal-row"><span class="lk">50~99억</span><span class="lv">총 공사비 50억원 이상 100억원 미만은 시·군·구(시행령: 시·군·자치구) 발주 공사만 심의 대상 — 국가·광역 등 그 밖의 발주청은 100억원 이상부터</span></div>
+              <div class="legal-row"><span class="lk">제외</span><span class="lv">기술자문위원회(시행령 제19조⑤3호)에 자문하여 의견을 받은 건설공사는 지방심의위원회 심의에서 제외(시행령 제17조②3호 단서)</span></div>
             </div>
           </div>
           <div class="legal-section">
@@ -1105,7 +1113,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
 
         <div class="bs-panel" id="m_prep">
           <div class="msec">건설공사 유형별 준비기간 (가이드라인 예시)</div>
-          <table class="mtbl"><thead><tr><th>공종</th><th>준비기간</th></tr></thead><tbody><tr><td>공동주택</td><td style="text-align:center;font-weight:800;color:#785a28;">45일</td></tr><tr><td>고속도로공사</td><td style="text-align:center;font-weight:800;color:#785a28;">180일</td></tr><tr><td>철도공사</td><td style="text-align:center;font-weight:800;color:#785a28;">90일</td></tr><tr><td>포장공사(신설)</td><td style="text-align:center;font-weight:800;color:#785a28;">50일</td></tr><tr><td>포장공사(수선)</td><td style="text-align:center;font-weight:800;color:#785a28;">60일</td></tr><tr><td>공동구공사</td><td style="text-align:center;font-weight:800;color:#785a28;">80일</td></tr><tr><td>상수도공사</td><td style="text-align:center;font-weight:800;color:#785a28;">60일</td></tr><tr><td>하천공사</td><td style="text-align:center;font-weight:800;color:#785a28;">40일</td></tr><tr><td>항만공사</td><td style="text-align:center;font-weight:800;color:#785a28;">40일</td></tr><tr><td>강교가설공사</td><td style="text-align:center;font-weight:800;color:#785a28;">90일</td></tr><tr><td>PC교량 공사</td><td style="text-align:center;font-weight:800;color:#785a28;">70일</td></tr><tr><td>교량보수공사</td><td style="text-align:center;font-weight:800;color:#785a28;">60일</td></tr></tbody></table>
+          <table class="mtbl"><thead><tr><th>공종</th><th>준비기간</th></tr></thead><tbody><tr><td>공동주택</td><td style="text-align:center;font-weight:800;color:#785a28;">택지 45일 · 비택지 60일</td></tr><tr><td>고속도로공사</td><td style="text-align:center;font-weight:800;color:#785a28;">180일</td></tr><tr><td>철도공사</td><td style="text-align:center;font-weight:800;color:#785a28;">90일</td></tr><tr><td>포장공사(신설)</td><td style="text-align:center;font-weight:800;color:#785a28;">50일</td></tr><tr><td>포장공사(수선)</td><td style="text-align:center;font-weight:800;color:#785a28;">60일</td></tr><tr><td>공동구공사</td><td style="text-align:center;font-weight:800;color:#785a28;">80일</td></tr><tr><td>상수도공사</td><td style="text-align:center;font-weight:800;color:#785a28;">60일</td></tr><tr><td>하천공사</td><td style="text-align:center;font-weight:800;color:#785a28;">40일</td></tr><tr><td>항만공사</td><td style="text-align:center;font-weight:800;color:#785a28;">40일</td></tr><tr><td>강교가설공사</td><td style="text-align:center;font-weight:800;color:#785a28;">90일</td></tr><tr><td>PC교량 공사</td><td style="text-align:center;font-weight:800;color:#785a28;">70일</td></tr><tr><td>교량보수공사</td><td style="text-align:center;font-weight:800;color:#785a28;">60일</td></tr></tbody></table>
           <div class="mhi amber" style="margin-top:10px;">
             <strong>일반건물</strong>은 가이드라인 예시가 없습니다. 프로그램은 MANMIN 참고값(공사비 10억원 미만 10일 · 10억원 이상 20일 · 안전관리계획 대상 45일)을 넣으니 현장 조건으로 조정하십시오.<br/>
             준비기간에는 비작업일수를 계상하지 않으며, 안전관리계획·품질관리계획 승인 기간을 반영할 수 있습니다(가이드라인).
@@ -1145,7 +1153,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
 
         <div class="bs-panel" id="m_verify">
           <div class="msec">시설물별 공사기간 산정공식 (부록 5 · 건축물)</div>
-          <div class="mhi">산정공식으로 구한 값(Y)에 준비기간과 정리기간을 더해 비교합니다. 고시 제14조는 실적 공기와 비교해 타당성을 「검토할 수 있다」고만 정하며, <strong>적정 판정 기준(±%)은 없습니다.</strong> 적용범위 밖에서는 쓰지 않습니다.</div>
+          <div class="mhi">산정공식으로 구한 값(Y)에 준비기간과 정리기간을 더해 비교합니다(고시 제14조 실적 공기 비교 · 가이드라인 부록 5). 가이드라인(국토교통부공고 제2025-1603호, p.30)은 산정 공사기간(A)이 공식 기준(B = Y + 준비 + 정리)의 <strong>±20 % 범위를 벗어나면 산정 과정에 오류가 없는지 재검토</strong>하도록 안내합니다(전문가 활용 가능) — 적부 판정이 아닌 재검토 권고입니다. 적용범위 밖에서는 쓰지 않습니다.</div>
           <table class="mtbl" style="margin-top:8px;"><thead><tr><th>건축물 유형</th><th>산정공식</th><th>적용범위</th></tr></thead><tbody>
             <tr><td>학교</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = 129.06x^0.2557</td><td>200억원 이하</td></tr><tr><td>청사</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = 155.94ln(x) − 82.355</td><td>500억원 이하</td></tr><tr><td>의료시설</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = −0.0385x² + 8.9084x + 140.87</td><td>200억원 이하</td></tr><tr><td>경찰서</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = −0.0154x² + 7.9986x + 145.51</td><td>300억원 이하</td></tr><tr><td>대학·연구시설</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = 201.62ln(x) − 175.51</td><td>5억원 이상, 300억원 이하</td></tr><tr><td>공연·전시시설</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = −205.7ln(x) + 1375.4</td><td>5억원 이상, 300억원 이하</td></tr><tr><td>기숙사</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = −0.0204x² + 6.6742x + 166.51</td><td>200억원 이하</td></tr><tr><td>공장, 창고</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = −0.0271x² + 6.9664x + 146.97</td><td>200억원 이하</td></tr><tr><td>체육시설</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = 112.19x^0.3719</td><td>300억원 이하</td></tr><tr><td>소방시설</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = −0.0497x² + 10.744x + 114.94</td><td>200억원 이하</td></tr><tr><td>공동주택</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = −21.674 + 7.953×G + 116.835×ln(C)</td><td>10억원 이상</td></tr><tr><td>체육시설</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = −278.109 + 189.438×ln(C)</td><td>10억원 이상</td></tr><tr><td>기타 건축물</td><td style="font-family:JetBrains Mono,monospace;font-size:11px">Y = −68.550 + 18.192×B + 12.079×G − 5.25×ln(A) + 167.632×ln(C)</td><td>10억원 이상</td></tr>
           </tbody></table>
@@ -1218,11 +1226,12 @@ const BLDF=[
    ==================================================== */
 const S={
   step:1,
-  proj:{name:'만민 건축사 전주 신사옥 건립공사',type:'general',cost:50,fa:5,fb:1,area:4000,startDate:'',safetyPlan:false,stn:'146',preset:'rc',conds:[4,8,12,5,0],use:'etc'},
+  proj:{name:'만민 건축사 전주 신사옥 건립공사',type:'general',cost:50,fa:5,fb:1,area:4000,startDate:'',safetyPlan:false,stn:'146',preset:'rc',conds:[4,8,12,5,0],use:'etc',land:'taek'},
   prep:{days:20,manual:false},
-  work:{items:[],custom:[],total:0},
+  work:{items:[],custom:[],total:0,key:null},
   nw:{months:[],total:0},
-  cleanup:{days:30,manual:false}
+  cleanup:{days:30,manual:false},
+  adj:{}   /* v6.1.5 — 입력 칸 정정 기록(A4 「입력 확인」 줄, 교차검증 F8 · F9 · F10) */
 };
 
 /* ====================================================
@@ -1233,6 +1242,7 @@ function calcPrep(p){
   const t=TYPES.find(t=>t.id===p.type);
   if(!t)return 30;
   if(t.prep==null){if(p.safetyPlan)return 45;return p.cost>=10?20:10;}
+  if(t.id==='apartment')return p.land==='non'?60:45; /* v6.1.5 — 공동주택 가이드라인 택지지구 45 · 비택지지구 60일(가이드라인 PDF p.141) */
   return t.prep;
 }
 /* 정리기간: 가이드라인 「일반적으로 주요공종이 마무리된 이후 준공 전 1개월의 범위에서 계상」 → 기본 30일, 직접 조정 */
@@ -1255,6 +1265,28 @@ function buildWorkItems(p){
   return items;
 }
 function r1(x){return Math.round(x*10)/10;}
+/* v6.1.5 — 'YYYY-MM-DD'를 로컬 날짜로(종전 new Date(문자열)은 UTC → UTC− 시간대에서 하루 당겨짐, 교차검증 F12) */
+function pd(s){if(s instanceof Date)return new Date(s.getTime());const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s||''));return m?new Date(+m[1],+m[2]-1,+m[3]):new Date(s);}
+/* v6.1.5 — 총 공사비는 0보다 큰 값만(교차검증 F3) */
+function costOk(){const c=S.proj.cost;return typeof c==='number'&&isFinite(c)&&c>0;}
+/* v6.1.5 — 같은 요소 기상조건 겹침(혹서기 4종 · 강수 4종 · 동절기 조합) — 같은 날이 두 번 계상될 수 있음(교차검증 F2 · J2) */
+function condOverlap(cs){cs=cs||[];const n=a=>a.filter(k=>cs.includes(k)).length,r=[];
+  if(n([0,1,2,3])>1)r.push('혹서기 '+n([0,1,2,3])+'개');
+  if(n([8,9,10,11])>1)r.push('일강수량 '+n([8,9,10,11])+'개');
+  if(cs.includes(6)&&(cs.includes(4)||cs.includes(5)))r.push('동절기 「0°C 이하 이거나 신적설 5㎝」와 「0°C 이하」·「신적설 5㎝」');
+  return r;}
+/* v6.1.5 — 산정공식 비교 ±20 % 범위 표시(가이드라인 p.30 — 벗어나면 재검토, 교차검증 F4 · J1 (나)) */
+function devIn(v){return Math.abs(parseFloat(v.dev))<=20;}
+function devBadge(v,a4){const fs=a4?'8.5px':'11px';return devIn(v)?`<span style="display:inline-block;margin-left:6px;padding:1px 7px;border-radius:4px;font-size:${fs};font-weight:800;background:#dcfce7;color:#166534;border:1px solid #86efac">범위 안(±20 %)</span>`:`<span style="display:inline-block;margin-left:6px;padding:1px 7px;border-radius:4px;font-size:${fs};font-weight:800;background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5">재검토 권고(±20 % 밖)</span>`;}
+/* v6.1.5 — 정정 · 범위 알림(교차검증 F8 · F10) */
+function airNote(msg){const t=document.getElementById('offlineToast');if(!t)return;t.textContent=msg;t.className='offline-toast warn show';clearTimeout(t._an);t._an=setTimeout(()=>t.classList.remove('show'),3600);}
+function adjSet(k,msg){if(msg){S.adj[k]=msg;airNote(msg);}else delete S.adj[k];}
+/* v6.1.5 — A4 「입력 확인」 줄(교차검증 F9) */
+function inputChecks(){const r=[];if(!costOk())r.push('총 공사비 미입력 · 0 이하');
+  const ov=condOverlap(S.proj.conds);if(ov.length)r.push('기상조건 겹침('+ov.join(' · ')+') — 같은 날이 중복 계상될 수 있음');
+  Object.keys(S.adj).forEach(k=>r.push(S.adj[k]));
+  if(S.cleanup.days>31)r.push('정리기간 '+S.cleanup.days+'일 — 가이드라인 「일반적으로 준공 전 1개월」보다 김(근거 확인)');
+  return r;}
 function stnName(c){const v=MM_STN[c];return v?`${v[0]}(${c})`:c;}
 function holYear(y){return MM_HOL[y]?y:(y<2026?2026:2035);}
 /* 월별 비작업일수 = A + B − C · C = A×B÷달력일수(소수점 첫째자리에서 반올림, 고시 제8조①) · 월 8일 미만이면 8일(주 40시간 근무제, 고시 제8조② · 가이드라인)
@@ -1263,7 +1295,7 @@ function holYear(y){return MM_HOL[y]?y:(y<2026?2026:2035);}
 function calcNWD(startStr,prepDays,workDays,p){
   p=p||S.proj;
   const st=MM_STN[p.stn]||MM_STN['146'],cs=(p.conds&&p.conds.length)?p.conds:[];
-  const cStart=new Date(startStr);cStart.setDate(cStart.getDate()+prepDays);
+  const cStart=pd(startStr);cStart.setDate(cStart.getDate()+prepDays);
   const months=[];let rem=workDays,tot=0,safe=0;
   let cur=new Date(cStart.getFullYear(),cStart.getMonth(),1);
   let firstDay=cStart.getDate();
@@ -1273,6 +1305,9 @@ function calcNWD(startStr,prepDays,workDays,p){
     const C=Math.round(A*B/dim),raw=r1(A+B-C),nw=Math.max(raw,8),wk=r1(dim-nw);
     const frac=(dim-firstDay+1)/dim; /* 첫 달은 착공일 이후 날짜만 */
     const cap=Math.max(0,r1(wk*frac));
+    /* v6.1.5 — 적용 비작업일수 ≥ 달력일수(작업가능일 0 이하)인 달은 그 달(첫 달은 남은) 달력일수 전체를 비작업일수로 계상 · 「작업 불가 달」 표시
+       (종전: 건너뛰어 0일 계상 → 조건을 더할수록 공기가 줄어듦, 고시 제8조① · 교차검증 F2) */
+    if(wk<=0){const left=dim-firstDay+1;months.push({yr,mo:mo+1,label:`${yr}.${String(mo+1).padStart(2,'0')}`,A:A.toFixed(1),B,C,raw:raw.toFixed(1),nw:nw.toFixed(1),wk:'0.0',used:0,appNW:left,hy,blocked:true});tot+=left;cur.setMonth(mo+1);firstDay=1;continue;}
     if(cap<=0){cur.setMonth(mo+1);firstDay=1;continue;}
     const used=Math.min(rem,cap),appNW=r1(nw*used/wk);
     months.push({yr,mo:mo+1,label:`${yr}.${String(mo+1).padStart(2,'0')}`,A:A.toFixed(1),B,C,raw:raw.toFixed(1),nw:nw.toFixed(1),wk:wk.toFixed(1),used:r1(used),appNW,hy});
@@ -1282,10 +1317,11 @@ function calcNWD(startStr,prepDays,workDays,p){
 }
 function standardFormula(p){
   const t=TYPES.find(x=>x.id===p.type);if(!t||!t.bld)return null;
-  const use=p.type==='apartment'?'apt':p.use;const F=BLDF.find(x=>x.id===use);if(!F||p.cost<=0)return null;
+  const use=p.type==='apartment'?'apt':p.use;const F=BLDF.find(x=>x.id===use);if(!F)return null;
   const calc=S.prep.days+S.work.total+S.nw.total+S.cleanup.days;
-  if(!F.ok(p))return{F,out:true,calc};
-  const Y=F.calc(p);if(!(Y>0))return{F,out:true,calc};
+  if(!(p.cost>0))return{F,out:true,calc,reason:'총 공사비 미입력'}; /* v6.1.5 — 생략 사유 표시(교차검증 F3 · F9) */
+  if(!F.ok(p))return{F,out:true,calc,reason:(F.id==='etc'&&!(p.area>0))?'연면적 미입력':`총 공사비 ${p.cost}억원`};
+  const Y=F.calc(p);if(!(Y>0))return{F,out:true,calc,reason:'공식 값 Y ≤ 0'};
   const std=Math.round(Y)+S.prep.days+S.cleanup.days;
   const dev=((calc-std)/std*100);
   return{F,out:false,std,calc,dev:dev.toFixed(1),Y:Math.round(Y)};
@@ -1293,7 +1329,9 @@ function standardFormula(p){
 function refresh(){
   const p=S.proj;
   if(!S.prep.manual)S.prep.days=calcPrep(p);if(!S.cleanup.manual)S.cleanup.days=calcCleanup(p);
-  S.work.items=buildWorkItems(p);
+  /* v6.1.5 — 표준 공종표는 유형 · 지상 · 지하 층수가 바뀔 때만 다시 만든다(종전: 매번 재생성 → 기상조건 · 지점 · 준비기간 변경 때 수정값 소실, 교차검증 F1) */
+  const wkey=[p.type,Math.max(1,p.fa||1),Math.max(0,p.fb||0)].join('|');
+  if(S.work.key!==wkey||!S.work.items.length){S.work.items=buildWorkItems(p);S.work.key=wkey;}
   const stdTotal=S.work.items.reduce((s,i)=>s+(parseInt(i.days)||0),0);
   const cusTotal=S.work.custom.reduce((s,i)=>s+(parseInt(i.days)||0),0);
   S.work.total=stdTotal+cusTotal;
@@ -1302,8 +1340,8 @@ function refresh(){
 }
 function totalDays(){return S.prep.days+S.work.total+S.nw.total+S.cleanup.days;}
 function today(){const d=new Date(); return new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().split('T')[0];}
-function fmtDate(d){const x=new Date(d);if(isNaN(x))return '-';return `${x.getFullYear()}. ${x.getMonth()+1}. ${x.getDate()}.`;}
-function addDays(dateStr,days){const d=new Date(dateStr);if(isNaN(d))return new Date();d.setDate(d.getDate()+days);return d;}
+function fmtDate(d){const x=pd(d);if(isNaN(x))return '-';return `${x.getFullYear()}. ${x.getMonth()+1}. ${x.getDate()}.`;}
+function addDays(dateStr,days){const d=pd(dateStr);if(isNaN(d))return new Date();d.setDate(d.getDate()+days);return d;}
 
 /* ====================================================
    STEP RENDERING
@@ -1339,15 +1377,15 @@ function renderStep(){
 
 function renderStep1(){
   const p=S.proj,t=today();
-  const typeOpts=TYPES.map(t=>`<div class="opt-card ${p.type===t.id?'sel':''}" onclick="selType('${t.id}')"><div class="opt-ico">${t.ico}</div><div class="opt-name">${t.name}</div><div class="opt-meta">${t.prep?`준비 ${t.prep}일`:'참고값·조정'}</div></div>`).join('');
+  const typeOpts=TYPES.map(t=>`<div class="opt-card ${p.type===t.id?'sel':''}" onclick="selType('${t.id}')"><div class="opt-ico">${t.ico}</div><div class="opt-name">${t.name}</div><div class="opt-meta">${t.id==='apartment'?'준비 45/60일':t.prep?`준비 ${t.prep}일`:'참고값·조정'}</div></div>`).join('');
   const useOpts=BLDF.filter(f=>f.id!=='apt').map(f=>`<option value="${f.id}" ${p.use===f.id?'selected':''}>${f.name}</option>`).join('');
   return`
-  <div class="card"><div class="card-head"><div class="card-icon">📁</div><div class="card-title">공사 기본 정보</div><span class="card-badge" style="margin-left:auto">건설기술진흥법 제45조의2</span></div>
+  <div class="card"><div class="card-head"><div class="card-icon">📁</div><div class="card-title">공사 기본 정보</div><span class="card-badge" style="margin-left:auto">건설기술 진흥법 제45조의2</span></div>
   <div class="card-body">
     <div class="frow"><div class="fgroup full"><label class="flbl">공사명</label><input class="finput" id="iName" value="${p.name}" placeholder="예: 광주 복합문화시설 건립공사" maxlength="100"></div></div>
     <div class="frow">
       <div class="fgroup"><label class="flbl">착공 예정일 <span style="color:#ef4444">*</span></label><input type="date" class="finput" id="iDate" value="${p.startDate||t}"></div>
-      <div class="fgroup"><label class="flbl">총 공사비 <span style="color:#ef4444">*</span> <span style="color:#6b7a99;font-size:11px;">(100억↑ 심의)</span></label><div class="input-sfx"><input type="number" class="finput" id="iCost" value="${p.cost||''}" placeholder="0" min="0" step="0.1"><div class="sfx-lbl">억원</div></div></div>
+      <div class="fgroup"><label class="flbl">총 공사비 <span style="color:#ef4444">*</span> <span style="color:#6b7a99;font-size:11px;">(100억↑ 심의)</span></label><div class="input-sfx"><input type="number" class="finput" id="iCost" value="${p.cost||''}" placeholder="0" min="0" step="0.1" style="${costOk()?'':'border-color:#ef4444;background:#fef2f2'}"><div class="sfx-lbl">억원</div></div><div id="costWarn" style="display:${costOk()?'none':'block'};color:#dc2626;font-size:11px;font-weight:700;margin-top:4px">총 공사비를 0보다 큰 값으로 입력하세요 — 입력 전에는 산정 · A4 · 인쇄 · JPG를 진행하지 않습니다</div></div>
     </div>
   </div></div>
   <div class="card"><div class="card-head"><div class="card-icon">📍</div><div class="card-title">기상 관측 지점</div><span class="card-badge" style="margin-left:auto">가이드라인 부록 3</span></div>
@@ -1373,6 +1411,7 @@ function renderStep1(){
     </div>
     <div class="frow">
       <div class="fgroup"><label class="flbl">연면적 <span style="color:#6b7a99;font-size:11px;">(산정공식 「기타 건축물」에 사용)</span></label><div class="input-sfx"><input type="number" class="finput" id="iArea" value="${p.area||''}" placeholder="0" min="0" step="1" onchange="setArea(this.value)"><div class="sfx-lbl">㎡</div></div></div>
+      ${p.type==='apartment'?`<div class="fgroup"><label class="flbl">택지 유형 <span style="color:#6b7a99;font-size:11px;">(공동주택 준비기간)</span></label><select class="finput" id="iLand" onchange="setLand(this.value)"><option value="taek" ${p.land!=='non'?'selected':''}>택지지구 — 45일</option><option value="non" ${p.land==='non'?'selected':''}>비택지지구 — 60일</option></select></div>`:''}
       ${p.type==='general'?`<div class="fgroup"><label class="flbl">건축물 유형 <span style="color:#6b7a99;font-size:11px;">(부록 5 산정공식 비교용)</span></label><select class="finput" id="iUse" onchange="setUse(this.value)">${useOpts}</select></div>`:''}
     </div>
   </div></div>`:''}
@@ -1396,13 +1435,14 @@ function renderStep2(){
     </div>
     <label class="flbl">준비기간 수동 조정 ${S.prep.manual?'<span class="tag" style="margin-left:4px">조정됨</span>':''}</label>
     <div class="stepper" style="max-width:180px"><button class="stp-btn" onclick="chPrep(-1)">−</button><input type="number" class="stp-inp" id="iPrep" value="${S.prep.days}" min="1" max="365" onchange="setPrep(this.value)"><button class="stp-btn" onclick="chPrep(1)">+</button></div>
-    <div class="legal-ref" style="margin-top:10px">⚖️ ${t&&t.prep!=null?`가이드라인 「건설공사 유형별 준비기간(예시)」 ${t.name} ${t.prep}일`:'일반건물은 가이드라인 예시가 없습니다 — MANMIN 참고값(공사비 10억원 미만 10일 · 10억원 이상 20일 · 안전관리계획 대상 45일)이며 현장 조건으로 조정하십시오'} · 안전관리계획·품질관리계획 승인 기간 반영 가능 · 준비기간에는 비작업일수를 계상하지 않음</div>
+    <div class="legal-ref" style="margin-top:10px">⚖️ ${t&&t.id==='apartment'?`공동주택 적정 공사기간 산정 가이드라인(가이드라인 PDF p.141) 택지지구 45일 · 비택지지구 60일 — ${p.land==='non'?'비택지지구 60일':'택지지구 45일'} 적용 · 시설물 규모별 준비기간(참조, p.142): 1·2종 시설물 45일 · 그 외 30일`:t&&t.prep!=null?`가이드라인 「건설공사 유형별 준비기간(예시)」 ${t.name} ${t.prep}일`:'일반건물은 가이드라인 예시가 없습니다 — MANMIN 참고값(공사비 10억원 미만 10일 · 10억원 이상 20일 · 안전관리계획 대상 45일)이며 현장 조건으로 조정하십시오'} · 안전관리계획·품질관리계획 승인 기간 반영 가능 · 준비기간에는 비작업일수를 계상하지 않음 · 입력 범위 1~365일은 MANMIN 입력 한계</div>
   </div></div>
   <div class="card"><div class="card-head"><div class="card-icon">🧹</div><div class="card-title">정리기간</div><span class="card-badge" style="margin-left:auto">고시 제12조 · 가이드라인</span></div>
   <div class="card-body">
     <div style="font-size:36px;font-weight:900;color:#8f6b2e;line-height:1;margin-bottom:10px">${S.cleanup.days}<span style="font-size:14px;font-weight:600;margin-left:3px">일</span></div>
     <div class="stepper" style="max-width:180px"><button class="stp-btn" onclick="chClean(-1)">−</button><input type="number" class="stp-inp" id="iClean" value="${S.cleanup.days}" min="0" max="120" onchange="setClean(this.value)"><button class="stp-btn" onclick="chClean(1)">+</button></div>
-    <div class="legal-ref" style="margin-top:10px">⚖️ 일반적으로 주요공종이 마무리된 이후 준공 전 1개월의 범위에서 계상(가이드라인) · 정리기간에는 비작업일수를 계상하지 않음</div>
+    <div class="legal-ref" style="margin-top:10px">⚖️ 일반적으로 주요공종이 마무리된 이후 준공 전 1개월의 범위에서 계상(가이드라인) · 정리기간에는 비작업일수를 계상하지 않음 · 입력 범위 0~120일은 MANMIN 입력 한계(가이드라인은 일반적으로 1개월)</div>
+    ${S.cleanup.days>31?`<div class="alert alert-warning" style="margin-top:8px;margin-bottom:0"><span class="alert-ico">⚠️</span><div>정리기간 ${S.cleanup.days}일은 가이드라인 「일반적으로 준공 전 1개월」보다 깁니다 — 공사 규모 · 시설물 특성(고시 제12조) 근거를 확인하십시오.</div></div>`:''}
   </div></div>
   <div class="alert alert-warning"><span class="alert-ico">⚠️</span><div><strong>시공조건 — 별도 반영 검토(가이드라인 예시):</strong> 용지보상 협의까지 약 7개월 · 지장물 이설 한전 255일(66~346) · 통신관로 150일(122~236) · 문화재 시굴조사 100일(60~180)</div></div>
   <div style="display:flex;justify-content:space-between;gap:8px;margin-top:14px">
@@ -1421,7 +1461,7 @@ function renderStep3(){
     rows+=`<tr class="cat-row"><td colspan="4">${g} <span style="float:right;font-weight:400">${gTotal}일</span></td></tr>`;
     gits.forEach(it=>{
       const idx=items.indexOf(it);
-      rows+=`<tr><td>${it.name}</td><td style="color:#6b7a99;font-size:11px">${it.basis}</td><td class="center"><span class="tag">자동</span></td><td class="center"><div class="stepper" style="max-width:120px;margin:0 auto"><button class="stp-btn" onclick="chWork(${idx},-1)">−</button><input type="number" class="stp-inp" value="${it.days}" min="0" onchange="setWork(${idx},this.value)"><button class="stp-btn" onclick="chWork(${idx},1)">+</button></div></td></tr>`;
+      rows+=`<tr><td>${it.name}</td><td style="color:#6b7a99;font-size:11px">${it.basis}</td><td class="center">${it.manual?`<span class="tag" style="background:#fff7ed;color:#c2410c" title="표준 ${it.std}일">조정됨</span>`:'<span class="tag">자동</span>'}</td><td class="center"><div class="stepper" style="max-width:120px;margin:0 auto"><button class="stp-btn" onclick="chWork(${idx},-1)">−</button><input type="number" class="stp-inp" value="${it.days}" min="0" onchange="setWork(${idx},this.value)"><button class="stp-btn" onclick="chWork(${idx},1)">+</button></div></td></tr>`;
     });
   });
 
@@ -1452,7 +1492,7 @@ function renderStep3(){
   return`
   <div class="card"><div class="card-head"><div class="card-icon">🔨</div><div class="card-title">공종별 작업일수</div><span class="card-badge" style="margin-left:auto">고시 제11조 · 가이드라인 부록 4</span></div>
   <div class="card-body">
-    <div class="alert alert-info" style="margin-bottom:12px"><span class="alert-ico">ℹ️</span><div>주공정 기준 · <strong>1일 8시간 / 주 40시간</strong>(고시 제11조③) · 총 작업일수: <strong>${S.work.total}일</strong><br/><span style="font-size:11px">아래 공종 일수는 <strong>MANMIN 참고값</strong>(가이드라인 미수록)입니다. 가이드라인 부록 4 공종별 1일 작업량이나 실적·경험치로 산출해 고치십시오.</span></div></div>
+    <div class="alert alert-info" style="margin-bottom:12px"><span class="alert-ico">ℹ️</span><div>주공정 기준 · <strong>1일 8시간 / 주 40시간</strong>(고시 제11조③) · 총 작업일수: <strong>${S.work.total}일</strong><br/><span style="font-size:11px">아래 공종 일수는 <strong>MANMIN 참고값</strong>(가이드라인 미수록)입니다. 가이드라인 부록 4 공종별 1일 작업량이나 실적·경험치로 산출해 고치십시오. 고친 값은 「조정됨」으로 표시되고 기상조건 · 지점 · 준비 · 정리기간을 바꿔도 유지됩니다(공사 유형 · 층수를 바꾸면 표준 공종표를 다시 만듭니다).</span></div></div>
     <div style="overflow-x:auto"><table class="tbl">
       <thead><tr><th>공종명</th><th>산정 근거</th><th style="width:65px;text-align:center">구분</th><th style="width:155px;text-align:center">작업일수</th></tr></thead>
       <tbody>
@@ -1481,8 +1521,8 @@ function renderStep4(){
   const preset=MM_PRESETS.map(x=>`<option value="${x.id}" ${p.preset===x.id?'selected':''}>${x.name}</option>`).join('');
   const nwRows=nw.months.length===0
     ?`<tr><td colspan="9" style="text-align:center;padding:14px;color:#6b7a99">작업일수를 입력하세요</td></tr>`
-    :nw.months.map(m=>`<tr class="act-row"><td><strong>${m.label}</strong>${m.hy!==m.yr?'<sup>※</sup>':''}</td><td>${m.A}</td><td>${m.B}</td><td>${m.C}</td><td>${m.raw}</td><td><strong>${m.nw}</strong></td><td>${m.wk}</td><td>${m.used}</td><td style="color:#f97316;font-weight:800">${m.appNW}</td></tr>`).join('');
-  const outYr=nw.months.some(m=>m.hy!==m.yr);
+    :nw.months.map(m=>`<tr class="act-row"${m.blocked?' style="background:#fef2f2"':''}><td><strong>${m.label}</strong>${m.hy!==m.yr?'<sup>※</sup>':''}${m.blocked?'<br><span style="font-size:10px;color:#b91c1c;font-weight:800">작업 불가 달</span>':''}</td><td>${m.A}</td><td>${m.B}</td><td>${m.C}</td><td>${m.raw}</td><td><strong>${m.nw}</strong></td><td>${m.wk}</td><td>${m.used}</td><td style="color:#f97316;font-weight:800">${m.appNW}</td></tr>`).join('');
+  const outYr=nw.months.some(m=>m.hy!==m.yr),nBlk=nw.months.filter(m=>m.blocked).length,ov=condOverlap(p.conds);
   return`
   <div class="card"><div class="card-head"><div class="card-icon">🌦</div><div class="card-title">비작업일수 산정</div><span class="card-badge" style="margin-left:auto">고시 제8~10조 · 부록 1·3</span></div>
   <div class="card-body">
@@ -1496,6 +1536,7 @@ C = A × B ÷ 달력일수     <span class="cm">// 소수점 첫째자리에서 
       <div class="fgroup"><label class="flbl">관측 지점</label><select class="finput" onchange="setStn(this.value)">${stnOptions(p.stn)}</select></div>
     </div>
     <div class="cond-grid">${condBoxes}</div>
+    ${ov.length?`<div class="alert alert-warning" style="margin:8px 0 0"><span class="alert-ico">⚠️</span><div><strong>같은 요소의 기상조건을 겹쳐 골랐습니다:</strong> ${ov.join(' · ')} — 일수를 그대로 더하므로 같은 날이 두 번 계상될 수 있습니다. 공종에 맞는 조건 하나만 고르십시오(가이드라인 예시는 요소별 1조건).</div></div>`:''}
     <div style="font-size:11px;color:#6b7a99;margin:6px 0 12px;line-height:1.6">공종별로 작업을 제한하는 기상조건을 정해 체크합니다(가이드라인 부록 2). 체크한 조건의 월평균 일수를 더해 A로 씁니다 — 가이드라인 예시와 같은 방식이며, 조건끼리 겹치는 날은 따로 빼지 않습니다.</div>
     <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px">
       <div><div style="font-size:11px;color:#6b7a99;font-weight:700">작업 착수일(준비기간 후)</div><div style="font-weight:800;color:#1d4ed8">${fmtDate(cStart)}</div></div>
@@ -1504,7 +1545,7 @@ C = A × B ÷ 달력일수     <span class="cm">// 소수점 첫째자리에서 
     </div>
     <div style="overflow-x:auto"><table class="nw-tbl"><thead><tr><th>연도·월</th><th>기상[A]</th><th>공휴[B]</th><th>중복[C]</th><th>A+B−C</th><th>적용</th><th>작업가능</th><th>사용</th><th>계상</th></tr></thead>
     <tbody>${nwRows}<tr class="sum-row"><td><strong>합 계</strong></td><td colspan="6">—</td><td><strong>${r1(nw.months.reduce((s,m)=>s+m.used,0))}일</strong></td><td style="font-size:13px"><strong>${nw.total}일</strong></td></tr></tbody></table></div>
-    <div style="font-size:11px;color:#6b7a99;margin-top:6px;line-height:1.6">「적용」은 A+B−C와 8일 중 큰 값, 「작업가능」은 달력일수 − 적용, 「계상」은 그 달에 사용한 작업일수 비율만큼의 비작업일수입니다. 합계는 정수로 반올림합니다.${outYr?' ※ 부록 1 범위(2026~2035년) 밖의 해는 가까운 해의 공휴일수를 썼습니다.':''}</div>
+    <div style="font-size:11px;color:#6b7a99;margin-top:6px;line-height:1.6">「적용」은 A+B−C와 8일 중 큰 값, 「작업가능」은 달력일수 − 적용, 「계상」은 그 달에 사용한 작업일수 비율만큼의 비작업일수입니다. 합계는 정수로 반올림합니다.${outYr?' ※ 부록 1 범위(2026~2035년) 밖의 해는 가까운 해의 공휴일수를 썼습니다.':''}${nBlk?` 작업 불가 달 ${nBlk}개: 적용 비작업일수가 달력일수 이상이라 그 달(첫 달은 남은) 달력일수 전체를 비작업일수로 계상했습니다(고시 제8조①).`:''}</div>
   </div></div>
   <div style="display:flex;justify-content:space-between;gap:8px;margin-top:14px">
     <button class="btn-ghost" onclick="prevStep()">← 이전</button>
@@ -1515,7 +1556,7 @@ C = A × B ÷ 달력일수     <span class="cm">// 소수점 첫째자리에서 
 function renderStep5(){
   const p=S.proj,prep=S.prep.days,work=S.work.total,nw=S.nw.total,clean=S.cleanup.days,tot=totalDays();
   const months=(tot/30.4).toFixed(1);
-  const sDate=new Date(p.startDate),eDate=addDays(p.startDate,tot);
+  const sDate=pd(p.startDate),eDate=addDays(p.startDate,tot);
   const t=TYPES.find(x=>x.id===p.type);
   const val=standardFormula(p);
   const valMsg=null;
@@ -1543,16 +1584,16 @@ function renderStep5(){
     <div class="res-item hl"><div class="ri-ico">📋</div><div class="ri-label">④ 정리기간</div><div class="ri-val">${clean}<span class="ri-unit">일</span></div><div class="ri-sub">고시 제12조 · 가이드라인</div></div>
   </div>
   <div class="card"><div class="card-head"><div class="card-icon">📊</div><div class="card-title">공사기간 구성</div></div><div class="card-body">${gantt}</div></div>
-  ${val?`<div class="card"><div class="card-head"><div class="card-icon">🔍</div><div class="card-title">산정공식과 비교</div><span class="card-badge" style="margin-left:auto">고시 제14조 · 부록 5</span></div>
+  ${val?`<div class="card"><div class="card-head"><div class="card-icon">🔍</div><div class="card-title">산정공식과 비교</div><span class="card-badge" style="margin-left:auto">고시 제14조 · 가이드라인 p.30 · 부록 5</span></div>
   <div class="card-body">
-    ${val.out?`<div class="alert alert-warning"><span class="alert-ico">⚠️</span><div><strong>${val.F.name}</strong> 산정공식의 적용범위(${val.F.rng}) 밖이라 비교하지 않습니다. 가이드라인은 적용범위 안에서만 쓰도록 합니다.</div></div>`:
+    ${val.out?`<div class="alert alert-warning"><span class="alert-ico">⚠️</span><div><strong>${val.F.name}</strong> 산정공식의 적용범위(${val.F.rng}) 밖이라 비교하지 않습니다${val.reason?` (사유: ${val.reason})`:''}. 가이드라인은 적용범위 안에서만 쓰도록 합니다.</div></div>`:
     `<table class="tbl"><tbody>
       <tr><td style="font-weight:700">산정공식 (${val.F.name})</td><td>${val.F.f} → Y ≈ ${val.Y}일</td></tr>
       <tr><td style="font-weight:700">Y + 준비 + 정리</td><td>${val.Y} + ${S.prep.days} + ${S.cleanup.days} = <strong>${val.std}일</strong></td></tr>
       <tr><td style="font-weight:700">산정한 공사기간</td><td><strong>${val.calc}일</strong></td></tr>
-      <tr><td style="font-weight:700">차이</td><td><strong>${val.dev>0?'+':''}${val.dev}%</strong></td></tr>
+      <tr><td style="font-weight:700">차이</td><td><strong>${val.dev>0?'+':''}${val.dev}%</strong>${devBadge(val)}</td></tr>
     </tbody></table>
-    <div style="font-size:11px;color:#6b7a99;margin-top:8px;line-height:1.6">산정공식은 실적 공사기간의 회귀식이며 적용범위: ${val.F.rng}. 가이드라인에 적정·부적정 판정 기준은 없습니다 — 차이가 크면 준비기간·작업일수·기상조건 설정을 다시 검토하십시오.</div>`}
+    <div style="font-size:11px;color:#6b7a99;margin-top:8px;line-height:1.6">산정공식은 실적 공사기간의 회귀식이며 적용범위: ${val.F.rng}. 가이드라인(국토교통부공고 제2025-1603호, p.30) — 산정 공사기간이 공식 기준(Y + 준비 + 정리)의 ±20 % 범위를 벗어나면 산정 과정에 오류가 없는지 재검토합니다(전문가 활용 가능). 적부 판정이 아닌 재검토 권고이며, 준비기간·작업일수·기상조건 설정을 다시 확인하십시오.</div>`}
   </div></div>`:''}
   <div class="card"><div class="card-head"><div class="card-icon">⚖️</div><div class="card-title">공사기간 산정근거 명세서</div><span class="card-badge" style="margin-left:auto">고시 제5조</span></div>
   <div class="card-body">
@@ -1561,11 +1602,11 @@ function renderStep5(){
       <li><span class="k">공사명</span><span class="v">${p.name||'(공사명 미입력)'}</span></li>
       <li><span class="k">공사유형</span><span class="v">${t?.ico} ${t?.name}</span></li>
       <li><span class="k">총 공사비</span><span class="v">${p.cost}억원 ${p.cost>=100?'⚠️ 공사기간 적정성 심의 대상':p.cost>=50?'※ 시·군·구 발주면 심의 대상':''}</span></li>
-      <li><span class="k">지상·지하 층수</span><span class="v">지상 ${p.fa}층 / 지하 ${p.fb}층</span></li>
+      ${t&&t.bld?`<li><span class="k">지상·지하 층수</span><span class="v">지상 ${p.fa}층 / 지하 ${p.fb}층</span></li>`:''}
       <li><span class="k">기상 관측 지점</span><span class="v">${stnName(p.stn)} · 기상조건 ${p.conds.length}개</span></li>
       <li><span class="k">착공 예정일</span><span class="v">${fmtDate(sDate)}</span></li>
       <li><span class="k">준공 예정일</span><span class="v">${fmtDate(eDate)}</span></li>
-      <li><span class="k">① 준비기간</span><span class="v">${prep}일 (고시 제7조 · ${t&&t.prep!=null?'가이드라인 예시':'MANMIN 참고값'}${S.prep.manual?' · 조정':''})</span></li>
+      <li><span class="k">① 준비기간</span><span class="v">${prep}일 (고시 제7조 · ${t&&t.prep!=null?'가이드라인 예시':'MANMIN 참고값'}${p.type==='apartment'?(p.land==='non'?' · 비택지지구':' · 택지지구'):''}${S.prep.manual?' · 조정':''})</span></li>
       <li><span class="k">② 순수 작업일수</span><span class="v">${work}일 (고시 제11조, 주공정 기준)</span></li>
       <li><span class="k">③ 비작업일수</span><span class="v">${nw}일 (고시 제8~10조 · 부록 1·3)</span></li>
       <li><span class="k">④ 정리기간</span><span class="v">${clean}일 (고시 제12조 · 가이드라인)</span></li>
@@ -1593,19 +1634,20 @@ function nextStep(){
     if(n)S.proj.name=n.value;if(c)S.proj.cost=parseFloat(c.value)||0;
     if(d)S.proj.startDate=d.value;
     if(!S.proj.startDate){alert('착공 예정일을 입력해 주세요.');return;}
+    if(!costOk()){const w=document.getElementById('costWarn');if(w)w.style.display='block';if(c){c.style.borderColor='#ef4444';c.style.background='#fef2f2';c.focus();}refresh();return;} /* v6.1.5 — 총 공사비 0 · 빈 값 · 음수면 진행 막음(교차검증 F3) */
     refresh();
   }
   if(S.step<5){S.step++;renderProg();renderStep();window.scrollTo({top:0,behavior:'smooth'});}
 }
 function prevStep(){if(S.step>1){S.step--;renderProg();renderStep();window.scrollTo({top:0,behavior:'smooth'});}}
 function goStep(n){if(n<S.step){S.step=n;renderProg();renderStep();window.scrollTo({top:0,behavior:'smooth'});}}
-function resetApp(){if(!confirm('초기화하시겠습니까?'))return;S.step=1;S.work.custom=[];S.proj={name:'만민 건축사 전주 신사옥 건립공사',type:'general',cost:50,fa:5,fb:1,area:4000,startDate:today(),safetyPlan:false,stn:'146',preset:'rc',conds:[4,8,12,5,0],use:'etc'};S.prep.manual=false;S.cleanup.manual=false;refresh();renderProg();renderStep();window.scrollTo({top:0,behavior:'smooth'});}
+function resetApp(){if(!confirm('초기화하시겠습니까?'))return;S.step=1;S.work.custom=[];S.work.key=null;S.adj={};S.proj={name:'만민 건축사 전주 신사옥 건립공사',type:'general',cost:50,fa:5,fb:1,area:4000,startDate:today(),safetyPlan:false,stn:'146',preset:'rc',conds:[4,8,12,5,0],use:'etc',land:'taek'};S.prep.manual=false;S.cleanup.manual=false;refresh();renderProg();renderStep();window.scrollTo({top:0,behavior:'smooth'});}
 
 function bindStep(){
   if(S.step===1){
     const n=document.getElementById('iName'),c=document.getElementById('iCost'),d=document.getElementById('iDate');
     if(n)n.oninput=e=>S.proj.name=e.target.value;
-    if(c)c.oninput=e=>{S.proj.cost=parseFloat(e.target.value)||0;refresh();};
+    if(c)c.oninput=e=>{S.proj.cost=parseFloat(e.target.value)||0;refresh();const ok=costOk(),w=document.getElementById('costWarn');if(w)w.style.display=ok?'none':'block';c.style.borderColor=ok?'':'#ef4444';c.style.background=ok?'':'#fef2f2';};
     if(d)d.onchange=e=>{S.proj.startDate=e.target.value;refresh();};
   }
 }
@@ -1617,15 +1659,22 @@ function setPreset(v){S.proj.preset=v;const x=MM_PRESETS.find(q=>q.id===v);if(x&
 function toggleCond(k,on){const c=S.proj.conds.filter(x=>x!==k);if(on)c.push(k);S.proj.conds=c;const x=MM_PRESETS.find(q=>q.conds&&q.conds.length===c.length&&q.conds.every(z=>c.includes(z)));S.proj.preset=x?x.id:'none';refresh();renderStep();}
 function setArea(v){S.proj.area=Math.max(0,parseFloat(v)||0);refresh();}
 function setUse(v){S.proj.use=v;refresh();}
-function chClean(d){S.cleanup.manual=true;S.cleanup.days=Math.max(0,Math.min(120,S.cleanup.days+d));refresh();renderStep();}
-function setClean(v){S.cleanup.manual=true;S.cleanup.days=Math.max(0,Math.min(120,parseInt(v)||0));refresh();renderStep();}
+function setLand(v){S.proj.land=v==='non'?'non':'taek';S.prep.manual=false;refresh();}
+/* v6.1.5 — 범위 밖 입력은 고친 값을 알림(교차검증 F10) · 0~120 · 1~365는 MANMIN 입력 한계 */
+function chClean(d){S.cleanup.manual=true;const w=S.cleanup.days+d;S.cleanup.days=Math.max(0,Math.min(120,w));if(w!==S.cleanup.days)airNote('정리기간 입력 범위는 0~120일(MANMIN 입력 한계)입니다');refresh();renderStep();}
+function setClean(v){S.cleanup.manual=true;const n=parseInt(v);S.cleanup.days=Math.max(0,Math.min(120,isNaN(n)?0:n));adjSet('clean',String(S.cleanup.days)!==String(v).trim()?`정리기간 ${String(v).trim()||'빈 값'} → ${S.cleanup.days}일(입력 범위 0~120일)`:null);refresh();renderStep();}
 function setSP(v){S.proj.safetyPlan=v;S.prep.manual=false;refresh();}
 function chFl(d,delta){if(d==='a')S.proj.fa=Math.max(1,Math.min(100,(S.proj.fa||1)+delta));else S.proj.fb=Math.max(0,Math.min(20,(S.proj.fb||0)+delta));const el=document.getElementById(d==='a'?'iFA':'iFB');if(el)el.value=d==='a'?S.proj.fa:S.proj.fb;refresh();}
-function setFl(d,v){if(d==='a')S.proj.fa=Math.max(1,Math.min(100,parseInt(v)||1));else S.proj.fb=Math.max(0,Math.min(20,parseInt(v)||0));refresh();}
-function chPrep(delta){S.prep.manual=true;S.prep.days=Math.max(1,Math.min(365,S.prep.days+delta));refresh();renderStep();}
-function setPrep(v){S.prep.manual=true;S.prep.days=Math.max(1,Math.min(365,parseInt(v)||1));refresh();renderStep();}
-function chWork(idx,delta){S.work.items[idx].days=Math.max(0,(S.work.items[idx].days||0)+delta);_recalcWork();renderStep();}
-function setWork(idx,v){S.work.items[idx].days=Math.max(0,parseInt(v)||0);_recalcWork();}
+/* v6.1.5 — 범위 밖 층수는 고친 값을 칸에 다시 쓰고 알림(종전: 상태만 바뀌고 칸은 0 · −1 그대로, 교차검증 F8) */
+function setFl(d,v){const a=d==='a',lo=a?1:0,hi=a?100:20,n=parseInt(v),x=isNaN(n)?lo:Math.max(lo,Math.min(hi,n));if(a)S.proj.fa=x;else S.proj.fb=x;
+  const el=document.getElementById(a?'iFA':'iFB'),raw=String(v).trim();if(el)el.value=x;
+  adjSet(a?'fa':'fb',raw!==String(x)?`${a?'지상':'지하'} 층수 ${raw||'빈 값'} → ${x}층(입력 범위 ${lo}~${hi}층)`:null);refresh();}
+function chPrep(delta){S.prep.manual=true;const w=S.prep.days+delta;S.prep.days=Math.max(1,Math.min(365,w));if(w!==S.prep.days)airNote('준비기간 입력 범위는 1~365일(MANMIN 입력 한계)입니다');refresh();renderStep();}
+function setPrep(v){S.prep.manual=true;const n=parseInt(v);S.prep.days=Math.max(1,Math.min(365,isNaN(n)?1:n));adjSet('prep',String(S.prep.days)!==String(v).trim()?`준비기간 ${String(v).trim()||'빈 값'} → ${S.prep.days}일(입력 범위 1~365일)`:null);refresh();renderStep();}
+/* v6.1.5 — 공종 수정값은 「조정됨」으로 보존 · 칸 수정 뒤 합계 · 배분 화면 갱신(교차검증 F1) */
+function wkMark(it){if(it.std==null)it.std=it.days;it.manual=true;}
+function chWork(idx,delta){const it=S.work.items[idx];wkMark(it);it.days=Math.max(0,(it.days||0)+delta);_recalcWork();renderStep();}
+function setWork(idx,v){const it=S.work.items[idx];wkMark(it);it.days=Math.max(0,parseInt(v)||0);_recalcWork();renderStep();}
 function addCus(){
   S.work.custom.push({name:'',basis:'직접 입력',days:0,g:'추가 공종'});
   renderStep();
@@ -1704,12 +1753,15 @@ window.addEventListener('orientationchange', function(){setTimeout(scaleA4Previe
 function renderA4(){
   const p=S.proj,prep=S.prep.days,work=S.work.total,nw=S.nw.total,clean=S.cleanup.days,tot=totalDays();
   const months=(tot/30.4).toFixed(1);
-  const sDate=new Date(p.startDate),eDate=addDays(p.startDate,tot);
+  const sDate=pd(p.startDate),eDate=addDays(p.startDate,tot);
   const t=TYPES.find(x=>x.id===p.type);
   const val=standardFormula(p);
   // 바닥글은 renderA4() 내 innerHTML에 포함되어 동적 렌더링됨
+  /* v6.1.5 — 총 공사비가 0 · 빈 값 · 음수면 무효값을 찍지 않고 「산정 대기」(교차검증 F3) */
+  if(!costOk()){document.getElementById('a4-content').innerHTML=`<div class="a4-header"><div class="a4-title">공공 건설공사 공기산정 근거서 [MANMIN-Ver6.1]</div><div class="a4-meta">국토교통부고시 제2024-1021호 · 가이드라인(국토교통부공고 제2025-1603호)</div></div><div style="padding:60px 20px;text-align:center;font-size:14px;font-weight:800;color:#b91c1c">산정 대기 — 1단계에서 총 공사비를 0보다 큰 값으로 입력하세요</div>`;requestAnimationFrame(function(){setTimeout(scaleA4Preview,80);});return;}
+  const t_bld=!!(t&&t.bld),outYr=S.nw.months.some(m=>m.hy!==m.yr),nBlk=S.nw.months.filter(m=>m.blocked).length,chk=inputChecks();
 
-  const nwRows=S.nw.months.map(m=>`<tr><td style="font-weight:700">${m.label}</td><td style="text-align:center">${m.A}</td><td style="text-align:center">${m.B}</td><td style="text-align:center">${m.C}</td><td style="text-align:center">${m.raw}</td><td style="text-align:center;font-weight:800">${m.nw}</td><td style="text-align:center">${m.wk}</td><td style="text-align:center">${m.used}</td><td style="text-align:center;color:#f97316;font-weight:800">${m.appNW}</td></tr>`).join('');
+  const nwRows=S.nw.months.map(m=>`<tr${m.blocked?' style="background:#fef2f2"':''}><td style="font-weight:700">${m.label}${m.hy!==m.yr?'<sup>※</sup>':''}${m.blocked?' <span style="color:#b91c1c">작업 불가</span>':''}</td><td style="text-align:center">${m.A}</td><td style="text-align:center">${m.B}</td><td style="text-align:center">${m.C}</td><td style="text-align:center">${m.raw}</td><td style="text-align:center;font-weight:800">${m.nw}</td><td style="text-align:center">${m.wk}</td><td style="text-align:center">${m.used}</td><td style="text-align:center;color:#f97316;font-weight:800">${m.appNW}</td></tr>`).join('');
 
   /* 간트 — 공종그룹별 분해 */
   const wgroups={};
@@ -1736,12 +1788,12 @@ function renderA4(){
   allItems.forEach(it=>{if(!itemGroups[it.g])itemGroups[it.g]=[];itemGroups[it.g].push(it);});
   let itemRows='';
   Object.entries(itemGroups).forEach(([g,gits])=>{
-    const bg=g==='추가 공종'?'style="background:#fff7ed;"':'style="background:#eff6ff;"';
+    const bg=g==='추가 공종'?'background:#fff7ed;':'background:#eff6ff;';
     const gc=g==='추가 공종'?'color:#c2410c':'color:#1e40af';
     const gd=gits.reduce((s,i)=>s+(parseInt(i.days)||0),0);
-    itemRows+=`<tr><td colspan="3" ${bg} style="font-weight:800;font-size:9.5px;${gc};padding:4px 8px;">${g} — ${gd}일</td></tr>`;
+    itemRows+=`<tr><td colspan="3" style="${bg}font-weight:800;font-size:9.5px;${gc};padding:4px 8px;">${g} — ${gd}일</td></tr>`; /* v6.1.5 — style 속성 하나로(종전 두 개 → 뒤 것 무시, 교차검증 F9) */
     gits.forEach(it=>{
-      itemRows+=`<tr><td style="padding-left:14px">${it.name}</td><td>${it.basis||'—'}</td><td style="text-align:center;font-weight:700">${it.days}일</td></tr>`;
+      itemRows+=`<tr><td style="padding-left:14px">${it.name}</td><td>${it.basis||'—'}${it.manual?` · <b style="color:#c2410c">조정(표준 ${it.std}일)</b>`:''}</td><td style="text-align:center;font-weight:700">${it.days}일</td></tr>`;
     });
   });
 
@@ -1755,18 +1807,19 @@ function renderA4(){
     <table class="a4-tbl"><thead><tr><th>항목</th><th>내용</th><th>항목</th><th>내용</th></tr></thead>
     <tbody>
       <tr><td style="font-weight:700">공사명</td><td colspan="3">${p.name||'(미입력)'}</td></tr>
-      <tr><td style="font-weight:700">공사유형</td><td>${t?.ico} ${t?.name}</td><td style="font-weight:700">총 공사비</td><td>${p.cost}억원 ${p.cost>=100?'[적정성 심의 대상]':p.cost>=50?'[시·군·구 발주 시 심의]':''}</td></tr>
-      <tr><td style="font-weight:700">건물 규모</td><td>지상 ${p.fa}층 / 지하 ${p.fb}층${p.area?` · ${Number(p.area).toLocaleString()}㎡`:''}</td><td style="font-weight:700">안전관리계획서</td><td>${p.safetyPlan?'해당':'비해당'}</td></tr>
+      <tr><td style="font-weight:700">공사유형</td><td>${t?.ico} ${t?.name}${p.type==='apartment'?(p.land==='non'?' (비택지지구)':' (택지지구)'):''}</td><td style="font-weight:700">총 공사비</td><td>${p.cost}억원 ${p.cost>=100?'[적정성 심의 대상]':p.cost>=50?'[시·군·구 발주 시 심의]':''}</td></tr>
+      ${t_bld?`<tr><td style="font-weight:700">건물 규모</td><td>지상 ${p.fa}층 / 지하 ${p.fb}층${p.area?` · ${Number(p.area).toLocaleString()}㎡`:''}</td><td style="font-weight:700">안전관리계획서</td><td>${p.safetyPlan?'해당':'비해당'}</td></tr>`:''}
       <tr><td style="font-weight:700">기상 관측 지점</td><td>${stnName(p.stn)}</td><td style="font-weight:700">기상조건</td><td style="font-size:9px">${p.conds.map(k=>MM_COND[k].replace(/^[^:]+: /,'')).join(' · ')||'없음'}</td></tr>
       <tr><td style="font-weight:700">착공 예정일</td><td>${fmtDate(sDate)}</td><td style="font-weight:700">준공 예정일</td><td>${fmtDate(eDate)}</td></tr>
     </tbody></table>
   </div>
   <div class="a4-section" style="break-inside:avoid;page-break-inside:avoid;">
     <div class="a4-sec-title">02. 공사기간 산정 결과 요약</div>
-    <div class="a4-grid">
+    <div class="a4-grid five">
       <div class="a4-item"><div class="a4-item-label">① 준비기간</div><div class="a4-item-val">${prep}<span class="a4-item-unit">일</span></div></div>
       <div class="a4-item"><div class="a4-item-label">② 작업일수</div><div class="a4-item-val">${work}<span class="a4-item-unit">일</span></div></div>
       <div class="a4-item"><div class="a4-item-label">③ 비작업일수</div><div class="a4-item-val">${nw}<span class="a4-item-unit">일</span></div></div>
+      <div class="a4-item"><div class="a4-item-label">④ 정리기간</div><div class="a4-item-val">${clean}<span class="a4-item-unit">일</span></div></div>
       <div class="a4-item total"><div class="a4-item-label">총 공사기간</div><div class="a4-item-val">${tot}<span class="a4-item-unit" style="font-size:11px;color:#fff"> 일</span></div><div style="font-size:9px;color:rgba(255,255,255,.65)">약 ${months}개월</div></div>
     </div>
     <div class="a4-formula-box">공사기간 = 준비 ${prep}일 + 작업 ${work}일 + 비작업 ${nw}일 + 정리 ${clean}일 = <span class="hl">${tot}일</span></div>
@@ -1779,14 +1832,14 @@ function renderA4(){
     <div class="a4-sec-title" style="break-inside:avoid;page-break-inside:avoid;">04. 공종별 작업일수 명세</div>
     <table class="a4-tbl" style="break-inside:auto;page-break-inside:auto;"><thead style="display:table-header-group;"><tr><th>공종명</th><th>산정 근거</th><th style="text-align:center;width:60px">작업일수</th></tr></thead>
     <tbody>${itemRows}<tr style="background:#1d4ed8;color:#fff;font-weight:900;"><td colspan="2" style="color:#fff;">✦ 총 작업일수 합계</td><td style="text-align:center;color:#fbbf24;font-size:12px;">${work}일</td></tr></tbody></table>
-    ${S.work.custom.length>0?`<div style="font-size:9px;color:#c2410c;margin-top:5px;font-weight:600;">※ 추가 공종: 1일 8시간·주 40시간 법정근로시간 준수 확인 필수 (건설기술진흥법 제45조의2)</div>`:''}
+    ${S.work.custom.length>0?`<div style="font-size:9px;color:#c2410c;margin-top:5px;font-weight:600;">※ 추가 공종: 1일 8시간·주 40시간 법정근로시간 준수 확인 필수 (고시 제11조제3항 · 근로기준법)</div>`:''}
     <div style="margin-top:8px;"><div style="font-size:10px;font-weight:800;color:#1e3a8a;margin-bottom:5px;">공종별 배분 현황</div>${wgantt}</div>
   </div>
   ${S.nw.months.length>0?`<div class="a4-section" style="break-inside:auto;page-break-inside:auto;">
     <div class="a4-sec-title" style="break-inside:avoid;page-break-inside:avoid;">05. 비작업일수 산정 내역 (A+B−C)</div>
     <table class="a4-tbl" style="break-inside:auto;page-break-inside:auto;"><thead style="display:table-header-group;"><tr><th>연도·월</th><th style="text-align:center">기상[A]</th><th style="text-align:center">공휴[B]</th><th style="text-align:center">중복[C]</th><th style="text-align:center">A+B−C</th><th style="text-align:center">적용</th><th style="text-align:center">작업가능</th><th style="text-align:center">사용</th><th style="text-align:center">계상</th></tr></thead>
     <tbody>${nwRows}<tr class="sum"><td colspan="7" style="font-weight:800;text-align:right">합 계</td><td style="text-align:center;font-weight:800">${r1(S.nw.months.reduce((s,m)=>s+m.used,0))}일</td><td style="text-align:center;font-weight:800;color:#f97316">${nw}일</td></tr></tbody></table>
-    <div style="font-size:8.5px;color:#64748b;margin-top:4px">A: 부록 3 ${stnName(p.stn)} 기상조건별 월평균(2015-2024) 합 · B: 부록 1 법정공휴일 · C: A×B÷달력일수(반올림) · 적용: 8일 미만이면 8일(주 40시간 근무제)</div>
+    <div style="font-size:8.5px;color:#64748b;margin-top:4px">A: 부록 3 ${stnName(p.stn)} 기상조건별 월평균(2015-2024) 합 · B: 부록 1 법정공휴일 · C: A×B÷달력일수(반올림) · 적용: 8일 미만이면 8일(주 40시간 근무제)${outYr?' · ※ 부록 1 범위(2026~2035년) 밖의 해는 가까운 해의 공휴일수 사용':''}${nBlk?` · 작업 불가 ${nBlk}개월: 적용 ≥ 달력일수라 그 달(첫 달은 남은) 달력일수 전체를 계상(고시 제8조①)`:''}</div>
   </div>`:''}
   ${val&&!val.out?`<div class="a4-section" style="break-inside:avoid;page-break-inside:avoid;">
     <div class="a4-sec-title">06. 산정공식과 비교 (부록 5)</div>
@@ -1795,9 +1848,9 @@ function renderA4(){
       <tr><td style="font-weight:700">산정공식 (${val.F.name})</td><td>${val.F.f}</td><td>Y ≈ ${val.Y}일</td></tr>
       <tr><td style="font-weight:700">Y + 준비 + 정리</td><td>${val.Y} + ${prep} + ${clean}</td><td>${val.std}일</td></tr>
       <tr><td style="font-weight:700">산정한 공사기간</td><td>준비 + 작업 + 비작업 + 정리</td><td>${val.calc}일</td></tr>
-      <tr><td style="font-weight:700">차이</td><td>(산정 − 공식) ÷ 공식 × 100 · 적용범위 ${val.F.rng}</td><td style="font-weight:900">${val.dev>0?'+':''}${val.dev}%</td></tr>
+      <tr><td style="font-weight:700">차이</td><td>(산정 − 공식) ÷ 공식 × 100 · 적용범위 ${val.F.rng} · ±20 % 밖이면 산정 과정 재검토(가이드라인 p.30)</td><td style="font-weight:900">${val.dev>0?'+':''}${val.dev}%${devBadge(val,1)}</td></tr>
     </tbody></table>
-  </div>`:''}
+  </div>`:val&&val.out?`<div class="a4-section" style="break-inside:avoid;page-break-inside:avoid;"><div class="a4-sec-title">06. 산정공식 비교 — 적용범위 밖(${val.reason||val.F.rng})</div><div style="font-size:8.5px;color:#64748b">${val.F.name} 산정공식 적용범위: ${val.F.rng} — 가이드라인은 적용범위 안에서만 활용(p.30)하므로 비교하지 않음</div></div>`:''}
   <div class="a4-section" style="break-inside:avoid;page-break-inside:avoid;">
     <div class="a4-sec-title">07. 법적 근거</div>
     <table class="a4-tbl"><thead><tr><th>법령</th><th>조항</th><th>내용</th></tr></thead>
@@ -1806,9 +1859,11 @@ function renderA4(){
       <tr><td style="font-weight:700">고시 제2024-1021호</td><td>제5조</td><td>공공 공사 입찰 시 공사기간 산정근거를 입찰에 관한 서류에 명시</td></tr>
       <tr><td style="font-weight:700">고시 제2024-1021호</td><td>제4조제3항</td><td>총 공사비 100억원 이상(시·군·구 50억원 이상) 공사기간 적정성 심의</td></tr>
       <tr><td style="font-weight:700">고시 제2024-1021호</td><td>제6조~제12조</td><td>공사기간 = 준비기간 + 비작업일수 + 작업일수 + 정리기간</td></tr>
+      <tr><td style="font-weight:700">고시 제2024-1021호</td><td>제14조</td><td>실적 공기와 비교해 타당성 검토 · 가이드라인 p.30: ±20 % 밖이면 산정 과정 재검토</td></tr>
       <tr><td style="font-weight:700">가이드라인</td><td>국토교통부공고<br/>제2025-1603호</td><td>준비기간 예시 · 부록 1 법정공휴일 · 부록 3 지역별 비작업일수 · 부록 5 산정공식</td></tr>
     </tbody></table>
   </div>
+  ${chk.length?`<div style="font-size:9px;color:#b91c1c;font-weight:700;margin-top:6px;line-height:1.5">⚠ 입력 확인 — ${chk.join(' · ')}</div>`:''}
   <div class="a4-footer">
     <span>건축공사 공기산정 시스템 [MANMIN-Ver6.1]</span>
     <span>고시 제2024-1021호 · 국토교통부공고 제2025-1603호</span>
@@ -1846,7 +1901,7 @@ function renderMobile(){
       <div style="font-size:9.5px;opacity:.65;margin-bottom:3px;font-weight:700">${p.name||'해당 공사'} — 적정 공사기간</div>
       <div class="mob-big-num">${tot}</div>
       <div style="font-size:13px;font-weight:700;opacity:.85;margin-top:2px">일 (약 ${(tot/30.4).toFixed(1)}개월)</div>
-      <div style="font-size:10px;opacity:.65;margin-top:8px">착공 ${fmtDate(new Date(p.startDate))} → 준공 ${fmtDate(addDays(p.startDate,tot))}</div>
+      <div style="font-size:10px;opacity:.65;margin-top:8px">착공 ${fmtDate(p.startDate)} → 준공 ${fmtDate(addDays(p.startDate,tot))}</div>
       <div style="font-size:9.5px;opacity:.65;margin-top:5px;font-family:monospace">${prep}+${work}+${nw}+${clean} = ${tot}일</div>
     </div>
     <div class="mob-res-grid">
@@ -1860,7 +1915,7 @@ function renderMobile(){
       <div style="font-size:11px;color:#374151;line-height:1.9;">
         <div style="display:flex;justify-content:space-between"><span style="color:#6b7a99">공사유형</span><span style="font-weight:700">${t?.ico} ${t?.name}</span></div>
         <div style="display:flex;justify-content:space-between"><span style="color:#6b7a99">총 공사비</span><span style="font-weight:700">${p.cost}억원</span></div>
-        <div style="display:flex;justify-content:space-between"><span style="color:#6b7a99">건물 규모</span><span style="font-weight:700">지상 ${p.fa}층 / 지하 ${p.fb}층</span></div>
+        ${t&&t.bld?`<div style="display:flex;justify-content:space-between"><span style="color:#6b7a99">건물 규모</span><span style="font-weight:700">지상 ${p.fa}층 / 지하 ${p.fb}층</span></div>`:''}
       </div>
     </div>
     <div style="font-size:9px;color:#94a3b8;text-align:center;margin-bottom:8px">국토교통부고시 제2024-1021호 기준 산정</div>
@@ -2341,6 +2396,7 @@ function mmOpenSheet(shots, base){
 }
 
 window.exportA4Jpg = function(){
+  if(!costOk()){ mmToast('총 공사비를 0보다 큰 값으로 입력해야 JPG를 저장할 수 있습니다'); return; } /* v6.1.5 교차검증 F3 */
   var el = document.getElementById('a4-page');
   if(!el){ mmToast('A4 미리보기 탭으로 이동 후 시도하세요'); return; }
   renderA4();
@@ -2415,6 +2471,7 @@ function mmToast(msg){
 /* ⛔ 종전 printA4 는 #a4-page 를 #a4-print-target 에 복제해 인쇄했다(§2② 위반).
    v5.0 은 같은 DOM 을 인쇄한다 — @media print 가 A4 탭만 남기고 전부 숨긴다. */
 window.printA4 = function(){
+  if(!costOk()){ mmToast('총 공사비를 0보다 큰 값으로 입력해야 인쇄할 수 있습니다'); return; } /* v6.1.5 교차검증 F3 */
   renderA4();
   setTimeout(function(){ window.print(); }, 120);
 };
