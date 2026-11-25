@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════
+   v6.1.6 (2026-11-25) — 헤더 고정 — 공통 원본 MM-HEADER v1.1 주입(태블릿 · 데스크톱만 — 폭 768px · 높이 600px 이상, 휴대폰은 고정 없음 · 머리+탭 sticky · 내리면 제목 한 줄+탭으로 접힘 · 다른 sticky 패널 top 보정) — 계산 · 인쇄 불변 · MIN 「추천안대로 승인」 · 「추천안대로 진행해줘」(모바일 제외) · 캐시명 v6.1.6 (종전 v6.1.5)
    v6.1.5 (2026-11-24) — 건축 3차 교차검증 반영(Claude · Codex · Gemini): 공종 수정값 보존 · 작업 불가 달 달력일수 전체 계상 · 기상조건 겹침 경고 · 총 공사비 0 이하 차단 · ±20 % 재검토 안내 · 공동주택 택지/비택지 준비기간 · 비건축 유형 행 숨김 · 층수 칸 정정 · A4 보강 · 단서 병기 · 로컬 날짜 파싱 · 캐시명 v6.1.5 (종전 v6.1.4)
    v6.1.4 (2026-11-12) — html2canvas 1.4.1 머리 태그 SRI(integrity sha384 · crossorigin) · 공통 인쇄 원본 MM-PRINT v1.0 → v1.1(지연 로더도 SRI)(정밀검토 B8 · html2canvas SRI) — 화면 · 계산 · 인쇄 불변 · 작업지시서 §25-6-87 · 캐시명 v6.1.4 (종전 v6.1.3)
    v6.1.3 (2026-11-12) — Pretendard CSS SRI(integrity · crossorigin)(정밀검토 C2) — 화면 · 계산 · 인쇄 불변 · 작업지시서 §25-6-82 · 캐시명 v6.1.3 (종전 v6.1.2)
@@ -42,7 +43,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE  = 'air-v6.1.5';   /* 2026-09-03 v5.0 디자인 통일 */
+const CACHE  = 'air-v6.1.6';   /* 2026-09-03 v5.0 디자인 통일 */
 const ORPHAN = ['air-v3.0'];
 const ASSETS = [
   './',
